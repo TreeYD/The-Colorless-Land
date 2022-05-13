@@ -1,27 +1,27 @@
 #include "stateManager.h"
 #include "menu.h"
 #include"gamecontrol.h"
-#ifndef CurrentRank //ï¿½ï¿½Ð´ï¿½Ä£ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Ê¾ï¿½Ø¿ï¿½ï¿½Ä²ï¿½ï¿½ï¿½
-#define CurrentRank
-#endif
+/*CurrentRank: temporary variable to represent present stage process. Waiting to be changed.*/
 
-//ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½
+//function for main menu
 void Continue(void);
 void setMenu(void);
+void drawMenu(void);
 void GetBackToMainMenu(void);
 void ToHelp(void);
 void NewGame(void);
-void ExitGame();
-void ToArchiveManagement();
+void ExitGame(void);
+void ToArchiveManagement(void);
 
-//ï¿½Ø¿ï¿½Ñ¡ï¿½ï¿½ï¿½Ü£ï¿½Î´ï¿½ê£©
+//function for stage selection
 void setStageMap(void);
 void LoadStage1(void);
-
+void LoadStage2(void);
+void LoadStage3(void);
 State  MainMenu = {
 	"MAINMENU",
 	setMenu,
-	traverseButton,
+	drawMenu,
 	NULL,
 	NULL,
 	uiMouseEvent,
@@ -36,7 +36,7 @@ State StageMap = {
 };
 void Continue()
 {
-	//TO DO:ï¿½ï¿½ï¿½Ý´æµµï¿½ï¿½Í¬ï¿½ï¿½ï¿½Ø¿ï¿½ï¿½ï¿½Ï¢
+	//TO DO:load all info according to current archive
 	StatePush(&StageMap);
 
 }
@@ -45,31 +45,38 @@ void setMenu()
 {
 	double x = GetWindowWidth() / 2;
 	double half = 4.45;
-	//setLabel(x - half,8,30,"ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½");
-	setButton(x-half, 2.5, 0.1 , 2.3, 0.6, "continue.bmp", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·", Continue);
-	setButton(x - half+3.3, 2.5, 0.1, 2.3, 0.6, "new.bmp", "ï¿½Â½ï¿½ï¿½ï¿½Ï·", NewGame);
-	setButton(x - half+6.6, 2.5, 0.1, 2.3, 0.6, "exit.bmp", "ï¿½Ë³ï¿½ï¿½ï¿½Ï·", ExitGame);
-	setButton(x - half, 1.5, 0.1, 2.3, 0.6, "archive.bmp", "ï¿½æµµï¿½ï¿½ï¿½ï¿½", ToArchiveManagement);
-	setButton(x - half + 3.3, 1.5, 0.1, 2.3, 0.6, "help.bmp", "ï¿½é¿´ï¿½ï¿½ï¿½ï¿½", ToHelp);
+	setButton(x-half, 2.5, 0.1 , 2.3, 0.6, "continue.bmp", "¼ÌÐøÓÎÏ·", Continue);
+	setButton(x - half+3.3, 2.5, 0.1, 2.3, 0.6, "new.bmp", "ÐÂ½¨ÓÎÏ·", NewGame);
+	setButton(x - half+6.6, 2.5, 0.1, 2.3, 0.6, "exit.bmp", "ÍË³öÓÎÏ·", ExitGame);
+	setButton(x - half, 1.5, 0.1, 2.3, 0.6, "archive.bmp", "´æµµ¹ÜÀí", ToArchiveManagement);
+	setButton(x - half + 3.3, 1.5, 0.1, 2.3, 0.6, "help.bmp", "²é¿´°ïÖú", ToHelp);
 }
 
+void drawMenu()
+{
+	setLabel(5, 7, 30, "ÎÞÉ«Ö®¾³-THE COLORLESS LAND");
+	traverseButton();
+}
 void setStageMap()
 {
-	
-	setButton(1, 3, 0.2, 3.5, 0.7, "", (CurrentRank>=1?"1":"lock.bmp"), LoadStage1);
-	setButton(8.5, 2, 0.1, 2.3, 0.6, "", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½", GetBackToMainMenu);
-
+	double x = GetWindowWidth() / 2;
+	double half = 3.625;
+	setButton(x-half, 6, 0.2, 1.75, 1, (CurrentRank >= 1 ? "" : "lock.bmp"), (CurrentRank>=1?"1":" "), LoadStage1);
+	setButton(x-half+2.75, 6, 0.2, 1.75, 1, (CurrentRank >= 2 ? "" : "lock.bmp"), (CurrentRank >= 2 ? "2" : " "), LoadStage2);
+	setButton(x - half + 5.5, 6, 0.2, 1.75, 1, (CurrentRank >= 3 ? "" : "lock.bmp"), (CurrentRank >= 2 ? "3" : " "), LoadStage3);
+	setButton(x+1, 2, 0.1, 2.3, 0.6, "", "·µ»ØÖ÷²Ëµ¥", GetBackToMainMenu);
+	setButton(x-3.3, 2, 0.1, 2.3, 0.6, "", "Ñ¡Ôñ´æµµ", ToArchiveManagement);
 }
 
 
 void GetBackToMainMenu()
 {
-	StatePop("MAINMENU");//ï¿½ï¿½StatePop(NULL)
+	StatePop("MAINMENU");//or StatePop(NULL)
 }
 
 void NewGame()
 {
-	//TO DO:ï¿½ï¿½Ê¼ï¿½ï¿½Ò»ï¿½ï¿½ï¿½æµµï¿½ï¿½
+	//TO DO:initialize an archive£¬
 	StatePush(&StageMap);
 }
 
@@ -91,7 +98,7 @@ void ToHelp()
 }
 void LoadStage1(void)
 {
-	//Î±ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½hhhï¿½È¾ï¿½ï¿½ï¿½æ·¶ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½Ù¸ï¿½
+	//Î±´úÂë£¬²ÎÊýÊÇÂÒÐ´µÄhhhµÈ¾ßÌå¹æ·¶ÖÆ¶¨ÍêÔÙ¸Ä
 	/*
 	if (CurrentRank<1)
 	{
@@ -100,7 +107,7 @@ void LoadStage1(void)
 	StatePush(&GameState[0]);
 	*/
 }
-void LoadStage3(void)
+void LoadStage2(void)
 {
 	/*
 	if (CurrentRank<2)
