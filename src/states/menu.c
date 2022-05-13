@@ -1,11 +1,11 @@
 #include "stateManager.h"
 #include "menu.h"
 #include"gamecontrol.h"
-#ifndef CurrentRank //ÂÒÐ´µÄ£¬¶×Ò»²¨µ±Ç°±íÊ¾¹Ø¿¨µÄ²ÎÊý
+#ifndef CurrentRank //ï¿½ï¿½Ð´ï¿½Ä£ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Ê¾ï¿½Ø¿ï¿½ï¿½Ä²ï¿½ï¿½ï¿½
 #define CurrentRank
 #endif
 
-//²Ëµ¥¹¦ÄÜ
+//ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½
 void Continue(void);
 void setMenu(void);
 void GetBackToMainMenu(void);
@@ -14,7 +14,7 @@ void NewGame(void);
 void ExitGame();
 void ToArchiveManagement();
 
-//¹Ø¿¨Ñ¡Ôñ¹¦ÄÜ£¨Î´Íê£©
+//ï¿½Ø¿ï¿½Ñ¡ï¿½ï¿½ï¿½Ü£ï¿½Î´ï¿½ê£©
 void setStageMap(void);
 void LoadStage1(void);
 
@@ -36,7 +36,7 @@ State StageMap = {
 };
 void Continue()
 {
-	//TO DO:¸ù¾Ý´æµµ£¬Í¬²½¹Ø¿¨ÐÅÏ¢
+	//TO DO:ï¿½ï¿½ï¿½Ý´æµµï¿½ï¿½Í¬ï¿½ï¿½ï¿½Ø¿ï¿½ï¿½ï¿½Ï¢
 	StatePush(&StageMap);
 
 }
@@ -45,31 +45,31 @@ void setMenu()
 {
 	double x = GetWindowWidth() / 2;
 	double half = 4.45;
-	setLabel(x - half,8,30,"ÕâÊÇÒ»¸öÓÎÏ·±êÌâ");
-	setButton(x-half, 2.5, 0.1 , 2.3, 0.6, "continue.bmp", "¼ÌÐøÓÎÏ·", Continue);
-	setButton(x - half+3.3, 2.5, 0.1, 2.3, 0.6, "new.bmp", "ÐÂ½¨ÓÎÏ·", NewGame);
-	setButton(x - half+6.6, 2.5, 0.1, 2.3, 0.6, "exit.bmp", "ÍË³öÓÎÏ·", ExitGame);
-	setButton(x - half, 1.5, 0.1, 2.3, 0.6, "archive.bmp", "´æµµ¹ÜÀí", ToArchiveManagement);
-	setButton(x - half + 3.3, 1.5, 0.1, 2.3, 0.6, "help.bmp", "²é¿´°ïÖú", ToHelp);
+	//setLabel(x - half,8,30,"ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½");
+	setButton(x-half, 2.5, 0.1 , 2.3, 0.6, "continue.bmp", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·", Continue);
+	setButton(x - half+3.3, 2.5, 0.1, 2.3, 0.6, "new.bmp", "ï¿½Â½ï¿½ï¿½ï¿½Ï·", NewGame);
+	setButton(x - half+6.6, 2.5, 0.1, 2.3, 0.6, "exit.bmp", "ï¿½Ë³ï¿½ï¿½ï¿½Ï·", ExitGame);
+	setButton(x - half, 1.5, 0.1, 2.3, 0.6, "archive.bmp", "ï¿½æµµï¿½ï¿½ï¿½ï¿½", ToArchiveManagement);
+	setButton(x - half + 3.3, 1.5, 0.1, 2.3, 0.6, "help.bmp", "ï¿½é¿´ï¿½ï¿½ï¿½ï¿½", ToHelp);
 }
 
 void setStageMap()
 {
 	
 	setButton(1, 3, 0.2, 3.5, 0.7, "", (CurrentRank>=1?"1":"lock.bmp"), LoadStage1);
-	setButton(8.5, 2, 0.1, 2.3, 0.6, "", "·µ»ØÖ÷²Ëµ¥", GetBackToMainMenu);
+	setButton(8.5, 2, 0.1, 2.3, 0.6, "", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½", GetBackToMainMenu);
 
 }
 
 
 void GetBackToMainMenu()
 {
-	StatePop("MAINMENU");//»òStatePop(NULL)
+	StatePop("MAINMENU");//ï¿½ï¿½StatePop(NULL)
 }
 
 void NewGame()
 {
-	//TO DO:³õÊ¼»¯Ò»¸ö´æµµ£¬
+	//TO DO:ï¿½ï¿½Ê¼ï¿½ï¿½Ò»ï¿½ï¿½ï¿½æµµï¿½ï¿½
 	StatePush(&StageMap);
 }
 
@@ -91,7 +91,7 @@ void ToHelp()
 }
 void LoadStage1(void)
 {
-	//Î±´úÂë£¬²ÎÊýÊÇÂÒÐ´µÄhhhµÈ¾ßÌå¹æ·¶ÖÆ¶¨ÍêÔÙ¸Ä
+	//Î±ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½hhhï¿½È¾ï¿½ï¿½ï¿½æ·¶ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½Ù¸ï¿½
 	/*
 	if (CurrentRank<1)
 	{
