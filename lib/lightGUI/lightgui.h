@@ -97,4 +97,7 @@ void freeSeekbar();
 // free all the seekbar, make it disable
 void CacheSorting(void);
 
+void traverseButton();
+void traverseSeekbar();
+void traverseTextbox();
 #endif

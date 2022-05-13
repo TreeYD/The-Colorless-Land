@@ -59,16 +59,13 @@ static double MAX(double x, double y);
 
 /*TODO: Button Process*/
 void insertButton(BUTTON ptr);
-void traverseButton();
 
 /*TODO: Seekbar Process*/
 void insertSeekbar(SEEKBAR ptr);
-void traverseSeekbar();
 
 /*TODO: Textbox Process*/
 void insertTextbox(TEXTBOX ptr);
 void drawCursor(TEXTBOX ptr);
-void traverseTextbox();
 void Insert(int id, char c);
 void Delete(int id);
 
