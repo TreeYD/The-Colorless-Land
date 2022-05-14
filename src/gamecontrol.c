@@ -20,10 +20,10 @@ extern struct ROLE myrole;
 struct ENEMY enemy[EnemyNum];
 struct BULLET bullet[BulletNum];
 struct BLOCK* blockhead;
-LINE* LineUnion = NULL; //the linklist for all lines drawn.
 void render(int TimerID)//计时器回调函数
 {
 	startTimer(FALL, RENDERGAP);//FALL的Timer需要一直开着，因为需要一直判断，不需要按键来触发
+	startTimer(JUDGE, JUDGEGAP);
 	startTimer(BULLETMAKE, RENDERGAP);//子弹的不断产生
 	startTimer(BULLETMOVE, RENDERGAP);//子弹运动的Timer需要一直开着
 	switch (TimerID)
@@ -39,6 +39,10 @@ void render(int TimerID)//计时器回调函数
 		break;
 	case FALL:
 		PlayerMove(FALL);
+		break;
+	case JUDGE:
+		BonusJudge();
+		EnemyJudge();
 		break;
 	case BULLETMAKE:
 		BulletMake();
@@ -95,42 +99,69 @@ void PlayerMove(int event)
 	{
 	case LEFTMOVING:
 		myrole.direction = LEFT;
-		if (myrole.x >= 0 && !RoleAndGroundX(myrole, blockhead)) {//窗口边界判定和地面障碍判定
+		if (myrole.x >= 0 && !RoleAndGroundX(blockhead) && !RoleAndLineX()) {//窗口边界判定和地面障碍判定
 			myrole.x -= RoleSpeed;
 		}
 		break;
 	case RIGHTMOVING:
 		myrole.direction = RIGHT;
-		if (myrole.x <= GraphicsWindowWidth - RoleWidth && !RoleAndGroundX(myrole, blockhead)) {//窗口边界判定和地面障碍判定
+		if (myrole.x <= GraphicsWindowWidth - RoleWidth && !RoleAndGroundX(blockhead) && !RoleAndLineX()) {//窗口边界判定和地面障碍判定
 			myrole.x += RoleSpeed;
 		}
 		break;
 	case JUMP:
-		if (!IsFloating) {
+		if (!IsJumping && !IsDropping && (RoleAndGroundY(blockhead) || RoleAndLineY())) {
+			IsJumping = TRUE;
 			VerticalSpeed = INITIALVERTICALSPEED;
-			IsFloating = TRUE;
+		}
+		if (IsJumping) {
 			myrole.y += VerticalSpeed;
 			VerticalSpeed -= G;
 		}
-		else if (RoleAndGroundY(myrole, blockhead)) {
-			VerticalSpeed = INITIALVERTICALSPEED;
-			IsFloating = FALSE;
+		if (RoleAndGroundY(blockhead) || RoleAndLineY()) {
+			IsJumping = FALSE;
 			cancelTimer(JUMP);
 		}
 		break;
 	case FALL://FALL的Timer需要一直开着，因为需要一直判断，不需要按键来触发
-		if (!RoleAndGroundY(myrole, blockhead) && !IsFloating) {
-			//判定说明：第一竖直方向上判断没有与block接触第二没有在跳跃中，就开始下落，第二个如果不加会出现按W跳的时候有两个速度一上一下
+		if (!IsJumping && !IsDropping && !RoleAndGroundY(blockhead) && !RoleAndLineY()) {
+			IsDropping = TRUE;
 			FallingSpeed = 0;
+		}
+		if (IsDropping) {
 			myrole.y -= FallingSpeed;
 			FallingSpeed += G;
 		}
-		if (RoleAndGroundY(myrole, blockhead)) {
-			FallingSpeed = 0;
+		if (RoleAndGroundY(blockhead) || RoleAndLineY()) {
+			IsDropping = FALSE;
 		}
 		break;
 	default:
 		break;
+	}
+	return;
+}
+void BonusJudge() {
+	int i;
+	for (i = 0; i < BonusNum; i++) {
+		if (RoleAndBonus(bonus[i])) {
+			if (bonus[i].IsColor) {
+				myrole.colorvolume++;
+			}
+			else {
+				myrole.mark++;
+			}
+			bonus[i].live = FALSE;
+		}
+	}
+	return;
+}
+void EnemyJudge() {
+	int i;
+	for (i = 0; i < EnemyNum; i++) {
+		if (RoleAndEnemy(enemy[i])) {
+			myrole.HP--;
+		}
 	}
 	return;
 }
@@ -172,6 +203,10 @@ void BulletMove() {//子弹发射出去以后自动运动的函数
 					enemy[j].HP--;
 					bullet[i].live = FALSE;
 					bullet[i].IsMoving = FALSE;
+				}
+				if (enemy[j].HP <= 0) {
+					enemy[j].live = FALSE;
+					myrole.mark++;//击杀敌人得分
 				}
 			}
 		}
