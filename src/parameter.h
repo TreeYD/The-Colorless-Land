@@ -14,6 +14,8 @@
 #define BulletSize 0.005//子弹判定半径
 #define BulletNum 100//子弹最大数量
 #define BlockSize 0.5
+#define BonusNum 20
+#define BonusSize 0.3
 #define DotSize 0.5
 enum DIRECTION
 {
@@ -61,6 +63,13 @@ struct BLOCK {
 	struct BLOCK* next;
 };
 struct BLOCK* blockhead;//地面表面用链表存储
+struct BONUS {
+	double x;
+	double y;
+	bool IsColor;//收集物两种 一种加分一种加颜料
+	bool live;
+};
+struct BONUS bonus[BonusNum];
 typedef struct dot {
 	double x, y;
 	struct dot* next;
@@ -69,4 +78,5 @@ typedef struct line {
 	DOT* HeadDot;
 	struct line* next;
 }LINE;
+LINE* LineUnion = NULL; //the linklist for all lines drawn.
 #endif
