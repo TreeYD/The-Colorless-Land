@@ -14,20 +14,18 @@
 #include <winuser.h>
 #include"parameter.h"
 #include"gamecontrol.h"
-#include"stateManager.h"
 #include"judge.h"
 #include<math.h>
 extern struct ROLE myrole;
-extern void(*stateRender)(void);
 struct ENEMY enemy[EnemyNum];
 struct BULLET bullet[BulletNum];
 struct BLOCK* blockhead;
-static void ScreenRender(void);
-void render(int TimerID)//¼ÆÊ±Æ÷»Øµ÷º¯Êı
+LINE* LineUnion = NULL; //the linklist for all lines drawn.
+void render(int TimerID)//è®¡æ—¶å™¨å›è°ƒå‡½æ•°
 {
-	startTimer(FALL, RENDERGAP);//FALLµÄTimerĞèÒªÒ»Ö±¿ª×Å£¬ÒòÎªĞèÒªÒ»Ö±ÅĞ¶Ï£¬²»ĞèÒª°´¼üÀ´´¥·¢
-	startTimer(BULLETMAKE, RENDERGAP);//×Óµ¯µÄ²»¶Ï²úÉú
-	startTimer(BULLETMOVE, RENDERGAP);//×Óµ¯ÔË¶¯µÄTimerĞèÒªÒ»Ö±¿ª×Å
+	startTimer(FALL, RENDERGAP);//FALLçš„Timeréœ€è¦ä¸€ç›´å¼€ç€ï¼Œå› ä¸ºéœ€è¦ä¸€ç›´åˆ¤æ–­ï¼Œä¸éœ€è¦æŒ‰é”®æ¥è§¦å‘
+	startTimer(BULLETMAKE, RENDERGAP);//å­å¼¹çš„ä¸æ–­äº§ç”Ÿ
+	startTimer(BULLETMOVE, RENDERGAP);//å­å¼¹è¿åŠ¨çš„Timeréœ€è¦ä¸€ç›´å¼€ç€
 	switch (TimerID)
 	{
 	case LEFTMOVING:
@@ -50,15 +48,14 @@ void render(int TimerID)//¼ÆÊ±Æ÷»Øµ÷º¯Êı
 	case BULLETMOVE:
 		BulletMove();
 		break;
-	case DRAW://»¹ÔÚĞ´
-		break;
-	case RENDER:
-		ScreenRender();
+	case DRAW://è¿˜åœ¨å†™
+		MakeLine();
+		PickUpDots();
 		break;
 	}
 	return;
 }
-void KeyBoardControl(int key, int event) {//¼üÅÌĞÅÏ¢»Øµ÷º¯Êı
+void KeyBoardControl(int key, int event) {//é”®ç›˜ä¿¡æ¯å›è°ƒå‡½æ•°
 	if (event == KEY_DOWN)
 	{
 		switch (key)
@@ -72,7 +69,9 @@ void KeyBoardControl(int key, int event) {//¼üÅÌĞÅÏ¢»Øµ÷º¯Êı
 		case 'W':
 			startTimer(JUMP, RENDERGAP);
 			break;
-
+		case 'F'://åˆ‡æ¢æ­¦å™¨ï¼ŒæŒ‰é”®å¯ä»¥æ”¹ï¼Œä¹Ÿå¯ä»¥æ”¹é¼ æ ‡
+			myrole.weapon = !myrole.weapon;
+			break;
 		}
 	}
 	else if (event == KEY_UP) {
@@ -96,13 +95,13 @@ void PlayerMove(int event)
 	{
 	case LEFTMOVING:
 		myrole.direction = LEFT;
-		if (myrole.x >= 0 && !RoleAndGroundX(myrole, blockhead)) {//´°¿Ú±ß½çÅĞ¶¨ºÍµØÃæÕÏ°­ÅĞ¶¨
+		if (myrole.x >= 0 && !RoleAndGroundX(myrole, blockhead)) {//çª—å£è¾¹ç•Œåˆ¤å®šå’Œåœ°é¢éšœç¢åˆ¤å®š
 			myrole.x -= RoleSpeed;
 		}
 		break;
 	case RIGHTMOVING:
 		myrole.direction = RIGHT;
-		if (myrole.x <= GraphicsWindowWidth - RoleWidth && !RoleAndGroundX(myrole, blockhead)) {//´°¿Ú±ß½çÅĞ¶¨ºÍµØÃæÕÏ°­ÅĞ¶¨
+		if (myrole.x <= GraphicsWindowWidth - RoleWidth && !RoleAndGroundX(myrole, blockhead)) {//çª—å£è¾¹ç•Œåˆ¤å®šå’Œåœ°é¢éšœç¢åˆ¤å®š
 			myrole.x += RoleSpeed;
 		}
 		break;
@@ -119,9 +118,9 @@ void PlayerMove(int event)
 			cancelTimer(JUMP);
 		}
 		break;
-	case FALL://FALLµÄTimerĞèÒªÒ»Ö±¿ª×Å£¬ÒòÎªĞèÒªÒ»Ö±ÅĞ¶Ï£¬²»ĞèÒª°´¼üÀ´´¥·¢
+	case FALL://FALLçš„Timeréœ€è¦ä¸€ç›´å¼€ç€ï¼Œå› ä¸ºéœ€è¦ä¸€ç›´åˆ¤æ–­ï¼Œä¸éœ€è¦æŒ‰é”®æ¥è§¦å‘
 		if (!RoleAndGroundY(myrole, blockhead) && !IsFloating) {
-			//ÅĞ¶¨ËµÃ÷£ºµÚÒ»ÊúÖ±·½ÏòÉÏÅĞ¶ÏÃ»ÓĞÓëblock½Ó´¥µÚ¶şÃ»ÓĞÔÚÌøÔ¾ÖĞ£¬¾Í¿ªÊ¼ÏÂÂä£¬µÚ¶ş¸öÈç¹û²»¼Ó»á³öÏÖ°´WÌøµÄÊ±ºòÓĞÁ½¸öËÙ¶ÈÒ»ÉÏÒ»ÏÂ
+			//åˆ¤å®šè¯´æ˜ï¼šç¬¬ä¸€ç«–ç›´æ–¹å‘ä¸Šåˆ¤æ–­æ²¡æœ‰ä¸blockæ¥è§¦ç¬¬äºŒæ²¡æœ‰åœ¨è·³è·ƒä¸­ï¼Œå°±å¼€å§‹ä¸‹è½ï¼Œç¬¬äºŒä¸ªå¦‚æœä¸åŠ ä¼šå‡ºç°æŒ‰Wè·³çš„æ—¶å€™æœ‰ä¸¤ä¸ªé€Ÿåº¦ä¸€ä¸Šä¸€ä¸‹
 			FallingSpeed = 0;
 			myrole.y -= FallingSpeed;
 			FallingSpeed += G;
@@ -135,7 +134,7 @@ void PlayerMove(int event)
 	}
 	return;
 }
-void BulletMake() {//×Óµ¯²úÉú
+void BulletMake() {//å­å¼¹äº§ç”Ÿ
 	int i;
 	for (i = 0; i < BulletNum; i++) {
 		if (!bullet[i].live) {
@@ -144,7 +143,7 @@ void BulletMake() {//×Óµ¯²úÉú
 	}
 	return;
 }
-void Shot() {//°´W·¢ÉäÊ±µ÷ÓÃµÄº¯Êı
+void Shot() {//å‘å°„æ—¶è°ƒç”¨çš„å‡½æ•°
 	int i;
 	if (myrole.colorvolume > 0) {
 		for (i = 0; i < BulletNum; i++) {
@@ -158,7 +157,7 @@ void Shot() {//°´W·¢ÉäÊ±µ÷ÓÃµÄº¯Êı
 	}
 	return;
 }
-void BulletMove() {//×Óµ¯·¢Éä³öÈ¥ÒÔºó×Ô¶¯ÔË¶¯µÄº¯Êı
+void BulletMove() {//å­å¼¹å‘å°„å‡ºå»ä»¥åè‡ªåŠ¨è¿åŠ¨çš„å‡½æ•°
 	int i, j;
 	for (i = 0; i < BulletNum; i++) {
 		if (bullet[i].live && bullet[i].IsMoving) {
@@ -179,18 +178,23 @@ void BulletMove() {//×Óµ¯·¢Éä³öÈ¥ÒÔºó×Ô¶¯ÔË¶¯µÄº¯Êı
 	}
 	return;
 }
-void MouseControl(int x, int y, int button, int event) {//Êó±êĞÅÏ¢»Øµ÷º¯Êı
+void MouseControl(int x, int y, int button, int event) {//é¼ æ ‡ä¿¡æ¯å›è°ƒå‡½æ•°
 	MouseX = ScaleXInches(x);
 	MouseY = ScaleYInches(y);
 	COS = (MouseX - myrole.x) / sqrt(pow(MouseX - myrole.x, 2) + pow(MouseY - myrole.y, 2));
 	SIN = (MouseY - myrole.y) / sqrt(pow(MouseX - myrole.x, 2) + pow(MouseY - myrole.y, 2));
 	if (button == VK_LBUTTON) {
 		if (event == BUTTON_DOWN) {
-			if (myrole.weapon) {//ÓÃÇ¹µÄÇé¿ö
+			if (myrole.colorvolume <= 0) {
+				return;
+			}
+			if (myrole.weapon) {//ç”¨æªçš„æƒ…å†µ
 				startTimer(SHOT, RENDERGAP);
 			}
-			else {//ÓÃ±ÊµÄÇé¿ö
-				startTimer(DRAW, RENDERGAP);
+			else {//ç”¨ç¬”çš„æƒ…å†µ
+				if (MouseAndGround(blockhead)) {//é¼ æ ‡æ¥è§¦åœ°é¢æ‰èƒ½ç”»æ¡¥
+					startTimer(DRAW, RENDERGAP);
+				}
 			}
 		}
 		if (event == BUTTON_UP) {
@@ -198,24 +202,103 @@ void MouseControl(int x, int y, int button, int event) {//Êó±êĞÅÏ¢»Øµ÷º¯Êı
 				cancelTimer(SHOT);
 			}
 			else {
+				IsDrawing = FALSE;
 				cancelTimer(DRAW);
 			}
 		}
 	}
-	else if (button == VK_RBUTTON)
-	{
-		if(event==BUTTON_DOWN)
-		myrole.weapon = !myrole.weapon;
+	if (button = VK_RBUTTON) {//å³é”®ç‚¹å‡»æ¡¥æ¢å›æ”¶
+		if (!myrole.weapon) {
+			Delete();
+		}
 	}
-	
+}
+void MakeLine() {
+	if (!IsDrawing) {
+		IsDrawing = TRUE;
+		LINE* line = GetBlock(sizeof(LINE));
+		DOT* LineHead = GetBlock(sizeof(DOT));
+		line->HeadDot = LineHead;
+		line->next = NULL;
+		AddLine(line);
+		LineHead->x = MouseX;
+		LineHead->y = MouseY;
+		LineHead->next = NULL;
+	}
+	else {
+		return;
+	}
+}
+void AddLine(LINE* NewLine)
+{
+	LINE* p = LineUnion;
+	if (p == NULL)
+	{
+		LineUnion = NewLine;
+		return;
+	}
+	while (p->next != NULL)
+		p = p->next;
+	p->next = NewLine;
 	return;
 }
-
-void ScreenRender(void)
+void PickUpDots(void)
 {
-	DisplayClear();
-	if (stateRender != NULL)
-	{
-		stateRender();
+	if (IsDrawing) {
+		DOT* p;
+		p = GetBlock(sizeof(DOT));
+		p->x = MouseX;
+		p->y = MouseY;
+		p->next = NULL;
+		myrole.colorvolume -= VOLUMEREDUCINGSPEED;
+		AddDot(p);
 	}
+}
+void AddDot(DOT* NewDot)
+{
+	LINE* p = LineUnion;
+	DOT* dot = NULL;
+	while (p->next != NULL)
+		p = p->next;
+	dot = p->HeadDot;
+	if (dot == NULL)
+	{
+		p->HeadDot = NewDot;
+		return;
+	}
+	while (dot->next != NULL)
+		dot = dot->next;
+	dot->next = NewDot;
+	return;
+}
+void Delete() {
+	LINE* line = LineUnion;
+	while (line != NULL) {
+		if (MouseAndLine(line)) {//åˆ¤æ–­é¼ æ ‡ç‚¹å‡»æ¡¥
+			DeleteLine(line);
+			return;//ç‚¹ä¸€æ¬¡åˆ ä¸€æ¡
+		}
+		line = line->next;
+	}
+	return;
+}
+void DeleteLine(LINE* line) {
+	LINE* p = LineUnion;
+	if (p == NULL) {
+		return;
+	}
+	while (p->next != line) {
+		p = p->next;
+	}
+	p->next = line->next;
+	DOT* q = line->HeadDot;//åˆ é™¤æ¡¥é‡Œé¢çš„dot
+	DOT* r = NULL;
+	while (q != NULL) {
+		r = q;
+		q = q->next;
+		free(r);
+		myrole.colorvolume += VOLUMEREDUCINGSPEED;//é¢œæ–™å›æ”¶
+	}
+	free(line);//åˆ é™¤æ¡¥æœ¬èº«
+	return;
 }
