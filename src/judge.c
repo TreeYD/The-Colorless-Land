@@ -13,6 +13,8 @@
 #include <ocidl.h>
 #include <winuser.h>
 #include"parameter.h"
+#include"gamecontrol.h"
+#include"judge.h"
 #include<math.h>
 extern struct ROLE myrole;
 struct ENEMY enemy[EnemyNum];
@@ -70,6 +72,27 @@ bool EnemyAndBullet(struct ENEMY enemy, struct BULLET bullet) {
 	double EnemyY = enemy.y + enemy.height / 2;
 	if (distance(BulletX, BulletY, BulletSize, EnemyX, EnemyY, enemy.size)) {
 		return TRUE;
+	}
+	return FALSE;
+}
+bool MouseAndGround(struct BLOCK* blockhead) {
+	while (blockhead) {
+		double BlockX = blockhead->x + BlockSize / 2;
+		double BlockY = blockhead->y + BlockSize / 2;
+		if (distance(MouseX, MouseY, 0, BlockX, BlockY, BlockSize)) {
+			return TRUE;
+		}
+		blockhead = blockhead->next;
+	}
+	return FALSE;
+}
+bool MouseAndLine(LINE* line) {
+	DOT* p = line->HeadDot;
+	while (p != NULL) {
+		if (distance(MouseX, MouseY, 0, p->x, p->y, DotSize)) {
+			return TRUE;
+		}
+		p = p->next;
 	}
 	return FALSE;
 }
