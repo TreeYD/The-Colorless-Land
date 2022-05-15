@@ -6,6 +6,8 @@
 #define RoleSpeed 0.5//角色移动速度
 #define RoleWidth 0.5//角色大小
 #define RoleHeight 1
+#define InitialHP 100
+#define InitialColorVolume 10
 #define EnemySpeed 0.5//敌人移动速度
 #define EnemyNum 10//一个关卡中敌人的最大数量
 #define BulletSpeed 3//子弹移动速度
@@ -16,10 +18,12 @@
 #define BlockSize 0.5
 #define BonusNum 20
 #define BonusSize 0.3
+#define GoalSize 0.3
 #define DotSize 0.5
 enum DIRECTION
 {
-	LEFT, RIGHT//枚举方向类型
+	LEFT = -1,
+	RIGHT = 1//枚举方向类型
 };
 struct ROLE
 {
@@ -40,11 +44,12 @@ struct ENEMY
 	double width;//不同敌人不同大小
 	double height;
 	double size;
+	double moverange;//移动范围
+	double nowrange;
 	int direction;//敌人在一个区域往复运动，涉及运动方向
 	int kind;//敌人种类
 	bool live;
 	int HP;//不同敌人血量不同，需要攻击不同次数，每次攻击HP--，感觉BOSS应该可以放进里面来
-	struct ENEMY* next;
 };
 struct ENEMY enemy[EnemyNum];//敌人用数组存储
 struct BULLET
@@ -70,6 +75,16 @@ struct BONUS {
 	bool live;
 };
 struct BONUS bonus[BonusNum];
+struct GOAL {
+	double x;
+	double y;
+	bool live;
+};
+struct GOAL NowGoal;
+struct STAGE {
+	int num;
+	struct STAGE* next;
+};
 typedef struct dot {
 	double x, y;
 	struct dot* next;
