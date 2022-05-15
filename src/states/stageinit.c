@@ -17,6 +17,23 @@
 #include"judge.h"
 #include<math.h>
 #include"stageinit.h"
+#include "stateManager.h"
+#include"lightgui.h"
+State* StageArray[StageNum];
+fnPtr InitArray[StageNum];
+void StageSetting() {
+	int i;
+	for (i = 0; i < StageNum; i++) {
+		strcpy(StageArray[i].name, "STAGE");
+		(StageArray[i].name)[5] = i + '0';
+		(StageArray[i].name)[6] = '\0';
+		StageArray[i]->init = InitArray[i];//待改
+		StageArray[i]->draw = StageDraw;//在写
+		StageArray[i]->destroy = StageClear;
+		StageArray[i]->keyboardCallbackfn = KeyBoardControl;
+		StageArray[i]->mouseCallbackfn = MouseControl;
+	}
+}
 void RoleSetting(double x, double y) {
 	myrole.x = x;
 	myrole.y = y;
