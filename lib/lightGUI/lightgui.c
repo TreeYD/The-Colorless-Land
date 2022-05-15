@@ -208,7 +208,7 @@ void drawButton(BUTTON ptr,bool fill) {
 }
 BUTTON setButton(double x,double y,double r,double w,double h,string icon,string text,void *func) {
 	BUTTON ptr=GetBlock(sizeof(*ptr));
-	*ptr = (struct button) { x, y, r,w, h, icon,text,func,NULL};
+	*ptr = (struct button) { x, y, r,w, h, icon,text,func,NULL,0};
 	drawButton(ptr, NOTFILL);
 	insertButton(ptr);
 	return ptr;
@@ -216,20 +216,28 @@ BUTTON setButton(double x,double y,double r,double w,double h,string icon,string
 void traverseButton() {
 	BUTTON ptr = headButton;
 	while (ptr != NULL) {
-		if (inBox(ptr->x, ptr->y, ptr->w, ptr->h)) {
-			if (curState->button==LEFT_BUTTON&&curState->event == BUTTON_DOWN) {
-				ptr->clickEvent();
-			}
-			if (ptr == NULL)break;
+		if (ptr->isDisable) {
 			SetPenColor("ButtonShadow");
 			drawButton(ptr, FILL);
 			SetPenColor("black");
 			drawButton(ptr, NOTFILL);
-		}else {
-			SetPenColor("white");
-			drawButton(ptr, FILL);
-			SetPenColor("black");
-			drawButton(ptr, NOTFILL);
+		}
+		else {
+			if (inBox(ptr->x, ptr->y, ptr->w, ptr->h)) {
+				if (curState->button==LEFT_BUTTON&&curState->event == BUTTON_DOWN) {
+					ptr->clickEvent();
+				}
+				if (ptr == NULL)break;
+				SetPenColor("ButtonShadow");
+				drawButton(ptr, FILL);
+				SetPenColor("black");
+				drawButton(ptr, NOTFILL);
+			}else {
+				SetPenColor("white");
+				drawButton(ptr, FILL);
+				SetPenColor("black");
+				drawButton(ptr, NOTFILL);
+			}
 		}
 		if(ptr!=NULL)ptr = ptr->next;
 	}

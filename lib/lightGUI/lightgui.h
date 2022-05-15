@@ -36,6 +36,7 @@ typedef struct button {
 	string text;
 	void(*clickEvent)();
 	struct button* next;
+	bool isDisable;
 }*BUTTON;
 
 typedef struct textbox {
