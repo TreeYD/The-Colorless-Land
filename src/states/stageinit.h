@@ -1,5 +1,7 @@
 #ifndef STAGEINIT_H
 #define STAGEINIT_H
+void StageSetting();
+//初始化一切关卡
 void RoleSetting(double x, double y);
 //设置角色的初始位置为(x,y)
 
