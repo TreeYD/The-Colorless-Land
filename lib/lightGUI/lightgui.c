@@ -226,6 +226,7 @@ void traverseButton() {
 			if (inBox(ptr->x, ptr->y, ptr->w, ptr->h)) {
 				if (curState->button==LEFT_BUTTON&&curState->event == BUTTON_DOWN) {
 					ptr->clickEvent();
+					curState->event = BUTTON_UP;//to prevent action ig two buttons set in the same place
 				}
 				if (ptr == NULL)break;
 				SetPenColor("ButtonShadow");
