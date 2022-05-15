@@ -1,32 +1,35 @@
 #ifndef PARAMETER_H
 #define PARAMETER_H
 
-#define GraphicsWindowWidth 16//´°¿Ú´óĞ¡
+#define GraphicsWindowWidth 16//çª—å£å¤§å°
 #define GraphicsWindowHeight 9
-#define RoleSpeed 0.5//½ÇÉ«ÒÆ¶¯ËÙ¶È
-#define RoleWidth 0.5//½ÇÉ«´óĞ¡
+#define RoleSpeed 0.5//è§’è‰²ç§»åŠ¨é€Ÿåº¦
+#define RoleWidth 0.5//è§’è‰²å¤§å°
 #define RoleHeight 1
-#define EnemySpeed 0.5//µĞÈËÒÆ¶¯ËÙ¶È
-#define EnemyNum 10//Ò»¸ö¹Ø¿¨ÖĞµĞÈËµÄ×î´óÊıÁ¿
-#define BulletSpeed 3//×Óµ¯ÒÆ¶¯ËÙ¶È
-#define BulletWidth 0.01//×Óµ¯´óĞ¡
+#define EnemySpeed 0.5//æ•Œäººç§»åŠ¨é€Ÿåº¦
+#define EnemyNum 10//ä¸€ä¸ªå…³å¡ä¸­æ•Œäººçš„æœ€å¤§æ•°é‡
+#define BulletSpeed 3//å­å¼¹ç§»åŠ¨é€Ÿåº¦
+#define BulletWidth 0.01//å­å¼¹å¤§å°
 #define BulletHeight 0.002
-#define BulletSize 0.005//×Óµ¯ÅĞ¶¨°ë¾¶
-#define BulletNum 100//×Óµ¯×î´óÊıÁ¿
+#define BulletSize 0.005//å­å¼¹åˆ¤å®šåŠå¾„
+#define BulletNum 100//å­å¼¹æœ€å¤§æ•°é‡
 #define BlockSize 0.5
+#define BonusNum 20
+#define BonusSize 0.3
+#define DotSize 0.5
 enum DIRECTION
 {
-	LEFT, RIGHT//Ã¶¾Ù·½ÏòÀàĞÍ
+	LEFT, RIGHT//æšä¸¾æ–¹å‘ç±»å‹
 };
 struct ROLE
 {
 	double x;
 	double y;
-	int direction;//½ÇÉ«ÒÆ¶¯·½Ïò
-	int mark;//µÃ·Ö
-	int colorvolume;//ÑÕÁÏÈİÁ¿
+	int direction;//è§’è‰²ç§»åŠ¨æ–¹å‘
+	int mark;//å¾—åˆ†
+	int colorvolume;//é¢œæ–™å®¹é‡
 	bool live;
-	bool weapon;//TRUEÎªÇ¹FALSEÎª»­±Ê
+	bool weapon;//TRUEä¸ºæªFALSEä¸ºç”»ç¬”
 	int HP;
 };
 struct ROLE myrole;
@@ -34,30 +37,46 @@ struct ENEMY
 {
 	double x;
 	double y;
-	double width;//²»Í¬µĞÈË²»Í¬´óĞ¡
+	double width;//ä¸åŒæ•Œäººä¸åŒå¤§å°
 	double height;
 	double size;
-	int direction;//µĞÈËÔÚÒ»¸öÇøÓòÍù¸´ÔË¶¯£¬Éæ¼°ÔË¶¯·½Ïò
-	int kind;//µĞÈËÖÖÀà
+	int direction;//æ•Œäººåœ¨ä¸€ä¸ªåŒºåŸŸå¾€å¤è¿åŠ¨ï¼Œæ¶‰åŠè¿åŠ¨æ–¹å‘
+	int kind;//æ•Œäººç§ç±»
 	bool live;
-	int HP;//²»Í¬µĞÈËÑªÁ¿²»Í¬£¬ĞèÒª¹¥»÷²»Í¬´ÎÊı£¬Ã¿´Î¹¥»÷HP--£¬¸Ğ¾õBOSSÓ¦¸Ã¿ÉÒÔ·Å½øÀïÃæÀ´
+	int HP;//ä¸åŒæ•Œäººè¡€é‡ä¸åŒï¼Œéœ€è¦æ”»å‡»ä¸åŒæ¬¡æ•°ï¼Œæ¯æ¬¡æ”»å‡»HP--ï¼Œæ„Ÿè§‰BOSSåº”è¯¥å¯ä»¥æ”¾è¿›é‡Œé¢æ¥
 	struct ENEMY* next;
 };
-struct ENEMY enemy[EnemyNum];//µĞÈËÓÃÊı×é´æ´¢
+struct ENEMY enemy[EnemyNum];//æ•Œäººç”¨æ•°ç»„å­˜å‚¨
 struct BULLET
 {
 	double x;
 	double y;
-	double SpeedX;//¸ù¾İÊó±êÎ»ÖÃºÍ½ÇÉ«Î»ÖÃÈ·¶¨¼Ğ½Ç£¬È»ºó½«ËÙ¶ÈÕı½»·Ö½âÒ»ÏÂ
+	double SpeedX;//æ ¹æ®é¼ æ ‡ä½ç½®å’Œè§’è‰²ä½ç½®ç¡®å®šå¤¹è§’ï¼Œç„¶åå°†é€Ÿåº¦æ­£äº¤åˆ†è§£ä¸€ä¸‹
 	double SpeedY;
 	bool live;
 	bool IsMoving;
 };
-struct BULLET bullet[BulletNum];//×Óµ¯ÓÃÊı×é´æ´¢
+struct BULLET bullet[BulletNum];//å­å¼¹ç”¨æ•°ç»„å­˜å‚¨
 struct BLOCK {
 	double x;
 	double y;
 	struct BLOCK* next;
 };
-struct BLOCK* blockhead;//µØÃæ±íÃæÓÃÁ´±í´æ´¢
+struct BLOCK* blockhead;//åœ°é¢è¡¨é¢ç”¨é“¾è¡¨å­˜å‚¨
+struct BONUS {
+	double x;
+	double y;
+	bool IsColor;//æ”¶é›†ç‰©ä¸¤ç§ ä¸€ç§åŠ åˆ†ä¸€ç§åŠ é¢œæ–™
+	bool live;
+};
+struct BONUS bonus[BonusNum];
+typedef struct dot {
+	double x, y;
+	struct dot* next;
+}DOT;
+typedef struct line {
+	DOT* HeadDot;
+	struct line* next;
+}LINE;
+LINE* LineUnion = NULL; //the linklist for all lines drawn.
 #endif

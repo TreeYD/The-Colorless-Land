@@ -1,8 +1,13 @@
 #ifndef JUDGE_H
 #define JUDGE_H
-bool distance(double x1, double y1, double size1, double x2, double y2, double size2);//¸ù¾İ×ø±êºÍÅĞ¶¨°ë¾¶È·¶¨¾àÀë
-bool RoleAndGroundX(struct ROLE myrole, struct BLOCK* blockhead);//½ÇÉ«ÓëµØÃæ·ÖË®Æ½ºÍÊúÖ±ÅĞ¶¨
-bool RoleAndGroundY(struct ROLE myrole, struct BLOCK* blockhead);
-bool RoleAndEnemy(struct ROLE myrole, struct ENEMY enemy);//½ÇÉ«ºÍµĞÈËµÄÅö×²ÅĞ¶¨
-bool EnemyAndBullet(struct ENEMY enemy, struct BULLET bullet);//µĞÈËºÍ×Óµ¯µÄÅö×²ÅĞ¶¨
+bool distance(double x1, double y1, double size1, double x2, double y2, double size2);//æ ¹æ®åæ ‡å’Œåˆ¤å®šåŠå¾„ç¡®å®šè·ç¦»
+bool RoleAndGroundX(struct BLOCK* blockhead);//è§’è‰²ä¸åœ°é¢åˆ†æ°´å¹³å’Œç«–ç›´åˆ¤å®š
+bool RoleAndGroundY(struct BLOCK* blockhead);
+bool RoleAndEnemy(struct ENEMY enemy);//è§’è‰²å’Œæ•Œäººçš„ç¢°æ’åˆ¤å®š
+bool EnemyAndBullet(struct ENEMY enemy, struct BULLET bullet);//æ•Œäººå’Œå­å¼¹çš„ç¢°æ’åˆ¤å®š
+bool RoleAndBonus(struct BONUS bonus);//è§’è‰²ä¸æ”¶é›†ç‰©çš„åˆ¤å®š
+bool RoleAndLineX();//è§’è‰²ä¸æ‰€ç”»æ¡¥çš„åˆ¤å®š
+bool RoleAndLineY();
+bool MouseAndGround(struct BLOCK* blockhead);//é¼ æ ‡ä½ç½®å’Œåœ°é¢è¡¨é¢çš„åˆ¤å®šï¼Œç”»å›¾æ—¶ç”¨
+bool MouseAndLine(struct LINE* line);//å³é”®å›æ”¶æ¡¥æ¢ä½¿ç”¨
 #endif
