@@ -25,7 +25,7 @@ void StageSetting() {
 	int i;
 	for (i = 0; i < StageNum; i++) {
 		strcpy(StageArray[i].name, "STAGE");
-		(StageArray[i].name)[5] = i + '0';
+		(StageArray[i].name)[5] = i + '1';
 		(StageArray[i].name)[6] = '\0';
 		StageArray[i]->init = InitArray[i];//待改
 		StageArray[i]->draw = StageDraw;//在写
