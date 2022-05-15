@@ -19,7 +19,15 @@
 extern struct ROLE myrole;
 struct ENEMY enemy[EnemyNum];
 struct BULLET bullet[BulletNum];
+extern void(*stateRender)(void);
 struct BLOCK* blockhead;
+LINE* LineUnion = NULL; //the linklist for all lines drawn.
+void ScreenRender(void) {
+	DisplayClear();
+	if (stateRender != NULL) {
+		stateRender();
+	}
+}
 void render(int TimerID)//计时器回调函数
 {
 	startTimer(FALL, RENDERGAP);//FALL的Timer需要一直开着，因为需要一直判断，不需要按键来触发
@@ -56,7 +64,12 @@ void render(int TimerID)//计时器回调函数
 		MakeLine();
 		PickUpDots();
 		break;
+	case RENDER:
+		ScreenRender();
+		break;
 	}
+	
+
 	return;
 }
 void KeyBoardControl(int key, int event) {//键盘信息回调函数

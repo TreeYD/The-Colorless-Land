@@ -78,5 +78,4 @@ typedef struct line {
 	DOT* HeadDot;
 	struct line* next;
 }LINE;
-LINE* LineUnion = NULL; //the linklist for all lines drawn.
 #endif

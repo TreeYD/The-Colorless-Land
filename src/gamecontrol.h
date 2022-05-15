@@ -2,6 +2,7 @@
 #define GAMECONTROL_H
 #define RENDERGAP 20
 #define JUDGEGAP 1000
+#include "parameter.h"
 enum timer {
 	RENDER,
 	LEFTMOVING, //左移动

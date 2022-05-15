@@ -17,6 +17,7 @@
 #include"judge.h"
 #include<math.h>
 extern struct ROLE myrole;
+extern LINE* LineUnion;
 struct ENEMY enemy[EnemyNum];
 struct BULLET bullet[BulletNum];
 struct BLOCK* blockhead;
