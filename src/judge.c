@@ -66,6 +66,16 @@ bool RoleAndEnemy(struct ENEMY enemy) {
 	}
 	return FALSE;
 }
+bool RoleAndGoal(struct GOAL goal) {
+	double RoleX = myrole.x + RoleWidth / 2;
+	double RoleY = myrole.y + RoleHeight / 2;
+	double GoalX = goal.x + GoalSize / 2;
+	double GoalY = goal.y + GoalSize / 2;
+	if (distance(RoleX, RoleY, RoleWidth, goal.x, goal.y, GoalSize)) {
+		return TRUE;
+	}
+	else return FALSE;
+}
 bool EnemyAndBullet(struct ENEMY enemy, struct BULLET bullet) {
 	double BulletX = bullet.x + BulletWidth / 2;
 	double BulletY = bullet.y + BulletHeight / 2;

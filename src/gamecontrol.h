@@ -24,6 +24,7 @@ void MouseControl(int x, int y, int button, int event);//鼠标事件处理
 void PlayerMove(int event);//根据不同的方向event有不同坐标的改变
 void BonusJudge();//判断得到收集物的函数
 void EnemyJudge();//判断与敌人碰撞掉血的函数
+void GoalJudge();
 void BulletMake();//将bullet.live为FALSE的子弹改为TRUE
 void Shot();//按W时让bullet.live和bullet.IsMoving为TRUE,并确定子弹的速度
 void BulletMove();//一直遍历子弹数组让bullet.IsMoving为TRUE的子弹一直运动

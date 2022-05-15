@@ -51,6 +51,7 @@ void render(int TimerID)//计时器回调函数
 	case JUDGE:
 		BonusJudge();
 		EnemyJudge();
+		GoalJudge();
 		break;
 	case BULLETMAKE:
 		BulletMake();
@@ -175,8 +176,23 @@ void EnemyJudge() {
 		if (RoleAndEnemy(enemy[i])) {
 			myrole.HP--;
 		}
+		enemy[i].x = enemy[i].x + enemy[i].direction * EnemySpeed;//往复运动的判断
+		enemy[i].nowrange += EnemySpeed;
+		if (enemy[i].nowrange >= enemy[i].moverange) {
+			enemy[i].direction = -enemy[i].direction;
+			enemy[i].nowrange = 0;
+		}
+	}
+	if (myrole.HP <= 0) {
+		myrole.live = FALSE;
 	}
 	return;
+}
+void GoalJudge() {
+	if (RoleAndGoal(NowGoal)) {
+		CurrentRank++;
+		StatePush(&GameState[CurrentRank]);
+	}
 }
 void BulletMake() {//子弹产生
 	int i;
