@@ -19,7 +19,7 @@
  *
  *    2.  A new set of functions for memory allocation.
  *
- *    3.  A function for error handling.
+ *    3.  A function for error handling.,
  *
  *    4.  A repeat statement for loops with interior exits.
  */

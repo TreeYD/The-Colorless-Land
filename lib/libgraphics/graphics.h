@@ -12,45 +12,45 @@
 
 #ifndef _graphics_h
 #define _graphics_h
- /*
-  * Overview
-  * --------
-  * This library provides several functions for drawing lines
-  * and circular arcs in a region of the screen that is
-  * defined as the "graphics window."  Once drawn, these
-  * lines and arcs stay in their position, which means that
-  * the package can only be used for static pictures and not
-  * for animation.
-  *
-  * Individual points within the window are specified by
-  * giving their x and y coordinates.  These coordinates are
-  * real numbers measured in inches, with the origin in the
-  * lower left corner, as it is in traditional mathematics.
-  *
-  * The calls available in the package are listed below.  More
-  * complete descriptions are included with each function
-  * description.
-  *
-  *   InitGraphics();
-  *   MovePen(x, y);
-  *   DrawLine(dx, dy);
-  *   DrawArc(r, start, sweep);
-  *   width = GetWindowWidth();
-  *   height = GetWindowHeight();
-  *   x = GetCurrentX();
-  *   y = GetCurrentY();
-  */
+/*
+ * Overview
+ * --------
+ * This library provides several functions for drawing lines
+ * and circular arcs in a region of the screen that is
+ * defined as the "graphics window."  Once drawn, these
+ * lines and arcs stay in their position, which means that
+ * the package can only be used for static pictures and not
+ * for animation.
+ *
+ * Individual points within the window are specified by
+ * giving their x and y coordinates.  These coordinates are
+ * real numbers measured in inches, with the origin in the
+ * lower left corner, as it is in traditional mathematics.
+ *
+ * The calls available in the package are listed below.  More
+ * complete descriptions are included with each function
+ * description.
+ *
+ *   InitGraphics();
+ *   MovePen(x, y);
+ *   DrawLine(dx, dy);
+ *   DrawArc(r, start, sweep);
+ *   width = GetWindowWidth();
+ *   height = GetWindowHeight();
+ *   x = GetCurrentX();
+ *   y = GetCurrentY();
+ */
 
-  /*
-   * Function: InitGraphics
-   * Usage: InitGraphics();
-   * ----------------------
-   * This procedure creates the graphics window on the screen.
-   * The call to InitGraphics must precede any calls to other
-   * functions in this package and must also precede any printf
-   * output.  In most cases, the InitGraphics call is the first
-   * statement in the function main.
-   */
+/*
+ * Function: InitGraphics
+ * Usage: InitGraphics();
+ * ----------------------
+ * This procedure creates the graphics window on the screen.
+ * The call to InitGraphics must precede any calls to other
+ * functions in this package and must also precede any printf
+ * output.  In most cases, the InitGraphics call is the first
+ * statement in the function main.
+ */
 
 void InitGraphics(void);
 
@@ -144,32 +144,32 @@ void Main();
 
 typedef enum
 {
-	NO_BUTTON = 0,
-	LEFT_BUTTON,
-	MIDDLE_BUTTON,
-	RIGHT_BUTTON
+    NO_BUTTON = 0,
+    LEFT_BUTTON,
+    MIDDLE_BUTTON,
+    RIGHT_BUTTON
 } ACL_Mouse_Button;
 
-typedef enum
+typedef enum 
 {
-	BUTTON_DOWN,
-	BUTTON_DOUBLECLICK,
-	BUTTON_UP,
-	ROLL_UP,
-	ROLL_DOWN,
-	MOUSEMOVE
+    BUTTON_DOWN,
+    BUTTON_DOUBLECLICK,
+    BUTTON_UP,
+    ROLL_UP,
+    ROLL_DOWN,
+    MOUSEMOVE	
 } ACL_Mouse_Event;
 
-typedef enum
+typedef enum 
 {
 	KEY_DOWN,
 	KEY_UP
 } ACL_Keyboard_Event;
 
-typedef void(*KeyboardEventCallback) (int key, int event);
-typedef void(*CharEventCallback) (char c);
-typedef void(*MouseEventCallback) (int x, int y, int button, int event);
-typedef void(*TimerEventCallback) (int timerID);
+typedef void (*KeyboardEventCallback) (int key,int event);
+typedef void (*CharEventCallback) (char c);
+typedef void (*MouseEventCallback) (int x, int y, int button, int event);
+typedef void (*TimerEventCallback) (int timerID);
 
 void registerKeyboardEvent(KeyboardEventCallback callback);
 void registerCharEvent(CharEventCallback callback);
@@ -182,7 +182,6 @@ void cancelMouseEvent();
 void cancelTimerEvent();
 /*my new function*/
 void AddBitMap(char* bitMap, double x, double y, unsigned long printMethod);
-void AddZoomBitMap(char* bitMap, double x, double y, double w, double h, unsigned long printMethod);
 void NewSetPenColor(int red, int green, int blue);
-int ScalePixels(double x);
+void AddZoomBitMap(char* bitMap, double x, double y, double w, double h, unsigned long printMethod);
 #endif
