@@ -92,7 +92,7 @@ bool BulletAndGround(struct BULLET bullet, struct BLOCK* blockhead) {
 	while (blockhead) {
 		double BlockX = blockhead->x + BlockSize / 2;
 		double BlockY = blockhead->y + BlockSize / 2;
-		if (distance(RoleX, RoleY, RoleWidth, BonusX, BonusY, BonusSize)) {
+		if (distance(BulletX, BulletY, BulletSize, BlockX, BlockY, BlockSize)) {
 			return TRUE;
 		}
 		blockhead = blockhead->next;
@@ -112,10 +112,12 @@ bool RoleAndBonus(struct BONUS bonus) {
 bool RoleAndLineX() {
 	LINE* line = LineUnion;
 	DOT* dot = NULL;
+	double RoleX = myrole.x + RoleWidth / 2;
+	double RoleY = myrole.y + RoleHeight / 2;
 	while (line != NULL) {
 		dot = line->HeadDot;
 		while (dot != NULL) {
-			if (distance(dot->x, dot->y, DotSize, myrole.x, myrole.y, RoleWidth)) {
+			if (distance(dot->x, dot->y, DotSize, RoleX, RoleY, RoleWidth)) {
 				return TRUE;
 			}
 			dot = dot->next;
@@ -127,10 +129,12 @@ bool RoleAndLineX() {
 bool RoleAndLineY() {
 	LINE* line = LineUnion;
 	DOT* dot = NULL;
+	double RoleX = myrole.x + RoleWidth / 2;
+	double RoleY = myrole.y + RoleHeight / 2;
 	while (line != NULL) {
 		dot = line->HeadDot;
 		while (dot != NULL) {
-			if (distance(dot->x, dot->y, DotSize, myrole.x, myrole.y, RoleHeight)) {
+			if (distance(dot->x, dot->y, DotSize, RoleX, RoleY, RoleHeight)) {
 				return TRUE;
 			}
 			dot = dot->next;
