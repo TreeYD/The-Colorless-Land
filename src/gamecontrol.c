@@ -69,7 +69,7 @@ void render(int TimerID)//计时器回调函数
 		ScreenRender();
 		break;
 	}
-	
+
 
 	return;
 }
@@ -89,6 +89,8 @@ void KeyBoardControl(int key, int event) {//键盘信息回调函数
 			break;
 		case 'F'://切换武器，按键可以改，也可以改鼠标
 			myrole.weapon = !myrole.weapon;
+			break;
+		default:
 			break;
 		}
 	}
@@ -138,6 +140,9 @@ void PlayerMove(int event)
 		}
 		break;
 	case FALL://FALL的Timer需要一直开着，因为需要一直判断，不需要按键来触发
+		if (myrole.y <= 1) {//保证角色不穿过下边界
+			myrole.y = 1;
+		}
 		if (!IsJumping && !IsDropping && !RoleAndGroundY(blockhead) && !RoleAndLineY()) {
 			IsDropping = TRUE;
 			FallingSpeed = 0;
@@ -227,6 +232,11 @@ void BulletMove() {//子弹发射出去以后自动运动的函数
 	}
 	for (i = 0; i < BulletNum; i++) {
 		if (bullet[i].live && bullet[i].IsMoving) {
+			if (BulletAndGround(bullet[i], blockhead) || bullet[i].x >= GraphicsWindowWidth || bullet[i].x <= 0 || bullet[i].y >= GraphicsWindowHeight || bullet[i].y <= 0) {
+				bullet[i].live = FALSE;
+				bullet[i].IsMoving = FALSE;
+				//子弹撞墙 超出边界均算FALSE
+			}
 			for (j = 0; j < EnemyNum; j++) {
 				if (EnemyAndBullet(enemy[j], bullet[i])) {
 					enemy[j].HP--;
