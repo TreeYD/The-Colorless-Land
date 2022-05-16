@@ -6,6 +6,7 @@ bool RoleAndGroundY(struct BLOCK* blockhead);
 bool RoleAndEnemy(struct ENEMY enemy);//角色和敌人的碰撞判定
 bool RoleAndGoal(struct GOAL goal);
 bool EnemyAndBullet(struct ENEMY enemy, struct BULLET bullet);//敌人和子弹的碰撞判定
+bool BulletAndGround(struct BULLET bullet, struct BLOCK* blockhead);
 bool RoleAndBonus(struct BONUS bonus);//角色与收集物的判定
 bool RoleAndLineX();//角色与所画桥的判定
 bool RoleAndLineY();
