@@ -13,14 +13,14 @@
 #define EnemyNum 10//一个关卡中敌人的最大数量
 #define BulletSpeed 3//子弹移动速度
 #define BulletWidth 0.01//子弹大小
-#define BulletHeight 0.002
+#define BulletHeight 0.01
 #define BulletSize 0.005//子弹判定半径
 #define BulletNum 100//子弹最大数量
-#define BlockSize 0.5
+#define BlockSize 0.25
 #define BonusNum 20
-#define BonusSize 0.3
-#define GoalSize 0.3
-#define DotSize 0.5
+#define BonusSize 0.15
+#define GoalSize 0.15
+#define DotSize 0.25
 enum DIRECTION
 {
 	LEFT = -1,
