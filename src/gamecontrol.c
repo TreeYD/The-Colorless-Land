@@ -142,6 +142,7 @@ void PlayerMove(int event)
 	case FALL://FALL的Timer需要一直开着，因为需要一直判断，不需要按键来触发
 		if (myrole.y <= 1) {//保证角色不穿过下边界
 			myrole.y = 1;
+			IsDropping = FALSE;
 		}
 		if (!IsJumping && !IsDropping && !RoleAndGroundY(blockhead) && !RoleAndLineY()) {
 			IsDropping = TRUE;
