@@ -88,8 +88,7 @@ State *StateTop() {
 
 void StateChangedEvent()
 {
-	cancelMouseEvent();
-	cancelKeyboardEvent();
+
 	stateRender = NULL;
 	CacheSorting();
 }
