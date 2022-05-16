@@ -34,6 +34,13 @@ void EnemyClear();
 void BonusClear();
 void GoalClear();
 //清空关卡状态的函数 放在state的destroy里
+void InitSetting();
+//用于把设定好的StageInit赋值给函数指针数组
 void StageInit1();
+void StageInit2();
+void StageInit3();
+void StageInit4();
+void StageInit5();
+void StageInit6();
 //放在state的init里
 #endif // !STAGE_H
