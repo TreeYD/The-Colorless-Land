@@ -1,4 +1,4 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
 #include "graphics.h"
@@ -16,12 +16,16 @@
 #include"gamecontrol.h"
 #include"judge.h"
 #include<math.h>
+#include "stateManager.h"
+#include"helpAndPause.h"
 extern struct ROLE myrole;
 struct ENEMY enemy[EnemyNum];
 struct BULLET bullet[BulletNum];
 extern void(*stateRender)(void);
 struct BLOCK* blockhead;
 LINE* LineUnion = NULL; //the linklist for all lines drawn.
+extern State PauseMenu;
+extern State HelpMenu;
 void ScreenRender(void) {
 	DisplayClear();
 	if (stateRender != NULL) {
@@ -94,6 +98,15 @@ void KeyBoardControl(int key, int event) {//键盘信息回调函数
 		case 'F'://切换武器，按键可以改，也可以改鼠标
 			myrole.weapon = !myrole.weapon;
 			break;
+		case 'P':
+			StatePush(&PauseMenu);
+			break;
+		case VK_ESCAPE:
+			StatePop("MAINMENU");
+			break;
+		case 'H':
+			StatePush(&HelpMenu);
+			break;
 		default:
 			break;
 		}
@@ -130,8 +143,9 @@ void PlayerMove(int event)
 		}
 		break;
 	case JUMP:
-		if (!IsJumping && !IsDropping && (RoleAndGroundY(blockhead) || RoleAndLineY())) {
+		if ((!IsJumping && !IsDropping && (RoleAndGroundY(blockhead) || RoleAndLineY()))) {
 			IsJumping = TRUE;
+
 			VerticalSpeed = INITIALVERTICALSPEED;
 		}
 		if (IsJumping) {
@@ -168,14 +182,16 @@ void PlayerMove(int event)
 void BonusJudge() {
 	int i;
 	for (i = 0; i < BonusNum; i++) {
-		if (RoleAndBonus(bonus[i])) {
-			if (bonus[i].IsColor) {
-				myrole.colorvolume++;
+		if (bonus[i].live) {
+			if (RoleAndBonus(bonus[i])) {
+				if (bonus[i].IsColor) {
+					myrole.colorvolume += VOLUMEREDUCINGSPEED;
+				}
+				else {
+					myrole.mark++;
+				}
+				bonus[i].live = FALSE;
 			}
-			else {
-				myrole.mark++;
-			}
-			bonus[i].live = FALSE;
 		}
 	}
 	return;
@@ -223,6 +239,7 @@ void Shot() {//发射时调用的函数
 				bullet[i].SpeedX = BulletSpeed * COS;
 				bullet[i].SpeedY = BulletSpeed * SIN;
 				bullet[i].IsMoving = TRUE;
+				myrole.colorvolume--;
 				return;
 			}
 		}
@@ -260,6 +277,7 @@ void BulletMove() {//子弹发射出去以后自动运动的函数
 	return;
 }
 void MouseControl(int x, int y, int button, int event) {//鼠标信息回调函数
+	uiMouseEvent(x, y, button, event);
 	MouseX = ScaleXInches(x);
 	MouseY = ScaleYInches(y);
 	COS = (MouseX - myrole.x) / sqrt(pow(MouseX - myrole.x, 2) + pow(MouseY - myrole.y, 2));
@@ -273,7 +291,7 @@ void MouseControl(int x, int y, int button, int event) {//鼠标信息回调函�
 				startTimer(SHOT, RENDERGAP);
 			}
 			else {//用笔的情况
-				if (MouseAndGround(blockhead)) {//鼠标接触地面才能画桥
+				if (MouseAndGround(blockhead)||MouseAndLine) {//鼠标接触地面才能画桥
 					startTimer(DRAW, RENDERGAP);
 				}
 			}
@@ -288,7 +306,7 @@ void MouseControl(int x, int y, int button, int event) {//鼠标信息回调函�
 			}
 		}
 	}
-	if (button = VK_RBUTTON) {//右键点击桥梁回收
+	else if (button = VK_RBUTTON) {//右键点击桥梁回收
 		if (event == BUTTON_DOWN) {
 			if (!myrole.weapon) {
 				Delete();
@@ -297,13 +315,14 @@ void MouseControl(int x, int y, int button, int event) {//鼠标信息回调函�
 	}
 }
 void MakeLine() {
-	if (!IsDrawing) {
+	if (!IsDrawing && myrole.colorvolume >= 0) {
 		IsDrawing = TRUE;
 		LINE* line = GetBlock(sizeof(LINE));
 		DOT* LineHead = GetBlock(sizeof(DOT));
 		line->HeadDot = LineHead;
 		line->next = NULL;
 		AddLine(line);
+		myrole.colorvolume -= VOLUMEREDUCINGSPEED;
 		LineHead->x = MouseX;
 		LineHead->y = MouseY;
 		LineHead->next = NULL;
@@ -327,7 +346,7 @@ void AddLine(LINE* NewLine)
 }
 void PickUpDots(void)
 {
-	if (IsDrawing) {
+	if (IsDrawing && myrole.colorvolume >= 0) {
 		DOT* p;
 		p = GetBlock(sizeof(DOT));
 		p->x = MouseX;
@@ -356,32 +375,59 @@ void AddDot(DOT* NewDot)
 }
 void Delete() {
 	LINE* line = LineUnion;
+	LINE* prev = line;
 	while (line != NULL) {
-		if (MouseAndLine(line)) {//判断鼠标点击桥
-			DeleteLine(line);
-			return;//点一次删一条
+		if (MouseAndLine(line)) {
+			if (line == LineUnion) {
+				LineUnion = line->next;
+			}
+			else {
+				prev->next = line->next;
+			}
+			CacheLineSorting(line);
+			return;
 		}
+		prev = line;
 		line = line->next;
 	}
 	return;
 }
+void CacheLineSorting(LINE* line) {
+	LINE* temp = NULL;
+	if (temp == NULL) {
+		temp = line;
+		recycleInk(temp);
+	}
+	else {
+		DeleteLine(temp);
+		temp = line;
+		recycleInk(temp);
+	}
+}
+void recycleInk(LINE* line) {
+	DOT* q = NULL;
+	for (q = line->HeadDot; q != NULL; q = q->next) {
+		myrole.colorvolume += VOLUMEREDUCINGSPEED;
+	}
+}
 void DeleteLine(LINE* line) {
-	LINE* p = LineUnion;
-	if (p == NULL) {
+	if (line == NULL) {
 		return;
 	}
-	while (p->next != line) {
+	LINE* p = LineUnion;
+	while (p != line) {
 		p = p->next;
 	}
-	p->next = line->next;
 	DOT* q = line->HeadDot;//删除桥里面的dot
 	DOT* r = NULL;
 	while (q != NULL) {
 		r = q;
 		q = q->next;
 		free(r);
+		r = NULL;
 		myrole.colorvolume += VOLUMEREDUCINGSPEED;//颜料回收
 	}
 	free(line);//删除桥本身
+	line = NULL;
 	return;
 }

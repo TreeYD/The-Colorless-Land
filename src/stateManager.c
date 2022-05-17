@@ -18,6 +18,7 @@
 #include"gamecontrol.h"
 #include "stateManager.h"
 #include "menu.h" //在写了在写了.jpg
+#include "stageinit.h"
 extern State MainMenu;
 extern StateManager statemanager;
 static void StateChangedEvent();
@@ -76,6 +77,8 @@ void StatePop(string name) {
 		top = StateTop();
 		if(top->init!=NULL&&strcmp(lastName,"PAUSEMENU")!=0)
 			top->init();
+		if (strlen(top->name)==1)
+			setPauseButton();
 		if (top->draw != NULL)
 			stateRender = top->draw;
 		registerKeyboardEvent(top->keyboardCallbackfn);

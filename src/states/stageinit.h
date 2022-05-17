@@ -1,4 +1,4 @@
-#ifndef STAGEINIT_H
+﻿#ifndef STAGEINIT_H
 #define STAGEINIT_H
 void StageSetting();
 //初始化一切关卡
@@ -28,6 +28,7 @@ void BlockSettingY(double StartX, double StartY, int number);
 void GoalSetting(double x, double y);
 //设置终点的坐标
 
+void StopAutoTimer();
 void StageClear();
 void BlockClear();
 void EnemyClear();
@@ -43,4 +44,6 @@ void StageInit4();
 void StageInit5();
 void StageInit6();
 //放在state的init里
+void setPauseButton();
+//need to reset when pop other states above (pause menu), have to export it...
 #endif // !STAGE_H

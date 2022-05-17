@@ -25,6 +25,7 @@ extern LINE* LineUnion ;
 void DrawExistingLines(void);
 void DrawStatusBar()
 {
+	SetPointSize(13);
 	NewSetPenColor(196, 196, 196);
 	StartFilledRegion(1);
 	MovePen(0, 0.56);
@@ -105,7 +106,7 @@ void DrawRole()
 		if (myrole.direction == LEFT)
 			AddZoomBitMap((currPic ? "PICLEFT2.bmp" : "PICLEFT1.bmp"), myrole.x, myrole.y, RoleWidth, RoleHeight, SRCAND);
 		else
-			AddZoomBitMap((currPic ? "PICLEFT2.bmp" : "PICLEFT1.bmp"), myrole.x, myrole.y, RoleWidth, RoleHeight, SRCAND);
+			AddZoomBitMap((currPic ? "PICRIGHT2.bmp" : "PICRIGHT1.bmp"), myrole.x, myrole.y, RoleWidth, RoleHeight, SRCAND);
 	}
 }
 
@@ -142,7 +143,6 @@ void DrawExistingLines()
 	DOT* pres;
 	for (p = LineUnion; p != NULL; p = p->next)
 	{
-		printf("@");
 		for (pres = p->HeadDot; pres != NULL; pres = pres->next)
 		{
 			

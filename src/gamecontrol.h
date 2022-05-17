@@ -1,4 +1,4 @@
-#ifndef GAMECONTROL_H
+﻿#ifndef GAMECONTROL_H
 #define GAMECONTROL_H
 #define RENDERGAP 20
 #define JUDGEGAP 1000
@@ -15,8 +15,8 @@ enum timer {
 	BULLETMOVE, //发射出去后的子弹移动
 	DRAW//画笔timer，还没写
 };//不同的timer直接枚举了
-#define INITIALVERTICALSPEED 0.65
-#define G 0.1
+#define INITIALVERTICALSPEED 0.06
+#define G 0.01
 #define VOLUMEREDUCINGSPEED 1 //随便填的
 void StartAutoTimer();
 void render(int TimerID);
@@ -35,6 +35,8 @@ void AddLine(LINE* NewLine);
 void AddDot(DOT* NewDot);
 void Delete();
 void DeleteLine(LINE* line);
+void CacheLineSorting(LINE* line);
+void recycleInk(LINE* line);
 double MouseX, MouseY;//全局变量鼠标坐标
 double COS, SIN;//角色与鼠标位置连线夹角
 static double VerticalSpeed = INITIALVERTICALSPEED;//角色在地面上向上跳起的初速度
