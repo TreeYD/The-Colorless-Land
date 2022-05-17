@@ -189,7 +189,7 @@ void InitSetting() {
 	InitArray[19] = StageInit20;
 }
 void StageInit1() {
-	RoleSetting(0, 1);
+	RoleSetting(0, 1.5);
 	BlockSettingX(0, 1, 9);
 	BlockSettingY(4, 1.5, 2);
 	BlockSettingX(4.5, 2, 3);
@@ -206,7 +206,7 @@ void StageInit1() {
 	BonusSettingX(8, 12, 7.5, FALSE, 0.4, 5);
 	BonusSetting(13, 5.7, 2.5, TRUE);
 	BonusSetting(14, 15, 3.5, , TRUE);
-	GoalSetting(1, 7);
+	GoalSetting(1, 6.5);
 }
 void StageInit2() {
 	RoleSetting(15.5, 2);
@@ -226,7 +226,7 @@ void StageInit2() {
 	BonusSetting(11, 12, 4.5, TRUE);
 	BonusSetting(12, 7.2, 6.2, TRUE);
 	BonusSetting(13, 11.2, 8, TRUE);
-	GoalSetting(9.5, 7.5);
+	GoalSetting(0.5, 7.5);
 }
 void StageInit3() {
 	RoleSetting(0, 4.5);
