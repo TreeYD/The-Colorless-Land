@@ -16,7 +16,7 @@
 #include <winuser.h>
 #include "graphics.h"
 #include"lightgui.h"
-#define STATENUMBER 5
+#define STATENUMBER 20
 typedef void(*fnPtr)(void);
 typedef void(*keyboardCallback)(int button, int event);
 typedef void(*mouseCallback)(int x, int y, int button, int event);

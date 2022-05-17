@@ -51,6 +51,8 @@ void StatePop(string name) {
 	if (statemanager.top == -1) 
 		return;
 	State *top = StateTop();
+	char lastName[10] = { 0 };
+	strcpy(lastName, top->name);
 	if(name!=NULL)
 	do {
 		if (top->destroy != NULL)
@@ -63,6 +65,7 @@ void StatePop(string name) {
 	} while (strcmp(top->name,name)!=0);
 	else
 	{
+		
 		if (top->destroy != NULL)
 			top->destroy();
 		statemanager.stack[statemanager.top] = NULL;
@@ -71,7 +74,7 @@ void StatePop(string name) {
 			return;
 	}
 		top = StateTop();
-		if(top->init!=NULL)
+		if(top->init!=NULL&&strcmp(lastName,"PAUSEMENU")!=0)
 			top->init();
 		if (top->draw != NULL)
 			stateRender = top->draw;
