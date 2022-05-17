@@ -28,12 +28,15 @@ void ScreenRender(void) {
 		stateRender();
 	}
 }
-void render(int TimerID)//计时器回调函数
-{
+void StartAutoTimer() {
 	startTimer(FALL, RENDERGAP);//FALL的Timer需要一直开着，因为需要一直判断，不需要按键来触发
 	startTimer(JUDGE, JUDGEGAP);
 	startTimer(BULLETMAKE, RENDERGAP);//子弹的不断产生
 	startTimer(BULLETMOVE, RENDERGAP);//子弹运动的Timer需要一直开着
+	return;
+}
+void render(int TimerID)//计时器回调函数
+{
 	switch (TimerID)
 	{
 	case LEFTMOVING:
