@@ -170,4 +170,3 @@ bool MouseAndLine(LINE* line) {
 	}
 	return FALSE;
 }
-//old

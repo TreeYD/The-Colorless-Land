@@ -16,12 +16,16 @@
 #include"gamecontrol.h"
 #include"judge.h"
 #include<math.h>
+#include "stateManager.h"
+#include"helpAndPause.h"
 extern struct ROLE myrole;
 struct ENEMY enemy[EnemyNum];
 struct BULLET bullet[BulletNum];
 extern void(*stateRender)(void);
 struct BLOCK* blockhead;
 LINE* LineUnion = NULL; //the linklist for all lines drawn.
+extern State PauseMenu;
+extern State HelpMenu;
 void ScreenRender(void) {
 	DisplayClear();
 	if (stateRender != NULL) {
@@ -94,6 +98,15 @@ void KeyBoardControl(int key, int event) {//键盘信息回调函数
 		case 'F'://切换武器，按键可以改，也可以改鼠标
 			myrole.weapon = !myrole.weapon;
 			break;
+		case 'P':
+			StatePush(&PauseMenu);
+			break;
+		case VK_ESCAPE:
+			StatePop("MAINMENU");
+			break;
+		case 'H':
+			StatePush(&HelpMenu);
+			break;
 		default:
 			break;
 		}
@@ -132,6 +145,7 @@ void PlayerMove(int event)
 	case JUMP:
 		if (!IsJumping && !IsDropping && (RoleAndGroundY(blockhead) || RoleAndLineY())) {
 			IsJumping = TRUE;
+			
 			VerticalSpeed = INITIALVERTICALSPEED;
 		}
 		if (IsJumping) {
@@ -223,6 +237,7 @@ void Shot() {//发射时调用的函数
 				bullet[i].SpeedX = BulletSpeed * COS;
 				bullet[i].SpeedY = BulletSpeed * SIN;
 				bullet[i].IsMoving = TRUE;
+				myrole.colorvolume--;
 				return;
 			}
 		}

@@ -17,18 +17,19 @@
 #include"judge.h"
 #include<math.h>
 #include"stageinit.h"
-#include"stageDraw.h"
 #include "stateManager.h"
 #include"lightgui.h"
+#include"stageDraw.h"
 State* StageArray[StageNum];
 fnPtr InitArray[StageNum];
 void StageSetting() {
 	int i;
 	for (i = 0; i < StageNum; i++) {
-		StageArray[i] = (State*)GetBlock(sizeof(State*));
-		//strcpy(StageArray[i]->name, "STAGE");
-		//(StageArray[i].name)[5] = i + '1';
-		//(StageArray[i].name)[6] = '\0';
+		StageArray[i] = GetBlock(sizeof(State));
+		StageArray[i]->name = "Stage";
+		/*strcpy(StageArray[i].name, "STAGE");
+		(StageArray[i].name)[5] = i + '1';
+		(StageArray[i].name)[6] = '\0';*/
 		StageArray[i]->init = InitArray[i];//待改
 		StageArray[i]->draw = StageDraw;//在写
 		StageArray[i]->destroy = StageClear;
@@ -83,10 +84,10 @@ void BonusSetting(int i, double x, double y, bool IsColor) {
 }
 void BonusSettingX(int i, double StartX, double StartY, bool IsColor, double gap, int number) {
 	int j;
-	for (j = 0; j < number; j++) {
-		//BonusSetting(i + j, startX + j * gap, StartY, IsColor);
+	/*for (j = 0; j < number; j++) {
+		BonusSetting(i + j, startX + j * gap, StartY, IsColor);
 	}
-	return;
+	return;*/
 }
 
 void BlockSetting(double X, double Y) {

@@ -16,6 +16,9 @@
 #include "random.h"
 #include "strlib.h"
 #include "conio.h"
+#include "gcalloc.h"
+#include "lightgui.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -28,15 +31,7 @@
 #include <ole2.h>
 #include <ocidl.h>
 #include <winuser.h>
-#include "lightgui.h"
 
-#define MAXLINE 100
-#define FILL 1
-#define NOTFILL 0
-
-#define CURSOR_BLINK 0xdeafbee //a small trick to let timerID not confict
-#define CURSOR "|"
-#define timerseconds 500
 
 typedef struct {
 	double mX;
@@ -46,41 +41,7 @@ typedef struct {
 }*UIState;
 
  
-typedef struct button{
-	double x, y,r;
-	double w,h;//The default font size is half the height of the button
-	string iconAddress;
-	string text;
-	void (*clickEvent)();
-	struct button* next;
-}* BUTTON;
 
-typedef struct textbox{
-	double x, y,r;
-	double w, h;
-	int curPos;
-	bool isDisplayed;
-	char text[MAXLINE];
-	string hint;
-	int maxLength;
-	struct textbox* next;
-	int fontSize;
-	bool isFirst;
-}* TEXTBOX;
-
-//typedef struct label {
-//	double x, y;
-//	int fontSize;
-//	char text[MAXLINE];
-//	struct label *next;
-//}*LABEL;
-
-typedef struct seekbar {
-	double x, y;
-	double w,h, dw;//the percentage is ( dlength/length *100% )
-	double *controlObj;//store the address of the controlled object
-	struct seekbar *next;
-}*SEEKBAR;
 
 static UIState curState;
 static BUTTON headButton;
@@ -91,51 +52,29 @@ static SEEKBAR headSeekbar;
 //inCircle check if the mouse is in seekbar
 bool inBox(double x, double y, double w, double h);
 bool inCircle(double x, double y, double r);
-void uiMouseEvent(int x, int y, int button, int event);
-static void uiKeyboardEvent(int key,int event);
-static void uiCharEvent(char c);
 
-void InitGUI();
 void drawBox(double x, double y,double r, double w, double h);
 static double MIN(double x, double y);
 static double MAX(double x, double y);
 
 /*TODO: Button Process*/
 void insertButton(BUTTON ptr);
-void drawButton(BUTTON ptr, bool fill);
-void setButton(double x, double y, double r, double w, double h, string icon, string text, void *func);
-void traverseButton();
-void freeButton();
-
-/*TODO: Label Process*/
-void setLabel(double x, double y, int fontSize, string text);
 
 /*TODO: Seekbar Process*/
 void insertSeekbar(SEEKBAR ptr);
-void drawSeekbar(SEEKBAR ptr);
-void setSeekbar(double x, double y, double w, double h, double *Obj);
-void traverseSeekbar();
-void freeSeekbar();
 
 /*TODO: Textbox Process*/
 void insertTextbox(TEXTBOX ptr);
-void drawTextbox(TEXTBOX ptr);
 void drawCursor(TEXTBOX ptr);
-void setTextbox(double x,double y,double r,double w,double h,string hint,int maxLength);
-void traverseTextbox();
-void uiTimeEvent(int timerID);
 void Insert(int id, char c);
 void DeleteText(int id);
-void freeTextbox();
+
 bool inBox(double x, double y, double w, double h) {
 	return curState->mX > x&&curState->mX < x + w && curState->mY>y&&curState->mY<y + h;
 }
 bool inCircle(double x, double y, double r) {
 	return ((curState->mX - x)*(curState->mX - x) + (curState->mY - y)*(curState->mY - y)) < r*r;
 }
-
-
-
 void uiMouseEvent(int x,int y,int button, int event) {
 	//Update the current state
 	curState->mX = ScaleXInches(x);
@@ -143,13 +82,12 @@ void uiMouseEvent(int x,int y,int button, int event) {
 	curState->button = button;
 	curState->event = event;
 	//Update the whole elements
-	if(button==LEFT_BUTTON&&event==BUTTON_DOWN)
 	traverseButton();
 	traverseSeekbar();
 	traverseTextbox();
 	//displayAll;
 }
-static void uiKeyboardEvent(int key,int event) {
+void uiKeyboardEvent(int key,int event) {
 	if (!curState->inText)return;
 	SetEraseMode(TRUE);
 	drawCursor(curTextbox);
@@ -219,10 +157,6 @@ void InitGUI() {
 	curState->inDrag = 0;
 	DefineColor("ButtonShadow", .95, .95, .95);
 	DefineColor("TextGrey", .8, .8, .8);
-	registerMouseEvent(uiMouseEvent);
-	registerTimerEvent(uiTimeEvent);
-	registerKeyboardEvent(uiKeyboardEvent);
-	registerCharEvent(uiCharEvent);
 }
 
  /*TODO: Button Process*/
@@ -272,31 +206,39 @@ void drawButton(BUTTON ptr,bool fill) {
 	if (ptr->iconAddress != "")staX += ptr->h*0.7;
 	setLabel(staX, ptr->y + ptr->h / 3, ScalePixels(ptr->h / 3), ptr->text);
 }
-void setButton(double x,double y,double r,double w,double h,string icon,string text,void *func) {
+BUTTON setButton(double x,double y,double r,double w,double h,string icon,string text,void *func) {
 	BUTTON ptr=GetBlock(sizeof(*ptr));
-	*ptr = (struct button) { x, y, r,w, h, icon,text,func,NULL};
+	*ptr = (struct button) { x, y, r,w, h, icon,text,func,NULL,0};
 	drawButton(ptr, NOTFILL);
 	insertButton(ptr);
-	return;
+	return ptr;
 }
 void traverseButton() {
 	BUTTON ptr = headButton;
 	while (ptr != NULL) {
-		if (inBox(ptr->x, ptr->y, ptr->w, ptr->h)) {
-			if (curState->button==LEFT_BUTTON&&curState->event == BUTTON_DOWN) {
-				ptr->clickEvent();
-				curState->event = BUTTON_UP;
-			}
-			if (ptr == NULL)break;
+		if (ptr->isDisable) {
 			SetPenColor("ButtonShadow");
 			drawButton(ptr, FILL);
 			SetPenColor("black");
 			drawButton(ptr, NOTFILL);
-		}else {
-			SetPenColor("white");
-			drawButton(ptr, FILL);
-			SetPenColor("black");
-			drawButton(ptr, NOTFILL);
+		}
+		else {
+			if (inBox(ptr->x, ptr->y, ptr->w, ptr->h)) {
+				if (curState->button==LEFT_BUTTON&&curState->event == BUTTON_DOWN) {
+					ptr->clickEvent();
+					curState->event = BUTTON_UP;//to prevent action ig two buttons set in the same place
+				}
+				if (ptr == NULL)break;
+				SetPenColor("ButtonShadow");
+				drawButton(ptr, FILL);
+				SetPenColor("black");
+				drawButton(ptr, NOTFILL);
+			}else {
+				SetPenColor("white");
+				drawButton(ptr, FILL);
+				SetPenColor("black");
+				drawButton(ptr, NOTFILL);
+			}
 		}
 		if(ptr!=NULL)ptr = ptr->next;
 	}
@@ -354,13 +296,13 @@ void drawSeekbar(SEEKBAR ptr)
 	DrawArc(ptr->h*0.75, 0, 360);
 }
 
-void setSeekbar(double x, double y,double w, double h,double* Obj)
+SEEKBAR setSeekbar(double x, double y,double w, double h,double* Obj)
 {
 	SEEKBAR ptr = GetBlock(sizeof(*ptr));
 	*ptr = (struct seekbar) { x, y, w,h, *Obj, Obj,NULL };
 	drawSeekbar(ptr);
 	insertSeekbar(ptr);
-	return;
+	return ptr;
 }
 
 void traverseSeekbar()
@@ -446,14 +388,14 @@ void drawCursor(TEXTBOX ptr)
 	return;
 }
 
-void setTextbox(double x, double y, double r,double w, double h,string hint,int maxLength)
+TEXTBOX setTextbox(double x, double y, double r,double w, double h,string hint,int maxLength)
 {
 	TEXTBOX ptr = GetBlock(sizeof(*ptr));
 	*ptr = (struct textbox) { x, y, r,w, h, 0, 0,0, "\0", hint,maxLength,NULL ,ScalePixels(h/3),1};
 	drawTextbox(ptr);
 	insertTextbox(ptr);
 	curTextbox = ptr;
-	return;
+	return ptr;
 }
 
 void traverseTextbox()
@@ -540,7 +482,11 @@ void Insert(int id, char c) {
 	curTextbox->text[id] = c;
 	return;
 }
-void CacheSorting()
+// This part is added by Ag2SO4
+//	tql %%%
+/*cache the previous buttons, release them next time to avoid that 
+Mouse / timer callbacks may access memory that has been freed while in progress this time*/
+void CacheSorting(void)
 {
 	static BUTTON tmp = NULL;
 	if (tmp == NULL)

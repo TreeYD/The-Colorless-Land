@@ -1,6 +1,6 @@
 #ifndef _MENU_H
-
-#define _MENU_H
-void GetBackToMainMenu(void);
+#include "StateManager.h"
 void ToHelp(void);
+void GetBackToMainMenu();
+#define _MENU_H
 #endif // !MENU_H

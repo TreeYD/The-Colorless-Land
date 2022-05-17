@@ -134,16 +134,12 @@ void Goback()
 
 void helpEvent(int key, int event)
 {
-	if (page == 1 && key == VK_RIGHT && event == KEY_DOWN)
+	if( (page == 1 && key == VK_RIGHT && event == KEY_DOWN) || (page == 2 && key == VK_LEFT && event == KEY_DOWN))
 	{
-		page = 2;
+		TurnPage();
 		return;
 	}
-	if (page == 2 && key == VK_LEFT && event == KEY_DOWN)
-	{
-		page = 1;
-		return;
-	}
+	
 }
 
 

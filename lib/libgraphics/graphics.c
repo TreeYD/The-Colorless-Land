@@ -1072,7 +1072,7 @@ static void RegisterWindowClass(void)
 static LONG FAR PASCAL GraphicsEventProc(HWND hwnd, UINT msg,
 	WPARAM wParam, LPARAM lParam)
 {
-	printf("msg=%d，wparam=%d,lparam=%d\n", msg,wParam,lParam);
+	//printf("msg=%d，wparam=%d,lparam=%d\n", msg,wParam,lParam);
     switch(msg)
     {
 		// 刘新国：使用了double buffer, 手动清屏，
@@ -2030,6 +2030,7 @@ void AddBitMap(char* bitMap,double x,double y,unsigned long printMethod)
 	GetObject(hbitmap, sizeof(BITMAP), &bmp);
 	BitBlt(osdc, pixelX, pixelY, bmp.bmWidth,bmp.bmHeight, virtualDC,0,0, (DWORD)printMethod);
 	SelectObject(virtualDC, hOldBmp);
+	DeleteObject(hbitmap);
 	DeleteObject(hOldBmp);
 	DeleteDC(virtualDC);
 }
@@ -2052,6 +2053,7 @@ void AddZoomBitMap(char* bitMap, double x, double y, double w, double h, unsigne
 	GetObject(hbitmap, sizeof(BITMAP), &bmp);
 	StretchBlt(osdc, pixelX, pixelY, pixelW, pixelH, virtualDC, 0, 0, bmp.bmWidth, bmp.bmHeight, (DWORD)printMethod);
 	SelectObject(virtualDC, hOldBmp);
+	DeleteObject(hbitmap);
 	DeleteObject(hOldBmp);
 	DeleteDC(virtualDC);
 }

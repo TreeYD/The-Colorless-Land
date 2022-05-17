@@ -25,8 +25,6 @@ extern LINE* LineUnion ;
 void DrawExistingLines(void);
 void DrawStatusBar()
 {
-	myrole.HP = InitialHP;
-	myrole.colorvolume = InitialColorVolume;
 	NewSetPenColor(196, 196, 196);
 	StartFilledRegion(1);
 	MovePen(0, 0.56);
@@ -141,19 +139,17 @@ void StageDraw()
 void DrawExistingLines()
 {
 	LINE*p;
-	DOT* prev,* pres;
+	DOT* pres;
 	for (p = LineUnion; p != NULL; p = p->next)
 	{
+		printf("@");
 		for (pres = p->HeadDot; pres != NULL; pres = pres->next)
 		{
-			if (pres == p->HeadDot)
-			{
-				prev = pres;
-				continue;
-			}
-			MovePen(prev->x, prev->y);
-			DrawLine(pres->x - prev->x, pres->y - prev->y);
-			prev = pres;
+			
+			NewSetPenColor(0, 0, 0);
+			StartFilledRegion(1);
+			drawBox(pres->x, pres->y,0, 2*DotSize, 2*DotSize);
+			EndFilledRegion();
 		}
 	}
 }
