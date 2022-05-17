@@ -1,4 +1,4 @@
-﻿#ifndef GAMECONTROL_H
+#ifndef GAMECONTROL_H
 #define GAMECONTROL_H
 #define RENDERGAP 20
 #define JUDGEGAP 1000
@@ -18,6 +18,7 @@ enum timer {
 #define INITIALVERTICALSPEED 0.65
 #define G 0.1
 #define VOLUMEREDUCINGSPEED 1 //随便填的
+void StartAutoTimer();
 void render(int TimerID);
 void KeyBoardControl(int key, int event);//键盘事件处理
 void MouseControl(int x, int y, int button, int event);//鼠标事件处理

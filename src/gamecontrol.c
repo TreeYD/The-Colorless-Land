@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
 #include "graphics.h"
@@ -16,7 +16,6 @@
 #include"gamecontrol.h"
 #include"judge.h"
 #include<math.h>
-#include "lightgui.h"
 extern struct ROLE myrole;
 struct ENEMY enemy[EnemyNum];
 struct BULLET bullet[BulletNum];
@@ -29,12 +28,15 @@ void ScreenRender(void) {
 		stateRender();
 	}
 }
-void render(int TimerID)//计时器回调函数
-{
+void StartAutoTimer() {
 	startTimer(FALL, RENDERGAP);//FALL的Timer需要一直开着，因为需要一直判断，不需要按键来触发
 	startTimer(JUDGE, JUDGEGAP);
 	startTimer(BULLETMAKE, RENDERGAP);//子弹的不断产生
 	startTimer(BULLETMOVE, RENDERGAP);//子弹运动的Timer需要一直开着
+	return;
+}
+void render(int TimerID)//计时器回调函数
+{
 	switch (TimerID)
 	{
 	case LEFTMOVING:
@@ -56,6 +58,7 @@ void render(int TimerID)//计时器回调函数
 		break;
 	case BULLETMAKE:
 		BulletMake();
+		break;
 	case SHOT:
 		Shot();
 		break;
@@ -196,11 +199,10 @@ void EnemyJudge() {
 	return;
 }
 void GoalJudge() {
-	if (RoleAndGoal(NowGoal)) {
-		printf("\nCLAER\n");
-	/*	CurrentRank++;
-		StatePush(&GameState[CurrentRank]);*/
-	}
+	/*if (RoleAndGoal(NowGoal)) {
+		CurrentRank++;
+		StatePush(&GameState[CurrentRank]);
+	}*/
 }
 void BulletMake() {//子弹产生
 	int i;
@@ -216,6 +218,8 @@ void Shot() {//发射时调用的函数
 	if (myrole.colorvolume > 0) {
 		for (i = 0; i < BulletNum; i++) {
 			if (bullet[i].live && !bullet[i].IsMoving) {
+				bullet[i].x = myrole.x + RoleWidth / 2;
+				bullet[i].y = myrole.y + RoleHeight / 2;
 				bullet[i].SpeedX = BulletSpeed * COS;
 				bullet[i].SpeedY = BulletSpeed * SIN;
 				bullet[i].IsMoving = TRUE;
@@ -285,12 +289,12 @@ void MouseControl(int x, int y, int button, int event) {//鼠标信息回调函�
 		}
 	}
 	if (button = VK_RBUTTON) {//右键点击桥梁回收
-		if (!myrole.weapon) {
-			Delete();
+		if (event == BUTTON_DOWN) {
+			if (!myrole.weapon) {
+				Delete();
+			}
 		}
 	}
-	//added
-	uiMouseEvent(x,y,button,event);
 }
 void MakeLine() {
 	if (!IsDrawing) {

@@ -21,7 +21,8 @@
 #include "strlib.h"
 #include "conio.h"
 #include "lightgui.h"
-
+extern LINE* LineUnion ;
+void DrawExistingLines(void);
 void DrawStatusBar()
 {
 	myrole.HP = InitialHP;
@@ -132,6 +133,27 @@ void StageDraw()
 	DrawGoal();
 	DrawBullet();
 	DrawRole();
+	DrawExistingLines();
 	traverseButton();
 	DrawStatusBar();
+}
+
+void DrawExistingLines()
+{
+	LINE*p;
+	DOT* prev,* pres;
+	for (p = LineUnion; p != NULL; p = p->next)
+	{
+		for (pres = p->HeadDot; pres != NULL; pres = pres->next)
+		{
+			if (pres == p->HeadDot)
+			{
+				prev = pres;
+				continue;
+			}
+			MovePen(prev->x, prev->y);
+			DrawLine(pres->x - prev->x, pres->y - prev->y);
+			prev = pres;
+		}
+	}
 }
