@@ -55,6 +55,7 @@ void render(int TimerID)//计时器回调函数
 		break;
 	case BULLETMAKE:
 		BulletMake();
+		break;
 	case SHOT:
 		Shot();
 		break;
@@ -214,6 +215,8 @@ void Shot() {//发射时调用的函数
 	if (myrole.colorvolume > 0) {
 		for (i = 0; i < BulletNum; i++) {
 			if (bullet[i].live && !bullet[i].IsMoving) {
+				bullet[i].x = myrole.x + RoleWidth / 2;
+				bullet[i].y = myrole.y + RoleHeight / 2;
 				bullet[i].SpeedX = BulletSpeed * COS;
 				bullet[i].SpeedY = BulletSpeed * SIN;
 				bullet[i].IsMoving = TRUE;
@@ -283,8 +286,10 @@ void MouseControl(int x, int y, int button, int event) {//鼠标信息回调函�
 		}
 	}
 	if (button = VK_RBUTTON) {//右键点击桥梁回收
-		if (!myrole.weapon) {
-			Delete();
+		if (event == BUTTON_DOWN) {
+			if (!myrole.weapon) {
+				Delete();
+			}
 		}
 	}
 }
