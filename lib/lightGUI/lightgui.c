@@ -32,21 +32,20 @@
 #include <ocidl.h>
 #include <winuser.h>
 
-
 typedef struct {
 	double mX;
 	double mY;
 	bool inText,inDrag;
 	int event, button;
+	bool isClick;//解决：反复traverse刷新出新界面时，鼠标没有回弹，导致同区域新按钮误触的问题
 }*UIState;
 
- 
 
 
 static UIState curState;
-static BUTTON headButton;
-static TEXTBOX headTextbox,curTextbox;
-static SEEKBAR headSeekbar;
+static BUTTON headButton=NULL;
+static TEXTBOX headTextbox=NULL,curTextbox;
+static SEEKBAR headSeekbar=NULL;
 
 //inBox check if the mouse is in textbox/button
 //inCircle check if the mouse is in seekbar
@@ -58,16 +57,16 @@ static double MIN(double x, double y);
 static double MAX(double x, double y);
 
 /*TODO: Button Process*/
-void insertButton(BUTTON ptr);
+static void insertButton(BUTTON ptr);
 
 /*TODO: Seekbar Process*/
-void insertSeekbar(SEEKBAR ptr);
+static void insertSeekbar(SEEKBAR ptr);
 
 /*TODO: Textbox Process*/
-void insertTextbox(TEXTBOX ptr);
-void drawCursor(TEXTBOX ptr);
-void Insert(int id, char c);
-void Delete(int id);
+static void insertTextbox(TEXTBOX ptr);
+static void drawCursor(TEXTBOX ptr);
+static void Insert(int id, char c);
+static void Delete(int id);
 
 bool inBox(double x, double y, double w, double h) {
 	return curState->mX > x&&curState->mX < x + w && curState->mY>y&&curState->mY<y + h;
@@ -155,8 +154,12 @@ void InitGUI() {
 	curState = GetBlock(sizeof(*curState));
 	curState->inText = 0;
 	curState->inDrag = 0;
+	curState->event = -1;
+	curState->button = -1;
+	curState->isClick = 0;
 	DefineColor("ButtonShadow", .95, .95, .95);
 	DefineColor("TextGrey", .8, .8, .8);
+	InitConsole();
 }
 
  /*TODO: Button Process*/
@@ -182,7 +185,7 @@ static double MAX(double x, double y)
 {
 	return x > y ? x : y;
 }
-void insertButton(BUTTON ptr) {
+static void insertButton(BUTTON ptr) {
 	BUTTON temp = headButton;
 	if (temp == NULL) {
 		headButton = ptr;
@@ -195,9 +198,14 @@ void insertButton(BUTTON ptr) {
 }
 
 void drawButton(BUTTON ptr,bool fill) {
-	if (fill) StartFilledRegion(1);
+	if (ptr == NULL)return;
+	if (fill ) {
+		StartFilledRegion(1);
+	}
 	drawBox(ptr->x, ptr->y, ptr->r,ptr->w, ptr->h);
-	if(fill)EndFilledRegion();
+	if (fill) { 
+		EndFilledRegion(); 
+	}
 	drawBox(ptr->x, ptr->y, ptr->r,ptr->w, ptr->h);
 	double length = TextStringWidth(ptr->text);
 	if (ptr->iconAddress != "")length += ptr->h*0.7;
@@ -215,7 +223,9 @@ BUTTON setButton(double x,double y,double r,double w,double h,string icon,string
 }
 void traverseButton() {
 	BUTTON ptr = headButton;
-	while (ptr != NULL) {
+	if (curState->event != BUTTON_DOWN)
+		curState->isClick = 0;
+	while (headButton!=NULL&&ptr != NULL) {
 		if (ptr->isDisable) {
 			SetPenColor("ButtonShadow");
 			drawButton(ptr, FILL);
@@ -224,11 +234,14 @@ void traverseButton() {
 		}
 		else {
 			if (inBox(ptr->x, ptr->y, ptr->w, ptr->h)) {
-				if (curState->button==LEFT_BUTTON&&curState->event == BUTTON_DOWN) {
-					ptr->clickEvent();
-					curState->event = BUTTON_UP;//to prevent action ig two buttons set in the same place
+				puts("why");
+				if (!curState->isClick&&curState->button==LEFT_BUTTON&&curState->event == BUTTON_DOWN) {//解决长时间按下重复执行的问题
+					if(ptr->clickEvent!=NULL)ptr->clickEvent();
+					curState->isClick = 1;
 				}
-				if (ptr == NULL)break;
+				if (headButton==NULL||ptr == NULL)break;
+				//headButton==NULL 说明已经进行了CacheSorting()
+				//CacheSorting 进行完之后，ptr不一定为NULL
 				SetPenColor("ButtonShadow");
 				drawButton(ptr, FILL);
 				SetPenColor("black");
@@ -267,7 +280,7 @@ void setLabel(double x, double y, int fontSize, string text) {
 	return;
 }
 
-void insertSeekbar(SEEKBAR ptr)
+static void insertSeekbar(SEEKBAR ptr)
 {
 	SEEKBAR temp = headSeekbar;
 	if (temp == NULL) {
@@ -282,6 +295,7 @@ void insertSeekbar(SEEKBAR ptr)
 
 void drawSeekbar(SEEKBAR ptr)
 {
+	if (ptr == NULL)return;
 	SetPenColor("black");
 	StartFilledRegion(1);
 	drawBox(ptr->x, ptr->y, ptr->h / 2, ptr->dw, ptr->h);
@@ -345,7 +359,7 @@ void freeSeekbar()
 	return;
 }
 
-void insertTextbox(TEXTBOX ptr)
+static void insertTextbox(TEXTBOX ptr)
 {
 	TEXTBOX temp = headTextbox;
 	if (temp == NULL) {
@@ -376,7 +390,7 @@ void drawTextbox(TEXTBOX ptr)
 	return;
 }
 
-void drawCursor(TEXTBOX ptr)
+static void drawCursor(TEXTBOX ptr)
 {
 	if (ptr == NULL)return;
 	if (ptr->curPos<0 || ptr->curPos>strlen(ptr->text))return;
@@ -453,7 +467,7 @@ void uiTimeEvent(int timerID)
 			break;
 	}
 }
-void Delete(int id) {
+static void Delete(int id) {
 	int len = strlen(curTextbox->text);
 	while (id < len) {
 		curTextbox->text[id] = curTextbox->text[id + 1];
@@ -473,7 +487,7 @@ void freeTextbox()
 	curTextbox = NULL;
 	return;
 }
-void Insert(int id, char c) {
+static void Insert(int id, char c) {
 	int k = strlen(curTextbox->text);
 	while (k >= id) {
 		curTextbox->text[k + 1] = curTextbox->text[k];
