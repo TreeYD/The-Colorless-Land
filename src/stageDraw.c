@@ -93,7 +93,7 @@ void DrawGoal()
 void DrawRole()
 {
 	static bool currPic = FALSE;
-	if (myrole.isMoving == FALSE)
+	if (myrole.IsMoving == FALSE)
 	{
 		if (myrole.direction == LEFT)
 			AddZoomBitMap("PICLEFTSTILL.bmp", myrole.x, myrole.y, RoleWidth, RoleHeight, SRCAND);
