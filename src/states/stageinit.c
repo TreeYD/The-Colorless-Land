@@ -21,6 +21,7 @@
 #include"lightgui.h"
 #include"stageDraw.h"
 #include"helpAndPause.h"
+extern LINE* LineUnion;
 State* StageArray[StageNum];
 fnPtr InitArray[StageNum];
 void StageSetting() {
@@ -89,7 +90,6 @@ void BonusSettingX(int i, double StartX, double StartY, bool IsColor, double gap
 	}
 	return;
 }
-
 void BlockSetting(double X, double Y) {
 	if (blockhead == NULL) {
 		blockhead = GetBlock(sizeof(struct BLOCK));
@@ -112,7 +112,6 @@ void BlockSetting(double X, double Y) {
 		q->next = p;
 		return;
 	}
-
 }
 void BlockSettingX(double StartX, double StartY, int number) {
 	int i;
@@ -133,9 +132,8 @@ void GoalSetting(double x, double y) {
 	NowGoal.y = y;
 }
 void StageClear() {
-	StopAutoTimer();
-	CacheLineSorting(NULL);
 	BlockClear();
+	LineClear();
 	EnemyClear();
 	BonusClear();
 	GoalClear();
@@ -155,6 +153,20 @@ void BlockClear() {
 	blockhead = NULL;
 	return;
 }
+void LineClear() {
+	LINE* line = LineUnion;
+	DOT* dot, * p;
+	while (line != NULL) {
+		dot = line->HeadDot;
+		while (dot != NULL) {
+			p = dot;
+			dot = dot->next;
+			free(p);
+		}
+		line = line->next;
+	}
+	LineUnion = NULL;
+}
 void EnemyClear() {
 	int i;
 	for (i = 0; i < EnemyNum; i++) {
@@ -171,14 +183,6 @@ void BonusClear() {
 }
 void GoalClear() {
 	NowGoal.live = FALSE;
-}
-
-void StopAutoTimer()
-{
-	cancelTimer(FALL);
-	cancelTimer(JUDGE);
-	cancelTimer(BULLETMAKE);
-	cancelTimer(BULLETMOVE);
 }
 void InitSetting() {
 	InitArray[0] = StageInit1;
@@ -219,10 +223,9 @@ void StageInit1() {
 	BonusSettingX(3, 2, 6.5, FALSE, 0.4, 5);
 	BonusSettingX(8, 12, 7.5, FALSE, 0.4, 5);
 	BonusSetting(13, 5.7, 2.5, TRUE);
-	//BonusSetting(14, 15, 3.5, , TRUE);
-	GoalSetting(1, 6.5);
-	setPauseButton();
+	BonusSetting(14, 15, 3.5, TRUE);
 	StartAutoTimer();
+	GoalSetting(1, 6.5);
 }
 void StageInit2() {
 	RoleSetting(15.5, 2);
@@ -296,19 +299,4 @@ void StageInit6() {
 	BonusSettingX(12, 7, 5.6, FALSE, 0.4, 2);
 	BonusSetting(14, 7.5, 6.5, FALSE);
 	GoalSetting(7.5, 1);
-}
-
-void setPauseButton()
-{
-	setButton(7.832, 0.112, 0.168, 0.336, 0.336, "", "", ToPause);
-}
-
-void FreeAllStages()
-{
-	int i;
-	for (i = 0; i < StageNum; i++)
-	{
-		//free(StageArray[i]->name);
-		free(StageArray[i]);
-	}
 }
