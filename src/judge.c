@@ -54,7 +54,6 @@ bool RightMoveJudgeBlock() {
 		BlockX = p->x;
 		BlockY = p->y;
 		if (BlockX - RoleX >= 0 && BlockX - RoleX <= MOVERANGE && fabs(RoleY - BlockY) <= MOVERANGE) {
-			printf("%f %f\n", BlockX - RoleX, RoleY - BlockY);
 			return TRUE;
 		}
 		p = p->next;
