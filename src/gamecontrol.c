@@ -87,9 +87,11 @@ void KeyBoardControl(int key, int event) {//键盘信息回调函数
 		switch (key)
 		{
 		case'A':
+			myrole.IsMoving = TRUE;
 			startTimer(LEFTMOVING, RENDERGAP);
 			break;
 		case'D':
+			myrole.IsMoving = TRUE;
 			startTimer(RIGHTMOVING, RENDERGAP);
 			break;
 		case 'W':
@@ -115,9 +117,11 @@ void KeyBoardControl(int key, int event) {//键盘信息回调函数
 		switch (key)
 		{
 		case'A':
+			myrole.IsMoving = FALSE;
 			cancelTimer(LEFTMOVING);
 			break;
 		case'D':
+			myrole.IsMoving = FALSE;
 			cancelTimer(RIGHTMOVING);
 			break;
 		default:
