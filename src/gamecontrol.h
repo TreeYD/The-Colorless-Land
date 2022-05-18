@@ -16,7 +16,7 @@ enum timer {
 	BULLETMOVE, //发射出去后的子弹移动
 	DRAW//画笔timer，还没写
 };//不同的timer直接枚举了
-#define INITIALVERTICALSPEED 0.2
+#define INITIALVERTICALSPEED 0.15
 #define G 0.01
 #define VOLUMEREDUCINGSPEED 1 //随便填的
 void StartAutoTimer();
