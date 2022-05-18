@@ -1,4 +1,4 @@
-﻿#ifndef STAGEINIT_H
+#ifndef STAGEINIT_H
 #define STAGEINIT_H
 void StageSetting();
 //初始化一切关卡
@@ -28,9 +28,9 @@ void BlockSettingY(double StartX, double StartY, int number);
 void GoalSetting(double x, double y);
 //设置终点的坐标
 
-void StopAutoTimer();
 void StageClear();
 void BlockClear();
+void LineClear();
 void EnemyClear();
 void BonusClear();
 void GoalClear();
