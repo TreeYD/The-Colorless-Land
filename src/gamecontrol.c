@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
 #include "graphics.h"
@@ -19,11 +19,11 @@
 #include "stateManager.h"
 #include"helpAndPause.h"
 extern struct ROLE myrole;
-struct ENEMY enemy[EnemyNum];
-struct BULLET bullet[BulletNum];
+extern struct ENEMY enemy[EnemyNum];
+extern struct BULLET bullet[BulletNum];
 extern void(*stateRender)(void);
-struct BLOCK* blockhead;
-LINE* LineUnion = NULL; //the linklist for all lines drawn.
+extern struct BLOCK* blockhead;
+extern LINE* LineUnion = NULL; //the linklist for all lines drawn.
 extern State PauseMenu;
 extern State HelpMenu;
 void ScreenRender(void) {
@@ -37,6 +37,18 @@ void StartAutoTimer() {
 	startTimer(JUDGE, JUDGEGAP);
 	startTimer(BULLETMAKE, RENDERGAP);//子弹的不断产生
 	startTimer(BULLETMOVE, RENDERGAP);//子弹运动的Timer需要一直开着
+	return;
+}
+void CancelControlTimer() {
+	cancelTimer(FALL);
+	cancelTimer(JUDGE);
+	cancelTimer(BULLETMAKE);
+	cancelTimer(BULLETMOVE);
+	cancelTimer(LEFTMOVING);
+	cancelTimer(RIGHTMOVING);
+	cancelTimer(JUMP);
+	cancelTimer(SHOT);
+	cancelTimer(DRAW);
 	return;
 }
 void render(int TimerID)//计时器回调函数
@@ -77,8 +89,6 @@ void render(int TimerID)//计时器回调函数
 		ScreenRender();
 		break;
 	}
-
-
 	return;
 }
 void KeyBoardControl(int key, int event) {//键盘信息回调函数
@@ -104,6 +114,7 @@ void KeyBoardControl(int key, int event) {//键盘信息回调函数
 			StatePush(&PauseMenu);
 			break;
 		case VK_ESCAPE:
+			CancelControlTimer();
 			StatePop("MAINMENU");
 			break;
 		case 'H':
@@ -136,27 +147,29 @@ void PlayerMove(int event)
 	{
 	case LEFTMOVING:
 		myrole.direction = LEFT;
-		if (myrole.x >= 0 && !RoleAndGroundX(blockhead) && !RoleAndLineX()) {//窗口边界判定和地面障碍判定
+		if (myrole.x >= 0 && !LeftMoveJudgeBlock() && !LeftMoveJudgeDot()) {//窗口边界判定和地面障碍判定
 			myrole.x -= RoleSpeed;
 		}
 		break;
 	case RIGHTMOVING:
 		myrole.direction = RIGHT;
-		if (myrole.x <= GraphicsWindowWidth - RoleWidth && !RoleAndGroundX(blockhead) && !RoleAndLineX()) {//窗口边界判定和地面障碍判定
+		printf("%d %d\n", RightMoveJudgeBlock(), RightMoveJudgeDot());
+		if (myrole.x <= GraphicsWindowWidth - RoleWidth && !RightMoveJudgeBlock() && !RightMoveJudgeDot()) {
+			//窗口边界判定和地面障碍判定
 			myrole.x += RoleSpeed;
 		}
 		break;
 	case JUMP:
-		if ((!IsJumping && !IsDropping && (RoleAndGroundY(blockhead) || RoleAndLineY()))) {
+		if (!IsJumping && !IsDropping && (JumpJudgeBlock() || JumpJudgeDot() || myrole.y <= 1)) {
 			IsJumping = TRUE;
-
 			VerticalSpeed = INITIALVERTICALSPEED;
-		}
-		if (IsJumping) {
 			myrole.y += VerticalSpeed;
-			VerticalSpeed -= G;
 		}
-		if (RoleAndGroundY(blockhead) || RoleAndLineY()) {
+		if (IsJumping && !(JumpJudgeBlock() || JumpJudgeDot())) {
+			VerticalSpeed -= G;
+			myrole.y += VerticalSpeed;
+		}
+		if (JumpJudgeBlock() || JumpJudgeDot() || myrole.y <= 1) {
 			IsJumping = FALSE;
 			cancelTimer(JUMP);
 		}
@@ -166,7 +179,7 @@ void PlayerMove(int event)
 			myrole.y = 1;
 			IsDropping = FALSE;
 		}
-		if (!IsJumping && !IsDropping && !RoleAndGroundY(blockhead) && !RoleAndLineY()) {
+		if (!IsJumping && !IsDropping && !(JumpJudgeBlock() || JumpJudgeDot()) && myrole.y > 1) {
 			IsDropping = TRUE;
 			FallingSpeed = 0;
 		}
@@ -174,7 +187,7 @@ void PlayerMove(int event)
 			myrole.y -= FallingSpeed;
 			FallingSpeed += G;
 		}
-		if (RoleAndGroundY(blockhead) || RoleAndLineY()) {
+		if (JumpJudgeBlock() || JumpJudgeDot()) {
 			IsDropping = FALSE;
 		}
 		break;
@@ -219,10 +232,10 @@ void EnemyJudge() {
 	return;
 }
 void GoalJudge() {
-	if (RoleAndGoal(NowGoal)) {
+	/*if (RoleAndGoal(NowGoal)) {
 		CurrentRank++;
 		StatePush(&GameState[CurrentRank]);
-	}
+	}*/
 }
 void BulletMake() {//子弹产生
 	int i;
@@ -281,12 +294,11 @@ void BulletMove() {//子弹发射出去以后自动运动的函数
 	return;
 }
 void MouseControl(int x, int y, int button, int event) {//鼠标信息回调函数
-	uiMouseEvent(x, y, button, event);
 	MouseX = ScaleXInches(x);
 	MouseY = ScaleYInches(y);
 	COS = (MouseX - myrole.x) / sqrt(pow(MouseX - myrole.x, 2) + pow(MouseY - myrole.y, 2));
 	SIN = (MouseY - myrole.y) / sqrt(pow(MouseX - myrole.x, 2) + pow(MouseY - myrole.y, 2));
-	if (button == VK_LBUTTON) {
+	if (button == LEFT_BUTTON) {
 		if (event == BUTTON_DOWN) {
 			if (myrole.colorvolume <= 0) {
 				return;
@@ -295,8 +307,8 @@ void MouseControl(int x, int y, int button, int event) {//鼠标信息回调函�
 				startTimer(SHOT, RENDERGAP);
 			}
 			else {//用笔的情况
-				if (MouseAndGround(blockhead)||MouseAndLine) {//鼠标接触地面才能画桥
-					startTimer(DRAW, RENDERGAP);
+				if (MouseAndGround(blockhead) || MouseAndAllLine()) {//鼠标接触地面才能画桥
+					startTimer(DRAW, DRAWGAP);
 				}
 			}
 		}
@@ -310,7 +322,7 @@ void MouseControl(int x, int y, int button, int event) {//鼠标信息回调函�
 			}
 		}
 	}
-	else if (button = VK_RBUTTON) {//右键点击桥梁回收
+	if (button == RIGHT_BUTTON) {//右键点击桥梁回收
 		if (event == BUTTON_DOWN) {
 			if (!myrole.weapon) {
 				Delete();
@@ -326,7 +338,7 @@ void MakeLine() {
 		line->HeadDot = LineHead;
 		line->next = NULL;
 		AddLine(line);
-		myrole.colorvolume -= VOLUMEREDUCINGSPEED;
+		myrole.colorvolume -= VOLUMEREDUCINGSPEED / 10;
 		LineHead->x = MouseX;
 		LineHead->y = MouseY;
 		LineHead->next = NULL;
