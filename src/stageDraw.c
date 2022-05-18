@@ -93,21 +93,50 @@ void DrawGoal()
 
 void DrawRole()
 {
-	static bool currPic = FALSE;
+	static int currPic = 1;
 	if (myrole.IsMoving == FALSE)
 	{
-		if (myrole.direction == LEFT)
-			AddZoomBitMap("PICLEFTSTILL.bmp", myrole.x, myrole.y, RoleWidth, RoleHeight, SRCAND);
+		if (!myrole.weapon) {
+			if (myrole.direction == LEFT)
+				AddZoomBitMap("PICLEFTSTILL.bmp", myrole.x, myrole.y, RoleWidth, RoleHeight, SRCAND);
+			else
+				AddZoomBitMap("PICRIGHTSTILL.bmp", myrole.x, myrole.y, RoleWidth, RoleHeight, SRCAND);
+		}
 		else
-			AddZoomBitMap("PICRIGHTSTILL.bmp", myrole.x, myrole.y, RoleWidth, RoleHeight, SRCAND);
+		{
+			if (myrole.direction == LEFT)
+				AddZoomBitMap("PICLEFTGUN.bmp", myrole.x-0.12, myrole.y, RoleHeight, RoleHeight, SRCAND);
+			else
+				AddZoomBitMap("PICRIGHTGUN.bmp", myrole.x, myrole.y, RoleHeight, RoleHeight, SRCAND);
+		}
 	}
 	else
 	{
-		currPic = !currPic;
+		string picName;
+		currPic ++;
+		if (currPic == 7)
+			currPic = 1;
 		if (myrole.direction == LEFT)
-			AddZoomBitMap((currPic ? "PICLEFT2.bmp" : "PICLEFT1.bmp"), myrole.x, myrole.y, RoleWidth, RoleHeight, SRCAND);
+		{
+			switch (currPic)
+			{
+			case 1:case 2:picName = "PICLEFT1.bmp"; break;
+			case 3:case 4:picName= "PICLEFT2.bmp"; break;
+			case 5:case 6:picName = "PICLEFT3.bmp"; break;
+			}
+			AddZoomBitMap(picName, myrole.x, myrole.y, RoleWidth, RoleHeight, SRCAND);
+		}
+			
 		else
-			AddZoomBitMap((currPic ? "PICRIGHT2.bmp" : "PICRIGHT1.bmp"), myrole.x, myrole.y, RoleWidth, RoleHeight, SRCAND);
+		{
+			switch (currPic)
+			{
+			case 1:case 2:picName = "PICRIGHT1.bmp"; break;
+			case 3:case 4:picName = "PICRIGHT2.bmp"; break;
+			case 5:case 6:picName = "PICRIGHT3.bmp"; break;
+			}
+			AddZoomBitMap(picName, myrole.x, myrole.y, RoleWidth, RoleHeight, SRCAND);
+		}
 	}
 }
 
