@@ -153,7 +153,6 @@ void PlayerMove(int event)
 		break;
 	case RIGHTMOVING:
 		myrole.direction = RIGHT;
-		printf("%d %d\n", RightMoveJudgeBlock(), RightMoveJudgeDot());
 		if (myrole.x <= GraphicsWindowWidth - RoleWidth && !RightMoveJudgeBlock() && !RightMoveJudgeDot()) {
 			//窗口边界判定和地面障碍判定
 			myrole.x += RoleSpeed;
