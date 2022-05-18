@@ -4,7 +4,7 @@
 #define GraphicsWindowWidth 16//窗口大小
 #define GraphicsWindowHeight 9
 #define StageNum 20
-#define RoleSpeed 0.05//角色移动速度
+#define RoleSpeed 0.2//角色移动速度
 #define RoleWidth 0.5//角色大小
 #define RoleHeight 0.75
 #define InitialHP 100
