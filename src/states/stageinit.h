@@ -46,4 +46,6 @@ void StageInit6();
 //放在state的init里
 void setPauseButton();
 //need to reset when pop other states above (pause menu), have to export it...
+void FreeAllStages();
+//called when exit
 #endif // !STAGE_H

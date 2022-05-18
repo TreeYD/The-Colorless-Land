@@ -88,7 +88,7 @@ void DrawBullet()
 
 void DrawGoal()
 {
-	AddZoomBitMap("Goal.bmp", NowGoal.x, NowGoal.y, GoalSize, GoalSize, SRCCOPY);
+	AddZoomBitMap("Goal.bmp", NowGoal.x, NowGoal.y, GoalSize*2, GoalSize*2, SRCCOPY);
 }
 
 void DrawRole()
@@ -119,9 +119,9 @@ void DrawBonus()
 		if (bonus[i].live == TRUE)
 		{
 			if (bonus[i].IsColor == TRUE)
-				AddZoomBitMap("COLORBONUS.bmp", bonus[i].x, bonus[i].y, BonusSize, BonusSize, SRCAND);
+				AddZoomBitMap("COLORBONUS.bmp", bonus[i].x, bonus[i].y, BonusSize*2, BonusSize*2, SRCAND);
 			else
-				AddZoomBitMap("NORMALBONUS.bmp", bonus[i].x, bonus[i].y, BonusSize, BonusSize, SRCAND);
+				AddZoomBitMap("NORMALBONUS.bmp", bonus[i].x, bonus[i].y, BonusSize*2, BonusSize*2, SRCAND);
 		}
 	}
 }
