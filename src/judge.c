@@ -30,29 +30,49 @@ bool distance(double x1, double y1, double size1, double x2, double y2, double s
 		return FALSE;
 	}
 }
-bool RoleAndGroundX(struct BLOCK* blockhead) {
+bool JumpJudgeBlock() {
 	double RoleX = myrole.x + RoleWidth / 2;
-	double RoleY = myrole.y + RoleHeight / 2;
-	while (blockhead) {
-		double BlockX = blockhead->x + BlockSize;
-		double BlockY = blockhead->y + BlockSize;
-		if (distance(RoleX, RoleY, RoleWidth / 2, BlockX, BlockY, BlockSize)) {
+	double RoleY = myrole.y;
+	double BlockX, BlockY;
+	struct BLOCK* p = blockhead;
+	while (p != NULL) {
+		BlockX = p->x + BlockSize;
+		BlockY = p->y + 2 * BlockSize;
+		if (fabs(RoleX - BlockX) <= JUMPBLOCKRANGEX && fabs(RoleY - BlockY) <= JUMPBLOCKRANGEY) {
 			return TRUE;
 		}
-		blockhead = blockhead->next;
+		p = p->next;
 	}
 	return FALSE;
 }
-bool RoleAndGroundY(struct BLOCK* blockhead) {
-	double RoleX = myrole.x + RoleWidth / 2;
-	double RoleY = myrole.y + RoleHeight / 2;
-	while (blockhead) {
-		double BlockX = blockhead->x + BlockSize;
-		double BlockY = blockhead->y + BlockSize;
-		if (distance(RoleX, RoleY, RoleHeight / 2, BlockX, BlockY, BlockSize)) {
+bool RightMoveJudgeBlock() {
+	double RoleX = myrole.x + RoleWidth;
+	double RoleY = myrole.y;
+	double BlockX, BlockY;
+	struct BLOCK* p = blockhead;
+	while (p != NULL) {
+		BlockX = p->x;
+		BlockY = p->y;
+		if (BlockX - RoleX >= 0 && BlockX - RoleX <= MOVERANGE && fabs(RoleY - BlockY) <= MOVERANGE) {
+			printf("%f %f\n", BlockX - RoleX, RoleY - BlockY);
 			return TRUE;
 		}
-		blockhead = blockhead->next;
+		p = p->next;
+	}
+	return FALSE;
+}
+bool LeftMoveJudgeBlock() {
+	double RoleX = myrole.x;
+	double RoleY = myrole.y;
+	double BlockX, BlockY;
+	struct BLOCK* p = blockhead;
+	while (p != NULL) {
+		BlockX = p->x + 2 * BlockSize;
+		BlockY = p->y;
+		if (RoleX - BlockX >= 0 && RoleX - BlockX <= MOVERANGE && fabs(RoleY - BlockY) <= MOVERANGE) {
+			return TRUE;
+		}
+		p = p->next;
 	}
 	return FALSE;
 }
@@ -61,7 +81,7 @@ bool RoleAndEnemy(struct ENEMY enemy) {
 	double RoleY = myrole.y + RoleHeight / 2;
 	double EnemyX = enemy.x + enemy.width / 2;
 	double EnemyY = enemy.y + enemy.height / 2;
-	if (distance(RoleX, RoleY, RoleWidth, EnemyX, EnemyY, enemy.size)) {
+	if (distance(RoleX, RoleY, RoleWidth / 2, EnemyX, EnemyY, enemy.size)) {
 		return TRUE;
 	}
 	return FALSE;
@@ -71,7 +91,7 @@ bool RoleAndGoal(struct GOAL goal) {
 	double RoleY = myrole.y + RoleHeight / 2;
 	double GoalX = goal.x + GoalSize;
 	double GoalY = goal.y + GoalSize;
-	if (distance(RoleX, RoleY, RoleWidth, goal.x, goal.y, GoalSize)) {
+	if (distance(RoleX, RoleY, RoleWidth / 2, goal.x, goal.y, GoalSize)) {
 		return TRUE;
 	}
 	return FALSE;
@@ -86,16 +106,17 @@ bool EnemyAndBullet(struct ENEMY enemy, struct BULLET bullet) {
 	}
 	return FALSE;
 }
-bool BulletAndGround(struct BULLET bullet, struct BLOCK* blockhead) {
+bool BulletAndGround(struct BULLET bullet) {
+	struct BLOCK* p = blockhead;
 	double BulletX = bullet.x + BulletWidth / 2;
 	double BulletY = bullet.y + BulletHeight / 2;
-	while (blockhead) {
-		double BlockX = blockhead->x + BlockSize;
-		double BlockY = blockhead->y + BlockSize;
+	while (p != NULL) {
+		double BlockX = p->x + BlockSize;
+		double BlockY = p->y + BlockSize;
 		if (distance(BulletX, BulletY, BulletSize, BlockX, BlockY, BlockSize)) {
 			return TRUE;
 		}
-		blockhead = blockhead->next;
+		p = p->next;
 	}
 	return FALSE;
 }
@@ -104,22 +125,22 @@ bool RoleAndBonus(struct BONUS bonus) {
 	double RoleY = myrole.y + RoleHeight / 2;
 	double BonusX = bonus.x + BonusSize;
 	double BonusY = bonus.y + BonusSize;
-	if (distance(RoleX, RoleY, RoleWidth, BonusX, BonusY, BonusSize)) {
+	if (distance(RoleX, RoleY, RoleWidth / 2, BonusX, BonusY, BonusSize)) {
 		return TRUE;
 	}
 	return FALSE;
 }
-bool RoleAndLineX() {
-	LINE* line = LineUnion;
-	DOT* dot = NULL;
+bool JumpJudgeDot() {
 	double RoleX = myrole.x + RoleWidth / 2;
-	double RoleY = myrole.y + RoleHeight / 2;
+	double RoleY = myrole.y;
+	double DotX, DotY;
+	LINE* line = LineUnion;
 	while (line != NULL) {
-		dot = line->HeadDot;
+		DOT* dot = line->HeadDot;
 		while (dot != NULL) {
-			double DotX = dot->x + DotSize;
-			double DotY = dot->y + DotSize;
-			if (distance(DotX, DotY, DotSize, RoleX, RoleY, RoleWidth)) {
+			DotX = dot->x + DotSize;
+			DotY = dot->y + 2 * DotSize;
+			if (fabs(RoleX - DotX) <= JUMPDOTRANGEX && fabs(RoleY - DotY) <= JUMPDOTRANGEY) {
 				return TRUE;
 			}
 			dot = dot->next;
@@ -128,17 +149,17 @@ bool RoleAndLineX() {
 	}
 	return FALSE;
 }
-bool RoleAndLineY() {
+bool RightMoveJudgeDot() {
+	double RoleX = myrole.x + RoleWidth;
+	double RoleY = myrole.y;
+	double DotX, DotY;
 	LINE* line = LineUnion;
-	DOT* dot = NULL;
-	double RoleX = myrole.x + RoleWidth / 2;
-	double RoleY = myrole.y + RoleHeight / 2;
 	while (line != NULL) {
-		dot = line->HeadDot;
+		DOT* dot = line->HeadDot;
 		while (dot != NULL) {
-			double DotX = dot->x + DotSize;
-			double DotY = dot->y + DotSize;
-			if (distance(DotX, DotY, DotSize, RoleX, RoleY, RoleHeight)) {
+			DotX = dot->x;
+			DotY = dot->y;
+			if (DotX - RoleX >= 0 && DotX - RoleX <= MOVERANGE && fabs(RoleY - DotY) <= MOVERANGE) {
 				return TRUE;
 			}
 			dot = dot->next;
@@ -147,24 +168,74 @@ bool RoleAndLineY() {
 	}
 	return FALSE;
 }
-bool MouseAndGround(struct BLOCK* blockhead) {
-	while (blockhead) {
-		double BlockX = blockhead->x + BlockSize;
-		double BlockY = blockhead->y + BlockSize;
+bool LeftMoveJudgeDot() {
+	double RoleX = myrole.x;
+	double RoleY = myrole.y;
+	double DotX, DotY;
+	LINE* line = LineUnion;
+	while (line != NULL) {
+		DOT* dot = line->HeadDot;
+		while (dot != NULL) {
+			DotX = dot->x + 2 * DotSize;
+			DotY = dot->y;
+			if (RoleX - DotX >= 0 && RoleX - DotX <= MOVERANGE && fabs(RoleY - DotY) <= MOVERANGE) {
+				return TRUE;
+			}
+			dot = dot->next;
+		}
+		line = line->next;
+	}
+	return FALSE;
+}
+bool MouseAndGround() {
+	struct BLOCK* p = blockhead;
+	while (p != NULL) {
+		double BlockX = p->x + BlockSize;
+		double BlockY = p->y + BlockSize;
 		if (distance(MouseX, MouseY, 0, BlockX, BlockY, BlockSize)) {
 			return TRUE;
 		}
-		blockhead = blockhead->next;
+		p = p->next;
 	}
 	return FALSE;
 }
 bool MouseAndLine(LINE* line) {
-	DOT* p = line->HeadDot;
-	while (p != NULL) {
-		double DotX = p->x + DotSize;
-		double DotY = p->y + DotSize;
+	LINE* p = LineUnion;
+	DOT* dot;
+	double DotX, DotY;
+	if (p == NULL) {
+		return;
+	}
+	while (p != line) {
+		p = p->next;
+	}
+	dot = p->HeadDot;
+	while (dot != NULL) {
+		DotX = dot->x + DotSize;
+		DotY = dot->y + DotSize;
 		if (distance(MouseX, MouseY, 0, DotX, DotY, DotSize)) {
 			return TRUE;
+		}
+		dot = dot->next;
+	}
+	return FALSE;
+}
+bool MouseAndAllLine() {
+	LINE* p = LineUnion;
+	DOT* dot;
+	double DotX, DotY;
+	if (p == NULL) {
+		return;
+	}
+	while (p != NULL) {
+		dot = p->HeadDot;
+		while (dot != NULL) {
+			DotX = dot->x;
+			DotY = dot->y;
+			if (distance(MouseX, MouseY, 0, DotX, DotY, DotSize)) {
+				return TRUE;
+			}
+			dot = dot->next;
 		}
 		p = p->next;
 	}
