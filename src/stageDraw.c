@@ -23,6 +23,7 @@
 #include "lightgui.h"
 extern LINE* LineUnion ;
 void DrawExistingLines(void);
+void DrawEnemy(void);
 void DrawStatusBar()
 {
 	SetPointSize(13);
@@ -132,6 +133,7 @@ void StageDraw()
 	DrawGoal();
 	DrawBullet();
 	DrawRole();
+	DrawEnemy();
 	DrawExistingLines();
 	traverseButton();
 	DrawStatusBar();
@@ -150,6 +152,31 @@ void DrawExistingLines()
 			StartFilledRegion(1);
 			drawBox(pres->x, pres->y,0, 2*DotSize, 2*DotSize);
 			EndFilledRegion();
+		}
+	}
+}
+
+void DrawEnemy()
+{
+	int i;
+	string enemyPicSource;
+	for (i = 0; i < EnemyNum; i++)
+	{
+		if (enemy[i].live == TRUE)
+		{
+			switch (enemy[i].kind)
+			{
+			case 1:enemyPicSource = "ghost.bmp";
+				break;
+			case 2:enemyPicSource = "skull.bmp";
+				break;
+			case 3:enemyPicSource = "chicken.bmp";
+				break;
+			default:
+				enemyPicSource = "chicken.bmp";
+				break;
+			}
+			AddZoomBitMap(enemyPicSource,enemy[i].x,enemy[i].y,enemy[i].width, enemy[i].height,SRCAND);
 		}
 	}
 }

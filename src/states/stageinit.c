@@ -51,6 +51,7 @@ void EnemySetting(int i, double x, double y, double range, int direction, int ki
 	enemy[i].nowrange = 0;
 	enemy[i].direction = direction;
 	enemy[i].live = TRUE;
+	enemy[i].kind = kind;
 	switch (enemy[i].kind)
 	{
 	case 1:
@@ -150,6 +151,7 @@ void BlockClear() {
 		p = p->next;
 		free(q);
 	}
+	blockhead = NULL;
 	return;
 }
 void EnemyClear() {

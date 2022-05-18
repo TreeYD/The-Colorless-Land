@@ -56,6 +56,7 @@ void StatePop(string name) {
 	strcpy(lastName, top->name);
 	if(name!=NULL)
 	do {
+		strcpy(lastName, top->name);
 		if (top->destroy != NULL)
 			top->destroy();
 		statemanager.stack[statemanager.top] = NULL;
@@ -75,7 +76,7 @@ void StatePop(string name) {
 			return;
 	}
 		top = StateTop();
-		if(top->init!=NULL&&strcmp(lastName,"PAUSEMENU")!=0)
+		if(top->init!=NULL&&strcmp(lastName,"PAUSEMENU")!=0&&!(strcmp(lastName,"HELPMENU")==0&&strlen(top->name)==1))
 			top->init();
 		if (strlen(top->name)==1)
 			setPauseButton();
