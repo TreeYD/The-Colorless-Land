@@ -184,6 +184,20 @@ void BonusClear() {
 void GoalClear() {
 	NowGoal.live = FALSE;
 }
+void setPauseButton()
+{
+	setButton(7.832, 0.112, 0.168, 0.336, 0.336, "", "", ToPause);
+}
+
+void FreeAllStages()
+{
+	int i;
+	for (i = 0; i < StageNum; i++)
+	{
+		//free(StageArray[i]->name);
+		free(StageArray[i]);
+	}
+} 
 void InitSetting() {
 	InitArray[0] = StageInit1;
 	InitArray[1] = StageInit2;
