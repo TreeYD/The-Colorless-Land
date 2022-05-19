@@ -17,7 +17,7 @@
 #include"lightgui.h"
 #include"gamecontrol.h"
 #include "stateManager.h"
-#include "menu.h" //��д����д��.jpg
+#include "menu.h" //ÔÚÐ´ÁËÔÚÐ´ÁË.jpg
 #include "stageinit.h"
 extern State MainMenu;
 extern StateManager statemanager;
@@ -25,6 +25,7 @@ static void StateChangedEvent();
 
 void StateManagerInit() {
 	statemanager.top = -1;
+	ReadArchFile();//从文件中读取存档到archBuf
 	StatePush(&MainMenu);
 }
 
