@@ -1072,12 +1072,12 @@ static void RegisterWindowClass(void)
 static LONG FAR PASCAL GraphicsEventProc(HWND hwnd, UINT msg,
 	WPARAM wParam, LPARAM lParam)
 {
-	//printf("msg=%d£¬wparam=%d,lparam=%d\n", msg,wParam,lParam);
+	//printf("msg=%dï¼Œwparam=%d,lparam=%d\n", msg,wParam,lParam);
     switch(msg)
     {
-		// ÁõĞÂ¹ú£ºÊ¹ÓÃÁËdouble buffer, ÊÖ¶¯ÇåÆÁ£¬
-		//         ÎŞĞèÏµÍ³²Á³ı±³¾°£¬±ÜÃâÉÁË¸
-		//         ¸ĞĞ»18¼¶Ê¯ÃÉÍ¬Ñ§£¬Ìá¹©Õâ¸ö·½·¨½â¾öË¢ĞÂÉÁË¸ÎÊÌâ
+		// åˆ˜æ–°å›½ï¼šä½¿ç”¨äº†double buffer, æ‰‹åŠ¨æ¸…å±ï¼Œ
+		//         æ— éœ€ç³»ç»Ÿæ“¦é™¤èƒŒæ™¯ï¼Œé¿å…é—ªçƒ
+		//         æ„Ÿè°¢18çº§çŸ³è’™åŒå­¦ï¼Œæä¾›è¿™ä¸ªæ–¹æ³•è§£å†³åˆ·æ–°é—ªçƒé—®é¢˜
 
 
 		case WM_ERASEBKGND: 
@@ -2020,7 +2020,7 @@ double ScaleYInches(int y)/*y coordinate from pixels to inches*/
 */
 void AddBitMap(char* bitMap,double x,double y,unsigned long printMethod)
 {
-	//y = DesiredHeight - y;
+	y = DesiredHeight - y;
 	int pixelX = PixelsX(x);
 	int pixelY = PixelsY(y);
 	HBITMAP hbitmap = LoadImage(NULL, (LPCSTR)bitMap, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
