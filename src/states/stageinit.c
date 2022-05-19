@@ -20,7 +20,7 @@
 #include "stateManager.h"
 #include"lightgui.h"
 #include"stageDraw.h"
-#include"helpAndPause.h"
+#include"menu.h"
 extern LINE* LineUnion;
 State* StageArray[StageNum];
 fnPtr InitArray[StageNum];
@@ -240,6 +240,7 @@ void StageInit1() {
 	BonusSetting(14, 15, 3.5, TRUE);
 	StartAutoTimer();
 	GoalSetting(1, 6.5);
+	setPauseButton();
 }
 void StageInit2() {
 	RoleSetting(15.5, 2);
@@ -260,6 +261,7 @@ void StageInit2() {
 	BonusSetting(12, 7.2, 6.2, TRUE);
 	BonusSetting(13, 11.2, 8, TRUE);
 	GoalSetting(0.5, 7.5);
+	setPauseButton();
 }
 void StageInit3() {
 	RoleSetting(0, 4.5);

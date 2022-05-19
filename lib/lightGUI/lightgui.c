@@ -79,7 +79,8 @@ void uiMouseEvent(int x,int y,int button, int event) {
 	curState->button = button;
 	curState->event = event;
 	//Update the whole elements
-	traverseButton();
+	/*changed*/
+	//traverseButton();
 	traverseSeekbar();
 	traverseTextbox();
 	//displayAll;

@@ -1,6 +1,7 @@
 #include "stateManager.h"
 #include "menu.h"
 #include"gamecontrol.h"
+#include "stageinit.h"
 #define MAXLEVEL 1
 #define TOTRANK  4
 #define LOCALTIME 14
@@ -35,6 +36,7 @@ struct ArchInfo* curArch;
 //由于ArchMenu和LevelMenu是同一级的，所以跳转的时候记得要pop出去
 //function for MainMenu
 extern StateManager statemanager;
+extern State* StageArray[StageNum];
 
 void setMainMenu(void);
 void drawMainMenu(void);
@@ -270,7 +272,7 @@ void drawMainMenu()
 
 void GetBackToMainMenu()
 {
-	StatePop(NULL);
+	StatePop("MAINMENU");
 }
 
 void ExitGame()
@@ -349,7 +351,7 @@ void setLevelMenu(void)
 	}
 	setButton(staX + 0.45, staY - 1.5, 0.1, 2.5, 0.8, "archive.bmp", " 存档", ToArch);
 	setButton(staX + 3.45, staY - 1.5, 0.1, 2.5, 0.8, "menu.bmp", " 主菜单", GetBackToMainMenu);
-	traverseButton();
+	//traverseButton();
 	return;
 }
 
@@ -414,14 +416,14 @@ void ToHelp(void)
 }
 void LoadStage1(void)
 {
-	/*
-	StatePush(&StateArray[0]);
-	*/
+	
+	StatePush(StageArray[0]);
+	
 }
 void LoadStage2(void)
 {
 	/*
-	StatePush(&StateArray[1]);
+	StatePush(StateArray[1]);
 	*/
 }
 void LoadStage3(void)
@@ -494,8 +496,8 @@ void setHelpMenu()
 	double x = GetWindowWidth();
 	double y = GetWindowHeight();
 	page = 1;
-	setButton(x / 2 - 0.8, y / 4 - 2, 0.1, 0.6, 0.4, "", "返回", Goback);
-	setButton(x / 2 + 0.2, y / 4 - 2, 0.1, 0.6, 0.4, "NextPage.bmp", "", TurnPage);
+	setButton(x / 2 - 2.4, y / 4 - 1.5, 0.1, 1.8, 0.6, "", "返回", Goback);
+	setButton(x / 2 + 0.6, y / 4 - 1.5, 0.1, 1.8, 0.6, "NextPage.bmp", "", TurnPage);
 
 }
 
@@ -607,15 +609,15 @@ void TurnPage()
 	if (page == 1)
 	{
 		CacheSorting();
-		setButton(x / 2 - 0.8, y / 4 - 2, 0.1, 0.6, 0.4, "", "返回", Goback);
-		setButton(x / 2 + 0.2, y / 4 - 2, 0.1, 0.6, 0.4, "PrevPage.bmp", "", TurnPage);
+		setButton(x / 2 - 2.4, y / 4 - 1.5, 0.1, 1.8, 0.6, "", "返回", Goback);
+		setButton(x / 2 + 0.6, y / 4 - 1.5, 0.1, 1.8, 0.6, "PrevPage.bmp", "", TurnPage);
 		page = 2;
 	}
 	else
 	{
 		CacheSorting();
-		setButton(x / 2 - 0.8, y / 4 - 2, 0.1, 0.6, 0.4, "", "返回", Goback);
-		setButton(x / 2 + 0.2, y / 4 - 2, 0.1, 0.6, 0.4, "NextPage.bmp", "", TurnPage);
+		setButton(x / 2 - 2.4, y / 4 - 1.5, 0.1, 1.8, 0.6, "", "返回", Goback);
+		setButton(x / 2 + 0.6, y / 4 - 1.5, 0.1, 1.8, 0.6, "NextPage.bmp", "", TurnPage);
 		page = 1;
 	}
 	return;
