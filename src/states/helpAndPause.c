@@ -1,10 +1,16 @@
-#include <stdio.h>
+#include <windows.h>
+#include<stdio.h>
+#include"strlib.h"
 #include"graphics.h"
-#include "genlib.h"
-#include "helpAndPause.h"
+#include<WinUser.h>
+#include <time.h>
+#include <wincon.h>
+#include <Windows.h>
 #include "stateManager.h"
-#include"lightgui.h"
 #include "menu.h"
+#include"parameter.h"
+#include "lightgui.h"
+#include"helpAndPause.h"
 /*for pause page*/
 void setPauseMenu();
 void drawPauseMenu();
@@ -37,15 +43,13 @@ extern State HelpMenu = {
 	uiMouseEvent,
 };
 
-
-
 void setPauseMenu()
 {
 	double x = GetWindowWidth();
 	double y = GetWindowHeight();
-	setButton(x / 2 - 0.75, y / 2 - 0.25, 0.1, 1.5, 0.3, "", "继续游戏", Goback);
-	setButton(x / 2 - 0.75, y / 2 - 0.75, 0.1, 1.5, 0.3, "", "查看帮助", ToHelp);
-	setButton(x / 2 - 0.75, y / 2 - 1.25, 0.1, 1.5, 0.3, "", "回到主菜单", GetBackToMainMenu);
+	setButton(x / 2 - 0.75, y / 2 - 0.15, 0.1, 1.5, 0.4, "", "继续游戏", Goback);
+	setButton(x / 2 - 0.75, y / 2 - 0.7, 0.1, 1.5, 0.4, "", "查看帮助", ToHelp);
+	setButton(x / 2 - 0.75, y / 2 - 1.25, 0.1, 1.5, 0.4, "", "回到主菜单", GetBackToMainMenu);
 }
 
 void drawPauseMenu()
@@ -75,6 +79,7 @@ void drawPauseMenu()
 	SetPointSize(regPointSize);
 	SetStyle(0);
 	traverseButton();
+
 }
 
 
@@ -83,8 +88,9 @@ void setHelpMenu()
 	double x = GetWindowWidth();
 	double y = GetWindowHeight();
 	page = 1;
-	setButton(x / 2 - 0.8, y / 4, 0.1, 0.6, 0.4, "", "返回", Goback);
-	setButton(x / 2 + 0.2, y / 4, 0.1, 0.6, 0.4, "NextPage.bmp", "", TurnPage);
+	setButton(x / 2 - 0.8, y / 4-2, 0.1, 0.6, 0.4, "", "返回", Goback);
+	setButton(x / 2 + 0.2, y / 4-2, 0.1, 0.6, 0.4, "NextPage.bmp", "", TurnPage);
+
 }
 
 void drawHelpMenu()
@@ -97,7 +103,7 @@ void drawHelpMenu()
 }
 void drawHelpMenuP1()
 {
-	const string helpsP1[2][4] = { "W:跳跃","A/D:向左/右运动","鼠标左键：绘制图线/向当前方向射击","鼠标右键：切换绘图/射击模式","ESC：退出关卡回到主菜单","P：暂停游戏","H：帮助页面","←/→：（帮助页面）上一页/下一页" };
+	const string helpsP1[2][5] = { "W:跳跃","A/D:向左/右运动","F:切换模式","鼠标左键：绘制图线/向当前方向射击","鼠标右键：绘图模式下回收墨水","ESC：退出关卡回到主菜单","P：暂停游戏","H：帮助页面","←/→：（帮助页面）上一页/下一页" ,""};
 	int regPointSize = GetPointSize();
 	SetPointSize(regPointSize * 2.5);
 	SetStyle(1);
@@ -108,8 +114,10 @@ void drawHelpMenuP1()
 	SetStyle(0);
 	for (int i = 0; i < 2; i++)
 	{
-		for (int j = 0; j < 4; j++)
+		for (int j = 0; j < 5; j++)
 		{
+			if (i == 1 && j == 4)
+				continue;
 			MovePen(1.5 + 7 * i, 6 - j * 1);
 			DrawTextString(helpsP1[i][j]);
 		}
@@ -128,16 +136,12 @@ void Goback()
 
 void helpEvent(int key, int event)
 {
-	if (page == 1 && key == VK_RIGHT && event == KEY_DOWN)
+	if( (page == 1 && key == VK_RIGHT && event == KEY_DOWN) || (page == 2 && key == VK_LEFT && event == KEY_DOWN))
 	{
-		page = 2;
+		TurnPage();
 		return;
 	}
-	if (page == 2 && key == VK_LEFT && event == KEY_DOWN)
-	{
-		page = 1;
-		return;
-	}
+	
 }
 
 
@@ -197,17 +201,21 @@ void TurnPage()
 	if (page == 1)
 	{
 		CacheSorting();
-		setButton(x / 2 - 0.8, y / 4, 0.1, 0.6, 0.4, "", "返回", Goback);
-		setButton(x / 2 + 0.2, y / 4, 0.1, 0.6, 0.4, "PrevPage.bmp", "", TurnPage);
+		setButton(x / 2 - 0.8, y / 4-2, 0.1, 0.6, 0.4, "", "返回", Goback);
+		setButton(x / 2 + 0.2, y / 4-2, 0.1, 0.6, 0.4, "PrevPage.bmp", "", TurnPage);
 		page = 2;
 	}
 	else
 	{
 		CacheSorting();
-		setButton(x / 2 - 0.8, y / 4, 0.1, 0.6, 0.4, "", "返回", Goback);
-		setButton(x / 2 + 0.2, y / 4, 0.1, 0.6, 0.4, "NextPage.bmp", "", TurnPage);
+		setButton(x / 2 - 0.8, y / 4-2, 0.1, 0.6, 0.4, "", "返回", Goback);
+		setButton(x / 2 + 0.2, y / 4-2, 0.1, 0.6, 0.4, "NextPage.bmp", "", TurnPage);
 		page = 1;
 	}
 	return;
 }
 
+void ToPause()
+{
+	StatePush(&PauseMenu);
+}
