@@ -40,8 +40,6 @@ typedef struct {
 	bool isClick;//解决：反复traverse刷新出新界面时，鼠标没有回弹，导致同区域新按钮误触的问题
 }*UIState;
 
-
-
 static UIState curState;
 static BUTTON headButton=NULL;
 static TEXTBOX headTextbox=NULL,curTextbox;
@@ -159,7 +157,6 @@ void InitGUI() {
 	curState->isClick = 0;
 	DefineColor("ButtonShadow", .95, .95, .95);
 	DefineColor("TextGrey", .8, .8, .8);
-	InitConsole();
 }
 
  /*TODO: Button Process*/
@@ -234,14 +231,15 @@ void traverseButton() {
 		}
 		else {
 			if (inBox(ptr->x, ptr->y, ptr->w, ptr->h)) {
-				puts("why");
 				if (!curState->isClick&&curState->button==LEFT_BUTTON&&curState->event == BUTTON_DOWN) {//解决长时间按下重复执行的问题
 					if(ptr->clickEvent!=NULL)ptr->clickEvent();
 					curState->isClick = 1;
+					ptr = NULL;//!!!
 				}
-				if (headButton==NULL||ptr == NULL)break;
+				if (ptr == NULL)break;
+				//经过Pop和Push两次的CacheSorting
+				//headButton此时不会为NULL了，但是ptr的内存又被释放了，ptr不为NULL，所以现在在clickevent之后将ptr强行设为NULL
 				//headButton==NULL 说明已经进行了CacheSorting()
-				//CacheSorting 进行完之后，ptr不一定为NULL
 				SetPenColor("ButtonShadow");
 				drawButton(ptr, FILL);
 				SetPenColor("black");
