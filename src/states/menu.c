@@ -22,11 +22,7 @@
 //总共设计了三种按钮大小
 //archive1.txt  10002022/05/22|(14)000000000000|(12)
 bool isDelete;//是否处于删除模式
-typedef struct ArchInfo {
-	int maxLevel;
-	char time[12];
-	int rank[8];//rank[0]存储总分，rank[1-6]分别存储1-6的分数 
-}ARCHINFO;
+
 ARCHINFO archBuf[3];
 string archName[3] = { "archive1.txt","archive2.txt","archive3.txt" };
 struct ArchInfo* curArch;
