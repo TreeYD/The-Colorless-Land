@@ -122,13 +122,6 @@ void BlockSettingX(double StartX, double StartY, int number) {
 	}
 	return;
 }
-void BlockSettingY(double StartX, double StartY, int number) {
-	int i;
-	for (i = 0; i < number; i++) {
-		BlockSetting(StartX, StartY + 2 * (double)i * BlockSize);
-	}
-	return;
-}
 void GoalSetting(double x, double y) {
 	NowGoal.x = x;
 	NowGoal.y = y;
@@ -198,7 +191,6 @@ void FreeAllStages()
 	int i;
 	for (i = 0; i < StageNum; i++)
 	{
-		//free(StageArray[i]->name);
 		free(StageArray[i]);
 	}
 }
@@ -209,7 +201,7 @@ void InitSetting() {
 	InitArray[3] = StageInit4;
 	InitArray[4] = StageInit5;
 	InitArray[5] = StageInit6;
-	/*InitArray[6] = StageInit7;
+	InitArray[6] = StageInit7;
 	InitArray[7] = StageInit8;
 	InitArray[8] = StageInit9;
 	InitArray[9] = StageInit10;
@@ -222,7 +214,7 @@ void InitSetting() {
 	InitArray[16] = StageInit17;
 	InitArray[17] = StageInit18;
 	InitArray[18] = StageInit19;
-	InitArray[19] = StageInit20;*/
+	InitArray[19] = StageInit20;
 }
 void StageInit1() {
 	RoleSetting(0, 1.06);
