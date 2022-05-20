@@ -9,7 +9,7 @@
 #define RoleHeight 0.75
 #define InitialHP 100
 #define InitialColorVolume 10
-#define EnemySpeed 0.5//敌人移动速度
+#define EnemySpeed 0.02//敌人移动速度
 #define EnemyNum 10//一个关卡中敌人的最大数量
 #define BulletSpeed 0.01//子弹移动速度
 #define BulletWidth 0.01//子弹大小
