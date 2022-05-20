@@ -1,9 +1,7 @@
-﻿#ifndef GAMECONTROL_H
+#ifndef GAMECONTROL_H
 #define GAMECONTROL_H
 #define RENDERGAP 20
 #define DRAWGAP 10
-#define JUDGEGAP 500
-#define DAMAGE 1
 #include "parameter.h"
 enum timer {
 	RENDER,
@@ -20,7 +18,8 @@ enum timer {
 };//不同的timer直接枚举了
 #define INITIALVERTICALSPEED 0.15
 #define G 0.01
-#define VOLUMEREDUCINGSPEED 1 //随便填的
+#define VOLUMEREDUCINGSPEED 0.1 //随便填的
+#define ColorBonusVolume 10
 void StartAutoTimer();
 void CancelControlTimer();
 void render(int TimerID);
