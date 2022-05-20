@@ -53,7 +53,7 @@ void StatePop(string name) {
 	if (statemanager.top == -1) 
 		return;
 	State *top = StateTop();
-	char lastName[10] = { 0 };
+	char lastName[15] = { 0 };
 	strcpy(lastName, top->name);
 	if(name!=NULL)
 	do {
