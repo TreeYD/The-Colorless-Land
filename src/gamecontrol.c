@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
 #include "graphics.h"
@@ -206,7 +206,10 @@ void BonusJudge() {
 		if (bonus[i].live) {
 			if (RoleAndBonus(bonus[i])) {
 				if (bonus[i].IsColor) {
-					myrole.colorvolume += VOLUMEREDUCINGSPEED;
+					myrole.colorvolume += ColorBonusVolume;
+					if (myrole.colorvolume > MaxColorVolume) {
+						myrole.colorvolume = MaxColorVolume;
+					}
 				}
 				else {
 					myrole.mark++;
@@ -221,7 +224,7 @@ void EnemyJudge() {
 	int i;
 	for (i = 0; i < EnemyNum; i++) {
 		if (RoleAndEnemy(enemy[i])) {
-			myrole.HP-=DAMAGE;
+			myrole.HP -= enemy[i].kind;
 		}
 		enemy[i].x = enemy[i].x + enemy[i].direction * EnemySpeed;//往复运动的判断
 		enemy[i].nowrange += EnemySpeed;
@@ -293,7 +296,7 @@ void BulletMove() {//子弹发射出去以后自动运动的函数
 					bullet[i].live = FALSE;
 					bullet[i].IsMoving = FALSE;
 				}
-				if (enemy[j].HP <= 0) {
+				if (enemy[j].HP <= 0 && enemy[j].live == TRUE) {
 					enemy[j].live = FALSE;
 					myrole.mark++;//击杀敌人得分
 				}
@@ -348,7 +351,7 @@ void MakeLine() {
 		line->HeadDot = LineHead;
 		line->next = NULL;
 		AddLine(line);
-		myrole.colorvolume -= VOLUMEREDUCINGSPEED / 10;
+		myrole.colorvolume -= VOLUMEREDUCINGSPEED;
 		LineHead->x = MouseX;
 		LineHead->y = MouseY;
 		LineHead->next = NULL;
