@@ -1,7 +1,6 @@
 #include "stateManager.h"
 #include "menu.h"
 #include"gamecontrol.h"
-#include "stageinit.h"
 #define MAXLEVEL 1
 #define TOTRANK  4
 #define LOCALTIME 14
@@ -35,6 +34,9 @@ struct ArchInfo* curArch;
 //在回到MainMenu的时候再输出到文件里面，关卡结算的时候记得更新curArch的总得分和当前关卡的得分
 //由于ArchMenu和LevelMenu是同一级的，所以跳转的时候记得要pop出去
 //function for MainMenu
+int curStage = 1;//当前所处的关卡
+char settleInfo[] = { "第1关     获得分数: 000" };//关卡结算是需要用到的字符串，给了节省每次draw生成字符的内存开支，现在此处存下来
+extern struct ROLE myrole;
 extern StateManager statemanager;
 extern State* StageArray[StageNum];
 
@@ -88,6 +90,21 @@ void helpEvent(int key, int event);
 void TurnPage();
 static int page = 1;
 
+/*function for settlement page*/
+void setSettleMenu();//在setSettleMenu时直接将myrole中的信息载入curArch
+void drawSettleMenu();
+void ToSettle();//关卡结算时触发，由于这关不会再用到了，所以直接Pop出栈
+void ToNextStage();
+void ToLevel();//使用当前存档加载Level界面
+
+State SettleMenu = {
+	"SETTLEMENU",
+	setSettleMenu,
+	drawSettleMenu,
+	NULL,
+	NULL,
+	uiMouseEvent
+};
 State PauseMenu = {
 	"PAUSEMENU",
 	setPauseMenu,
@@ -165,7 +182,7 @@ void LoadRank(int x, int score)
 void WriteArchFile() {
 	for (int i = 0; i < 3; i++) {
 		FILE *fp = fopen(archName[i], "w");
-		archBuf[i].rank[0];
+		archBuf[i].rank[0] = 0;
 		for (int j = 1; j <= (EACHRANK - LOCALTIME) / 2; j++)
 			archBuf[i].rank[0] += archBuf[i].rank[j];
 		fprintf(fp, "%d%03d%s", archBuf[i].maxLevel, archBuf[i].rank[0], archBuf[i].time);
@@ -218,7 +235,7 @@ void SetArchZero(ARCHINFO* ptr)
 {
 	ptr->maxLevel = 0;
 	for (int i = 0; i <= 6; i++)ptr->rank[i] = 0;
-	strcpy(ptr->time,"0000/00/00");
+	strcpy(ptr->time, "0000/00/00");
 	ptr->time[10] = '\0';
 	return;
 }
@@ -265,7 +282,7 @@ void drawMainMenu()
 	}
 	if (animation_line == -1) {
 		AddBitMap("logo.bmp", 3.5, 6, SRCCOPY);
-		AddBitMap("spray.bmp", GetAnimationX(3.5,ANIMATIONSTAGE ), GetAnimationY(6.1, ANIMATIONSTAGE),SRCCOPY);
+		AddBitMap("spray.bmp", GetAnimationX(3.5, ANIMATIONSTAGE), GetAnimationY(6.1, ANIMATIONSTAGE), SRCCOPY);
 		traverseButton();
 	}
 }
@@ -291,7 +308,7 @@ void NewGame(void)
 void setArchMenu(void)
 {
 	isDelete = 0;
-	
+
 	setArchButton();
 
 }
@@ -300,14 +317,14 @@ void drawArchMenu(void)
 {
 	AddZoomBitMap("archive.bmp", TITLEPOSX, TITLEPOSY - 0.15, ICONSZ, ICONSZ, SRCCOPY);
 	setLabel(TITLEPOSX + ICONSZ, TITLEPOSY, 50, " 存档");
-	add->isDisable = isDelete||(archBuf[2].maxLevel);
-	double staX=2.2, staY=5.9+BTHT1+0.25,W=BTWD1+0.2,H=-0.05;
+	add->isDisable = isDelete || (archBuf[2].maxLevel);
+	double staX = 2.2, staY = 5.9 + BTHT1 + 0.25, W = BTWD1 + 0.2, H = -0.05;
 	for (int i = 0; i < 3; i++) {
 		if (!archBuf[i].maxLevel)break;
 		staY -= BTHT1 + 0.25;
-		H += BTHT1+0.25;
+		H += BTHT1 + 0.25;
 	}
-	if(isDelete&&H>0){
+	if (isDelete&&H > 0) {
 		SetPenColor("TextGrey");
 		drawBox(staX, staY, 0, W, H);
 	}
@@ -319,19 +336,19 @@ void setArchButton(void)
 {
 	char i;
 	double staX = 2.3, staY = 6;
-	
+
 	for (i = 0; i < 3; i++) {
 		if (!archBuf[i].maxLevel)break;
-		char info0[15],info1[85];
-		sprintf(info0, "archive%d.bmp",i+1);
+		char info0[15], info1[85];
+		sprintf(info0, "archive%d.bmp", i + 1);
 		sprintf(info1, "      关卡进度 %d           得分 %03d           日期 %s   ",
-			archBuf[i].maxLevel,archBuf[i].rank[0],archBuf[i].time);
-		setButton(staX, staY, 0.1, BTWD1, BTHT1, CopyString(info0),CopyString(info1), LoadLevelList[i]);
-		staY -= BTHT1+0.25;
+			archBuf[i].maxLevel, archBuf[i].rank[0], archBuf[i].time);
+		setButton(staX, staY, 0.1, BTWD1, BTHT1, CopyString(info0), CopyString(info1), LoadLevelList[i]);
+		staY -= BTHT1 + 0.25;
 	}
-	add=setButton(staX, staY, 0.1, BTWD2, BTHT2, "addarchive.bmp", "", AddArch);
-	del=setButton(staX + BTWD2+0.45, staY, 0.1, BTWD2, BTHT2, "deletearchive.bmp", "", DeleteArch);
-	setButton(staX + 2 * BTWD2 + 0.9, staY, 0.1, BTWD2, BTHT2, "menu.bmp", " 主菜单",GetBackToMainMenu);
+	add = setButton(staX, staY, 0.1, BTWD2, BTHT2, "addarchive.bmp", "", AddArch);
+	del = setButton(staX + BTWD2 + 0.45, staY, 0.1, BTWD2, BTHT2, "deletearchive.bmp", "", DeleteArch);
+	setButton(staX + 2 * BTWD2 + 0.9, staY, 0.1, BTWD2, BTHT2, "menu.bmp", " 主菜单", GetBackToMainMenu);
 	return;
 }
 
@@ -351,7 +368,7 @@ void setLevelMenu(void)
 	}
 	setButton(staX + 0.45, staY - 1.5, 0.1, 2.5, 0.8, "archive.bmp", " 存档", ToArch);
 	setButton(staX + 3.45, staY - 1.5, 0.1, 2.5, 0.8, "menu.bmp", " 主菜单", GetBackToMainMenu);
-	//traverseButton();
+	traverseButton();
 	return;
 }
 
@@ -378,7 +395,7 @@ void LoadLevel1(void)
 		StatePop(NULL);//Pop the ArchMenu
 		StatePush(&LevelMenu);
 	}
-	
+
 }
 void LoadLevel2(void)
 {
@@ -416,39 +433,34 @@ void ToHelp(void)
 }
 void LoadStage1(void)
 {
-	
+	curStage = 1;
 	StatePush(StageArray[0]);
-	
+
 }
 void LoadStage2(void)
 {
-	/*
-	StatePush(StateArray[1]);
-	*/
+	curStage = 2;
+	StatePush(StageArray[1]);
 }
 void LoadStage3(void)
 {
-	/*
-	StatePush(&StateArray[2]);
-	*/
+	curStage = 3;
+	StatePush(StageArray[2]);
 }
 void LoadStage4(void)
 {
-	/*
-	StatePush(&StateArray[3]);
-	*/
+	curStage = 4;
+	StatePush(StageArray[3]);
 }
 void LoadStage5(void)
 {
-	/*
-	StatePush(&StateArray[4]);
-	*/
+	curStage = 5;
+	StatePush(StageArray[4]);
 }
 void LoadStage6(void)
 {
-	/*
-	StatePush(&StateArray[5]);
-	*/
+	curStage = 6;
+	StatePush(StageArray[5]);
 }
 
 void setPauseMenu()
@@ -623,7 +635,43 @@ void TurnPage()
 	return;
 }
 
+
 void ToPause()
 {
 	StatePush(&PauseMenu);
+}
+void setSettleMenu()
+{
+	double staX = 2.3, staY = 4;
+	LoadRank(curStage, myrole.mark);
+	setButton(staX, staY, 0.1, BTWD2, BTHT2, "continue.bmp", "下一关", ToNextStage);
+	setButton(staX + BTWD2 + 0.45, staY, 0.1, BTWD2, BTHT2, "flag.bmp", "关卡", ToLevel);
+	setButton(staX + 2 * BTWD2 + 0.9, staY, 0.1, BTWD2, BTHT2, "menu.bmp", " 主菜单", GetBackToMainMenu);
+	settleInfo[2] = curStage + '0';
+	settleInfo[20] = myrole.mark / 100 + '0';
+	settleInfo[21] = myrole.mark % 100 / 10 + '0';
+	settleInfo[22] = myrole.mark % 10 + '0';
+}
+void drawSettleMenu()
+{
+	setLabel(TITLEPOSX - 0.3, TITLEPOSY, 50, "关卡结算");
+	setLabel(5.5, 6, 40, settleInfo);
+	traverseButton();
+}
+void ToSettle()
+{
+	if (strcmp(StateTop()->name, "MAINMENU") != 0)StatePop("MAINMENU");//POP掉除了MAINMENU以外的所有东西，包括当前关卡
+	StatePush(&SettleMenu);
+}
+void ToNextStage()
+{
+	curStage++;
+	StatePop(NULL);
+	StatePush(StageArray[curStage - 1]);
+}
+void ToLevel()
+{
+	curArch = &archBuf[0];
+	StatePop(NULL);
+	StatePush(&LevelMenu);
 }
