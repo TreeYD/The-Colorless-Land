@@ -1,4 +1,4 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <stddef.h>
@@ -25,6 +25,7 @@
 extern LINE* LineUnion;
 void DrawExistingLines(void);
 void DrawEnemy(void);
+char MarkString[20] ;
 void DrawStatusBar()
 {
 	SetPointSize(13);
@@ -59,10 +60,9 @@ void DrawStatusBar()
 	MovePen(11.304, 0.28 - GetFontAscent() / 2);
 	DrawTextString("MODE:");
 	AddZoomBitMap((myrole.weapon ? "shoot.bmp" : "pen.bmp"), 11.904, 0.112, 0.336, 0.336, SRCAND);
-	char MarkString;
 	MovePen(0.56, 0.28 - GetFontAscent() / 2);
 	NewSetPenColor(0, 0, 0);
-	sprintf(MarkString, “Your Mark : % d”, myrole.mark);
+	sprintf(MarkString, "Your Mark : % d", myrole.mark);
 	DrawTextString(MarkString);
 }
 void DrawBlock(void)
@@ -101,11 +101,22 @@ void DrawGoal()
 void DrawRole()
 {
 	static int currPic = 1;
+	static int counter = 20;
 	string picName;
+	if (myrole.HP > 0)
+	{
+		counter = 24;
+	}
 	if (myrole.HP <= 0)
 	{
-		picName = "PICRETIRED.bmp";
+		if(counter>16)
+		picName = "PICRETIRED2.bmp";
+		else if(counter>8)
+			picName = "PICRETIRED1.bmp";
+		else
+			picName = "PICRETIRED.bmp";
 		AddZoomBitMap(picName, myrole.x, myrole.y, RoleWidth, RoleHeight, SRCAND);
+		counter--;
 		return;
 	}
 	if (myrole.IsMoving == FALSE)
