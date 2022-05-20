@@ -1,4 +1,4 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
 #include "graphics.h"
@@ -17,7 +17,7 @@
 #include"judge.h"
 #include<math.h>
 #include "stateManager.h"
-#include"helpAndPause.h"
+#include"menu.h"
 extern struct ROLE myrole;
 extern struct ENEMY enemy[EnemyNum];
 extern struct BULLET bullet[BulletNum];
@@ -26,6 +26,8 @@ extern struct BLOCK* blockhead;
 extern LINE* LineUnion = NULL; //the linklist for all lines drawn.
 extern State PauseMenu;
 extern State HelpMenu;
+extern int curStage;
+extern struct ArchInfo* curArch;
 void ScreenRender(void) {
 	DisplayClear();
 	if (stateRender != NULL) {
@@ -34,7 +36,7 @@ void ScreenRender(void) {
 }
 void StartAutoTimer() {
 	startTimer(FALL, RENDERGAP);//FALL的Timer需要一直开着，因为需要一直判断，不需要按键来触发
-	startTimer(JUDGE, JUDGEGAP);
+	startTimer(JUDGE, RENDERGAP);
 	startTimer(BULLETMAKE, RENDERGAP);//子弹的不断产生
 	startTimer(BULLETMOVE, RENDERGAP);//子弹运动的Timer需要一直开着
 	return;
@@ -87,6 +89,9 @@ void render(int TimerID)//计时器回调函数
 		break;
 	case RENDER:
 		ScreenRender();
+		break;
+	case HP:
+		HPMonitor();
 		break;
 	}
 	return;
@@ -216,7 +221,7 @@ void EnemyJudge() {
 	int i;
 	for (i = 0; i < EnemyNum; i++) {
 		if (RoleAndEnemy(enemy[i])) {
-			myrole.HP--;
+			myrole.HP-=DAMAGE;
 		}
 		enemy[i].x = enemy[i].x + enemy[i].direction * EnemySpeed;//往复运动的判断
 		enemy[i].nowrange += EnemySpeed;
@@ -231,10 +236,15 @@ void EnemyJudge() {
 	return;
 }
 void GoalJudge() {
-	/*if (RoleAndGoal(NowGoal)) {
-		CurrentRank++;
-		StatePush(&GameState[CurrentRank]);
-	}*/
+	if (RoleAndGoal(NowGoal)) {
+		/*CurrentRank++;
+		StatePush(&GameState[CurrentRank]);*/
+		if (curStage == curArch->maxLevel)
+		{
+			curArch->maxLevel++;
+		}
+		ToSettle();
+	}
 }
 void BulletMake() {//子弹产生
 	int i;
@@ -293,6 +303,7 @@ void BulletMove() {//子弹发射出去以后自动运动的函数
 	return;
 }
 void MouseControl(int x, int y, int button, int event) {//鼠标信息回调函数
+	uiMouseEvent(x, y, button, event);
 	MouseX = ScaleXInches(x);
 	MouseY = ScaleYInches(y);
 	COS = (MouseX - myrole.x) / sqrt(pow(MouseX - myrole.x, 2) + pow(MouseY - myrole.y, 2));
@@ -445,4 +456,24 @@ void DeleteLine(LINE* line) {
 	free(line);//删除桥本身
 	line = NULL;
 	return;
+}
+
+void HPMonitor()
+{
+	static counter = 0;
+	if (myrole.HP > 0)
+	{
+		counter = 0;
+		return;
+	}
+	else
+	{
+		CancelControlTimer();
+		cancelKeyboardEvent();
+		counter++;
+		if (counter >= 50)
+		{
+			ToSettle();
+		}
+	}
 }

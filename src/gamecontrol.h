@@ -3,6 +3,7 @@
 #define RENDERGAP 20
 #define DRAWGAP 10
 #define JUDGEGAP 500
+#define DAMAGE 1
 #include "parameter.h"
 enum timer {
 	RENDER,
@@ -14,7 +15,8 @@ enum timer {
 	BULLETMAKE, //子弹生成
 	SHOT, //点左键时的发射
 	BULLETMOVE, //发射出去后的子弹移动
-	DRAW//画笔timer，还没写
+	DRAW,//画笔timer，还没写
+	HP,//monitor life status
 };//不同的timer直接枚举了
 #define INITIALVERTICALSPEED 0.15
 #define G 0.01
@@ -39,6 +41,7 @@ void Delete();
 void DeleteLine(LINE* line);
 void CacheLineSorting(LINE* line);
 void recycleInk(LINE* line);
+void HPMonitor(void);
 double MouseX, MouseY;//全局变量鼠标坐标
 double COS, SIN;//角色与鼠标位置连线夹角
 static double VerticalSpeed = INITIALVERTICALSPEED;//角色在地面上向上跳起的初速度

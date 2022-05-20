@@ -21,6 +21,7 @@
 #include "strlib.h"
 #include "conio.h"
 #include "lightgui.h"
+#include "menu.h"
 extern LINE* LineUnion ;
 void DrawExistingLines(void);
 void DrawEnemy(void);
@@ -36,20 +37,21 @@ void DrawStatusBar()
 	DrawLine(0, 0.56);
 	EndFilledRegion();
 	AddZoomBitMap("pause.bmp", 7.832, 0.112, 0.336, 0.336, SRCAND);
-	MovePen(5.364, 0.36);
+	//MovePen(5.364, 0.36);
 	NewSetPenColor(242, 11, 25);
 	StartFilledRegion(1);
-	DrawLine(2.0*myrole.HP / InitialHP, 0);
-	DrawLine(0, -0.18);
-	DrawLine(-2.0*myrole.HP / InitialHP, 0);
-	DrawLine(0, 0.18);
+	drawBox(5.364, 0.18, 0, (myrole.HP > 0 ? 2.0*myrole.HP / InitialHP : 0), 0.18);
+	//DrawLine(2.0*myrole.HP / InitialHP, 0);
+	//DrawLine(0, -0.18);
+	//DrawLine(-2.0*myrole.HP / InitialHP, 0);
+	//DrawLine(0, 0.18);
 	EndFilledRegion();
 	MovePen(4.864, 0.28 - GetFontAscent() / 2);
 	NewSetPenColor(0, 0, 0);
 	DrawTextString("HP:");
 	NewSetPenColor(40, 85, 242);
 	StartFilledRegion(1);
-	drawBox(9.004, 0.18, 0, 2.0*myrole.colorvolume / InitialColorVolume, 0.18);
+	drawBox(9.004, 0.18, 0, (myrole.colorvolume>0?2.0*myrole.colorvolume / InitialColorVolume:0), 0.18);
 	EndFilledRegion();
 	MovePen(8.504, 0.28 - GetFontAscent() / 2);
 	NewSetPenColor(0, 0, 0);
@@ -94,6 +96,13 @@ void DrawGoal()
 void DrawRole()
 {
 	static int currPic = 1;
+	string picName;
+	if (myrole.HP <= 0)
+	{
+		picName = "PICRETIRED.bmp";
+		AddZoomBitMap(picName, myrole.x, myrole.y, RoleWidth, RoleHeight, SRCAND);
+		return;
+	}
 	if (myrole.IsMoving == FALSE)
 	{
 		if (!myrole.weapon) {
@@ -112,7 +121,6 @@ void DrawRole()
 	}
 	else
 	{
-		string picName;
 		currPic ++;
 		if (currPic == 7)
 			currPic = 1;
