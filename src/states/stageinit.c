@@ -226,50 +226,51 @@ void StageInit1() {
 	BlockSettingX(12, 2.56, 8);
 	BlockSettingX(0, 5.56, 12);
 	BlockSettingX(12, 6.56, 8);
-	EnemySetting(0, 8, 4.06, 1.5, RIGHT, 1);
-	EnemySetting(1, 12, 2.06, 3.5, RIGHT, 1);
-	BonusSettingX(0, 4, 1.06, FALSE, 0.4, 3);
-	BonusSettingX(3, 2, 5.06, FALSE, 0.4, 5);
-	BonusSettingX(8, 12, 6.06, FALSE, 0.4, 5);
-	BonusSetting(13, 5.7, 1.06, TRUE);
-	BonusSetting(14, 15, 2.06, TRUE);
-	GoalSetting(1, 5.06);
+	EnemySetting(0, 8, 5.06, 1.5, RIGHT, 1);
+	EnemySetting(1, 12, 3.06, 3.5, RIGHT, 1);
+	BonusSettingX(0, 4, 2.06, FALSE, 0.4, 3);
+	BonusSettingX(3, 2, 6.06, FALSE, 0.4, 5);
+	BonusSettingX(8, 12, 7.06, FALSE, 0.4, 5);
+	BonusSetting(13, 5.7, 2.06, TRUE);
+	BonusSetting(14, 15, 3.06, TRUE);
+	GoalSetting(1, 6.06);
 	SettingMisc();
 }
 void StageInit2() {
 	RoleSetting(15.5, 1.56);
 	BlockSettingX(0, 6.56, 8);
+	BlockSettingX(11, 0.56, 10);
 	BlockSettingX(11, 1.06, 10);
 	BlockSettingX(12, 5.56, 8);
-	BlockSettingX(7, 3.56, 2);
 	BlockSettingX(5, 4.56, 2);
+	BlockSettingX(7, 3.56, 2);
 	BlockSettingX(7, 5.56, 2);
-	BlockSettingX(11, 0.56, 10);
+	BlockSettingX(11, 7.06, 2);
 	EnemySetting(0, 5, 5.06, 0.5, RIGHT, 1);
 	EnemySetting(1, 12, 6.06, 3.5, RIGHT, 2);
 	BonusSettingX(0, 11, 1.56, FALSE, 0.4, 3);
 	BonusSettingX(3, 11.5, 2.26, FALSE, 0.4, 2);
 	BonusSettingX(5, 1, 2.56, FALSE, 0.4, 3);
 	BonusSettingX(8, 12.5, 6.06, FALSE, 0.4, 3);
-	BonusSetting(11, 12, 4.06, TRUE);
-	BonusSetting(12, 7.2, 5.76, TRUE);
-	BonusSetting(13, 11.76, 8, TRUE);
+	BonusSetting(11, 12, 3.06, TRUE);
+	BonusSetting(12, 7, 6.06, TRUE);
+	BonusSetting(13, 11, 7.56, FALSE);
 	GoalSetting(0.5, 7.06);
 	SettingMisc();
 }
 void StageInit3() {
 	RoleSetting(0, 4.06);
-	BlockSettingX(0, 4, 11.56);
-	BlockSettingX(0, 7, 11.56);
-	BlockSettingX(10, 4, 11.56);
+	BlockSettingX(0, 3.56, 12);
+	BlockSettingX(0, 6.06, 10);
+	BlockSettingX(10, 3.56, 12);
 	EnemySetting(0, 5.5, 4.06, 2.5, LEFT, 1);
 	EnemySetting(1, 15.5, 4.06, 5.5, LEFT, 2);
 	BonusSettingX(0, 6.5, 2.76, FALSE, 0.4, 3);
-	BonusSettingX(3, 12.2, 4.56, FALSE, 0.4, 3);
-	BonusSettingX(6, 2.5, 7.16, FALSE, 0.4, 3);
-	BonusSetting(9, 2, 4.56, TRUE);
-	BonusSetting(10, 11.5, 4.16, TRUE);
-	GoalSetting(1, 7.06);
+	BonusSettingX(3, 12.2, 4.06, FALSE, 0.4, 3);
+	BonusSettingX(6, 2.5, 6.56, FALSE, 0.4, 3);
+	BonusSetting(9, 2, 4.06, TRUE);
+	BonusSetting(10, 11.5, 4.06, TRUE);
+	GoalSetting(1, 6.56);
 	SettingMisc();
 }
 void StageInit4() {
@@ -280,11 +281,11 @@ void StageInit4() {
 	EnemySetting(0, 6, 1.06, 2.5, RIGHT, 2);
 	EnemySetting(1, 15.5, 1.06, 3.5, RIGHT, 2);
 	EnemySetting(2, 0, 4.06, 2.5, RIGHT, 3);
-	EnemySetting(3, 13, , 5.06, 2.5, LEFT, 3);
-	BonusSettingX(0, 0.2, 4.16, FALSE, 0.4, 3);
-	BonusSettingX(3, 13.2, 5.26, FALSE, 0.4, 4);
-	BonusSettingX(7, 6, 1.26, FALSE, 0.4, 3);
-	BonusSettingX(10, 11.2, 1.26, FALSE, 0.4, 4);
+	EnemySetting(3, 13, 5.06, 2.5, LEFT, 3);
+	BonusSettingX(0, 13.2, 5.06, FALSE, 0.4, 4);
+	BonusSettingX(4, 6, 1.26, FALSE, 0.4, 3);
+	BonusSettingX(7, 0.2, 4.06, TRUE, 0.4, 3);
+	BonusSettingX(10, 11.2, 1.26, TRUE, 0.4, 4);
 	GoalSetting(7.5, 7.56);
 	SettingMisc();
 }
@@ -293,9 +294,11 @@ void StageInit5() {
 	BlockSettingX(0, 0.56, 32);
 	EnemySetting(0, 5, 1.06, 3.5, RIGHT, 3);
 	EnemySetting(1, 10, 1.06, 4.5, RIGHT, 3);
-	BonusSettingX(0, 2, 1.06, TRUE, 0.4, 3);
-	BonusSettingX(3, 6.2, 1.06, TRUE, 0.4, 4);
-	BonusSettingX(7, 12, 1.06, TRUE, 0.4, 3);
+	BonusSettingX(0, 6.2, 1.06, FALSE, 0.4, 4);
+	BonusSettingX(4, 4, 5.06, FALSE, 0.4, 3);
+	BonusSettingX(7, 2, 1.06, TRUE, 0.4, 3);
+	BonusSettingX(10, 12, 5.06, TRUE, 0.4, 3);
+	BonusSettingX(13, 12, 1.06, TRUE, 0.4, 3);
 	GoalSetting(7.5, 7.56);
 	SettingMisc();
 }
@@ -304,8 +307,8 @@ void StageInit6() {
 	BlockSetting(0, 6.56, 8);
 	BlockSetting(12, 6.56, 8);
 	BlockSettingX(0, 0.56, 32);
-	EnemySettingX(0, 15.5, 7.06, 3.5, LEFT, 3);
-	EnemySettingX(1, 15.5, 1.06, 15.5, LEFT, 3);
+	EnemySetting(0, 15.5, 7.06, 3.5, LEFT, 3);
+	EnemySetting(1, 15.5, 1.06, 15.5, LEFT, 3);
 	BonusSettingX(0, 2, 7.16, TRUE, 0.4, 2);
 	BonusSettingX(2, 12, 7.16, TRUE, 0.4, 3);
 	BonusSettingX(5, 5.7, 3.56, FALSE, 0.4, 4);
