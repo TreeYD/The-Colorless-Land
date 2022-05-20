@@ -31,6 +31,8 @@
 #include <ole2.h>
 #include <ocidl.h>
 #include <winuser.h>
+#include "stateManager.h"
+#include "string.h"
 
 typedef struct {
 	double mX;
@@ -80,7 +82,7 @@ void uiMouseEvent(int x,int y,int button, int event) {
 	curState->event = event;
 	//Update the whole elements
 	/*changed*/
-	//traverseButton();
+	traverseButton();
 	traverseSeekbar();
 	traverseTextbox();
 	//displayAll;
@@ -233,19 +235,24 @@ void traverseButton() {
 		else {
 			if (inBox(ptr->x, ptr->y, ptr->w, ptr->h)) {
 				if (!curState->isClick&&curState->button==LEFT_BUTTON&&curState->event == BUTTON_DOWN) {//解决长时间按下重复执行的问题
-					if(ptr->clickEvent!=NULL)ptr->clickEvent();
 					curState->isClick = 1;
+					if(ptr->clickEvent!=NULL)ptr->clickEvent();
+					printf("isClick=%d\n",curState->isClick);
+					
 					ptr = NULL;//!!!
 				}
 				if (ptr == NULL)break;
 				//经过Pop和Push两次的CacheSorting
 				//headButton此时不会为NULL了，但是ptr的内存又被释放了，ptr不为NULL，所以现在在clickevent之后将ptr强行设为NULL
 				//headButton==NULL 说明已经进行了CacheSorting()
-				SetPenColor("ButtonShadow");
-				drawButton(ptr, FILL);
-				SetPenColor("black");
-				drawButton(ptr, NOTFILL);
-			}else {
+				if ((strlen(StateTop()->name) != 1))
+				{
+					SetPenColor("ButtonShadow");
+					drawButton(ptr, FILL);
+					SetPenColor("black");
+					drawButton(ptr, NOTFILL);
+				}
+			}else if(strlen(StateTop()->name)!=1){
 				SetPenColor("white");
 				drawButton(ptr, FILL);
 				SetPenColor("black");
