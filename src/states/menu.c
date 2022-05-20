@@ -669,7 +669,7 @@ void ToNextStage()
 }
 void ToLevel()
 {
-	curArch = &archBuf[0];
+	//curArch = &archBuf[0];
 	StatePop(NULL);
 	StatePush(&LevelMenu);
 }

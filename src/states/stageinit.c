@@ -46,6 +46,7 @@ void RoleSetting(double x, double y) {
 	myrole.HP = InitialHP;
 	myrole.live = TRUE;
 	myrole.mark = 0;
+	myrole.IsMoving = FALSE;
 }
 void EnemySetting(int i, double x, double y, double range, int direction, int kind) {
 	enemy[i].x = x;
