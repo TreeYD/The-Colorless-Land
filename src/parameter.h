@@ -1,4 +1,4 @@
-﻿#ifndef PARAMETER_H
+#ifndef PARAMETER_H
 #define PARAMETER_H
 
 #define GraphicsWindowWidth 16//窗口大小
@@ -8,7 +8,8 @@
 #define RoleWidth 0.5//角色大小
 #define RoleHeight 0.75
 #define InitialHP 100
-#define InitialColorVolume 10
+#define InitialColorVolume 20
+#define MaxColorVolume 100
 #define EnemySpeed 0.02//敌人移动速度
 #define EnemyNum 10//一个关卡中敌人的最大数量
 #define BulletSpeed 0.01//子弹移动速度
