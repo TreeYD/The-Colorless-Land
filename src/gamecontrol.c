@@ -293,7 +293,7 @@ void BulletMove() {//子弹发射出去以后自动运动的函数
 					bullet[i].live = FALSE;
 					bullet[i].IsMoving = FALSE;
 				}
-				if (enemy[j].HP <= 0) {
+				if (enemy[j].HP <= 0&&enemy[j].live==TRUE) {
 					enemy[j].live = FALSE;
 					myrole.mark++;//击杀敌人得分
 				}
@@ -348,7 +348,7 @@ void MakeLine() {
 		line->HeadDot = LineHead;
 		line->next = NULL;
 		AddLine(line);
-		myrole.colorvolume -= VOLUMEREDUCINGSPEED / 10;
+		myrole.colorvolume -= VOLUMEREDUCINGSPEED ;
 		LineHead->x = MouseX;
 		LineHead->y = MouseY;
 		LineHead->next = NULL;
@@ -440,18 +440,13 @@ void DeleteLine(LINE* line) {
 	if (line == NULL) {
 		return;
 	}
-	LINE* p = LineUnion;
-	while (p != line) {
-		p = p->next;
-	}
 	DOT* q = line->HeadDot;//删除桥里面的dot
 	DOT* r = NULL;
 	while (q != NULL) {
 		r = q;
 		q = q->next;
 		free(r);
-		r = NULL;
-		myrole.colorvolume += VOLUMEREDUCINGSPEED;//颜料回收
+		r = NULL;//颜料回收
 	}
 	free(line);//删除桥本身
 	line = NULL;
