@@ -338,7 +338,7 @@ void setArchButton(void)
 		char info0[15], info1[85];
 		sprintf(info0, "archive%d.bmp", i + 1);
 		sprintf(info1, "      关卡进度 %d           得分 %03d           日期 %s   ",
-			archBuf[i].maxLevel, archBuf[i].rank[0], archBuf[i].time);
+			(archBuf[i].maxLevel<=6? archBuf[i].maxLevel :6), archBuf[i].rank[0], archBuf[i].time);
 		setButton(staX, staY, 0.1, BTWD1, BTHT1, CopyString(info0), CopyString(info1), LoadLevelList[i]);
 		staY -= BTHT1 + 0.25;
 	}
@@ -640,7 +640,9 @@ void setSettleMenu()
 {
 	double staX = 2.3, staY = 4;
 	LoadRank(curStage, myrole.mark);
-	setButton(staX, staY, 0.1, BTWD2, BTHT2, "continue.bmp", "下一关", ToNextStage);
+	BUTTON Next=setButton(staX, staY, 0.1, BTWD2, BTHT2, "continue.bmp", "下一关", ToNextStage);
+	if (myrole.live == FALSE||curStage==6)
+		Next->isDisable = TRUE;
 	setButton(staX + BTWD2 + 0.45, staY, 0.1, BTWD2, BTHT2, "flag.bmp", "关卡", ToLevel);
 	setButton(staX + 2 * BTWD2 + 0.9, staY, 0.1, BTWD2, BTHT2, "menu.bmp", " 主菜单", GetBackToMainMenu);
 	settleInfo[2] = curStage + '0';

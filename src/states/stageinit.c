@@ -24,6 +24,7 @@
 extern LINE* LineUnion;
 State* StageArray[StageNum];
 fnPtr InitArray[StageNum];
+void SettingMisc(void);
 void StageSetting() {
 	int i;
 	for (i = 0; i < StageNum; i++) {
@@ -138,6 +139,8 @@ void StageClear() {
 	EnemyClear();
 	BonusClear();
 	GoalClear();
+	CancelControlTimer();
+	cancelTimer(HP);
 	return;
 }
 void BlockClear() {
@@ -239,9 +242,8 @@ void StageInit1() {
 	BonusSettingX(8, 12, 7.5, FALSE, 0.4, 5);
 	BonusSetting(13, 5.7, 2.5, TRUE);
 	BonusSetting(14, 15, 3.5, TRUE);
-	StartAutoTimer();
 	GoalSetting(1, 6.5);
-	setPauseButton();
+	SettingMisc();
 }
 void StageInit2() {
 	RoleSetting(15.5, 2);
@@ -262,7 +264,7 @@ void StageInit2() {
 	BonusSetting(12, 7.2, 6.2, TRUE);
 	BonusSetting(13, 11.2, 8, TRUE);
 	GoalSetting(0.5, 7.5);
-	setPauseButton();
+	SettingMisc();
 }
 void StageInit3() {
 	RoleSetting(0, 4.5);
@@ -277,6 +279,7 @@ void StageInit3() {
 	BonusSetting(9, 2, 5, TRUE);
 	BonusSetting(10, 11.5, 4.6, TRUE);
 	GoalSetting(1, 7.5);
+	SettingMisc();
 }
 void StageInit4() {
 	RoleSetting(1, 1.5);
@@ -292,6 +295,7 @@ void StageInit4() {
 	BonusSettingX(7, 6, 1.7, FALSE, 0.4, 3);
 	BonusSettingX(10, 11.2, 1.7, FALSE, 0.4, 4);
 	GoalSetting(7.5, 8);
+	SettingMisc();
 }
 void StageInit5() {
 	RoleSetting(1, 1.5);
@@ -302,6 +306,7 @@ void StageInit5() {
 	BonusSettingX(3, 6.2, 1.5, TRUE, 0.4, 4);
 	BonusSettingX(7, 12, 1.5, TRUE, 0.4, 3);
 	GoalSetting(7.5, 8);
+	SettingMisc();
 }
 void StageInit6() {
 	RoleSetting(0.5, 7.5);
@@ -316,4 +321,12 @@ void StageInit6() {
 	BonusSettingX(12, 7, 5.6, FALSE, 0.4, 2);
 	BonusSetting(14, 7.5, 6.5, FALSE);
 	GoalSetting(7.5, 1);
+	SettingMisc();
+}
+
+void SettingMisc()
+{
+	StartAutoTimer();
+	setPauseButton();
+	startTimer(HP, RENDERGAP);
 }

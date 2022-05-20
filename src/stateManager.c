@@ -37,6 +37,14 @@ void StateFree() {
 
 void StatePush(State *state) {
 	StateChangedEvent();
+	if(state!=&MainMenu)
+	{
+		State* top = StateTop();
+	if (strlen(top->name) == 1)
+	{
+		CancelControlTimer();
+	}
+	}
 	statemanager.top++;
 	statemanager.stack[statemanager.top] = state;
 	if(state->init!=NULL)
@@ -79,8 +87,8 @@ void StatePop(string name) {
 		top = StateTop();
 		if(top->init!=NULL&&strcmp(lastName,"PAUSEMENU")!=0&&!(strcmp(lastName,"HELPMENU")==0&&strlen(top->name)==1))
 			top->init();
-		if (strlen(top->name)==1)
-			setPauseButton();
+		if (strlen(top->name) == 1)
+			SettingMisc();
 		if (top->draw != NULL)
 			stateRender = top->draw;
 		registerKeyboardEvent(top->keyboardCallbackfn);
