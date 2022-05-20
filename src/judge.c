@@ -38,7 +38,18 @@ bool JumpJudgeBlock() {
 	while (p != NULL) {
 		BlockX = p->x + BlockSize;
 		BlockY = p->y + 2 * BlockSize;
-		if (fabs(RoleX - BlockX) <= JUMPBLOCKRANGEX && fabs(RoleY - BlockY) <= JUMPBLOCKRANGEY) {
+		//if (fabs(RoleX - BlockX) <= JUMPBLOCKRANGEX && fabs(RoleY - BlockY) <= JUMPBLOCKRANGEY) {
+		//changed
+		if (fabs(RoleX - BlockX) <= JUMPBLOCKRANGEX && RoleY-BlockY<=0&&BlockY-RoleY<=BlockSize) {
+			myrole.y = p->y + 2 * BlockSize;
+			//printf("down\n");
+			return TRUE;
+		}
+		else if (fabs(RoleX - BlockX) <= JUMPBLOCKRANGEX && BlockY-RoleY<RoleHeight+2*BlockSize&&BlockY-RoleY>0)
+		{
+			myrole.y = p->y - RoleHeight;
+			VerticalSpeed = -1*fabs(VerticalSpeed);
+			printf("up\n");
 			return TRUE;
 		}
 		p = p->next;
@@ -53,7 +64,12 @@ bool RightMoveJudgeBlock() {
 	while (p != NULL) {
 		BlockX = p->x;
 		BlockY = p->y;
-		if (BlockX - RoleX >= 0 && BlockX - RoleX <= MOVERANGE && fabs(RoleY - BlockY) <= MOVERANGE) {
+		//if (BlockX - RoleX >= 0 && BlockX - RoleX <= MOVERANGE && fabs(RoleY - BlockY) <= MOVERANGE) {
+		if (BlockX - RoleX >= 0 && BlockX - RoleX <= MOVERANGE && (BlockY-RoleY<RoleHeight&& BlockY - RoleY >=0||RoleY-BlockY<2*BlockSize&&RoleY-BlockY>=0)) {
+			//new
+			printf("right\n");
+			myrole.x = p->x - RoleWidth;
+			
 			return TRUE;
 		}
 		p = p->next;
@@ -68,7 +84,11 @@ bool LeftMoveJudgeBlock() {
 	while (p != NULL) {
 		BlockX = p->x + 2 * BlockSize;
 		BlockY = p->y;
-		if (RoleX - BlockX >= 0 && RoleX - BlockX <= MOVERANGE && fabs(RoleY - BlockY) <= MOVERANGE) {
+		//if (RoleX - BlockX >= 0 && RoleX - BlockX <= MOVERANGE && fabs(RoleY - BlockY) <= MOVERANGE) {
+		if (RoleX - BlockX >= 0 && RoleX - BlockX <= MOVERANGE && (BlockY - RoleY < RoleHeight  && BlockY - RoleY > 0 || RoleY - BlockY < 2*BlockSize && RoleY - BlockY >= 0)) {
+			//new
+			printf("left\n");
+			myrole.x = p->x + 2 * BlockSize;
 			return TRUE;
 		}
 		p = p->next;
@@ -80,6 +100,8 @@ bool RoleAndEnemy(struct ENEMY enemy) {
 	double RoleY = myrole.y + RoleHeight / 2;
 	double EnemyX = enemy.x + enemy.width / 2;
 	double EnemyY = enemy.y + enemy.height / 2;
+	if (enemy.live == FALSE)
+		return FALSE;
 	if (distance(RoleX, RoleY, RoleWidth / 2, EnemyX, EnemyY, enemy.size)) {
 		return TRUE;
 	}
