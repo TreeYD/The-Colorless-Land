@@ -22,7 +22,7 @@
 #include "conio.h"
 #include "lightgui.h"
 #include "menu.h"
-extern LINE* LineUnion ;
+extern LINE* LineUnion;
 void DrawExistingLines(void);
 void DrawEnemy(void);
 void DrawStatusBar()
@@ -40,7 +40,7 @@ void DrawStatusBar()
 	//MovePen(5.364, 0.36);
 	NewSetPenColor(242, 11, 25);
 	StartFilledRegion(1);
-	drawBox(5.364, 0.18, 0, (myrole.HP > 0 ? 2.0*myrole.HP / InitialHP : 0), 0.18);
+	drawBox(5.364, 0.18, 0, (myrole.HP > 0 ? 2.0 * myrole.HP / InitialHP : 0), 0.18);
 	//DrawLine(2.0*myrole.HP / InitialHP, 0);
 	//DrawLine(0, -0.18);
 	//DrawLine(-2.0*myrole.HP / InitialHP, 0);
@@ -51,7 +51,7 @@ void DrawStatusBar()
 	DrawTextString("HP:");
 	NewSetPenColor(40, 85, 242);
 	StartFilledRegion(1);
-	drawBox(9.004, 0.18, 0, (myrole.colorvolume>0?2.0*myrole.colorvolume / InitialColorVolume:0), 0.18);
+	drawBox(9.004, 0.18, 0, (myrole.colorvolume > 0 ? 2.0 * myrole.colorvolume / MaxColorVolume : 0), 0.18);
 	EndFilledRegion();
 	MovePen(8.504, 0.28 - GetFontAscent() / 2);
 	NewSetPenColor(0, 0, 0);
@@ -59,15 +59,20 @@ void DrawStatusBar()
 	MovePen(11.304, 0.28 - GetFontAscent() / 2);
 	DrawTextString("MODE:");
 	AddZoomBitMap((myrole.weapon ? "shoot.bmp" : "pen.bmp"), 11.904, 0.112, 0.336, 0.336, SRCAND);
+	char MarkString;
+	MovePen(0.56, 0.28 - GetFontAscent() / 2);
+	NewSetPenColor(0, 0, 0);
+	sprintf(MarkString, “Your Mark : % d”, myrole.mark);
+	DrawTextString(MarkString);
 }
 void DrawBlock(void)
 {
-	struct BLOCK*p;
+	struct BLOCK* p;
 	for (p = blockhead; p != NULL; p = p->next)
 	{
 		SetPenColor("black");
 		StartFilledRegion(1);
-		drawBox(p->x, p->y, 0, BlockSize*2, BlockSize*2);
+		drawBox(p->x, p->y, 0, BlockSize * 2, BlockSize * 2);
 		EndFilledRegion();
 	}
 }
@@ -90,7 +95,7 @@ void DrawBullet()
 
 void DrawGoal()
 {
-	AddZoomBitMap("Goal.bmp", NowGoal.x, NowGoal.y, GoalSize*2, GoalSize*2, SRCCOPY);
+	AddZoomBitMap("Goal.bmp", NowGoal.x, NowGoal.y, GoalSize * 2, GoalSize * 2, SRCCOPY);
 }
 
 void DrawRole()
@@ -114,14 +119,14 @@ void DrawRole()
 		else
 		{
 			if (myrole.direction == LEFT)
-				AddZoomBitMap("PICLEFTGUN.bmp", myrole.x-0.12, myrole.y, RoleHeight, RoleHeight, SRCAND);
+				AddZoomBitMap("PICLEFTGUN.bmp", myrole.x - 0.12, myrole.y, RoleHeight, RoleHeight, SRCAND);
 			else
 				AddZoomBitMap("PICRIGHTGUN.bmp", myrole.x, myrole.y, RoleHeight, RoleHeight, SRCAND);
 		}
 	}
 	else
 	{
-		currPic ++;
+		currPic++;
 		if (currPic == 7)
 			currPic = 1;
 		if (myrole.direction == LEFT)
@@ -129,12 +134,12 @@ void DrawRole()
 			switch (currPic)
 			{
 			case 1:case 2:picName = "PICLEFT1.bmp"; break;
-			case 3:case 4:picName= "PICLEFT2.bmp"; break;
+			case 3:case 4:picName = "PICLEFT2.bmp"; break;
 			case 5:case 6:picName = "PICLEFT3.bmp"; break;
 			}
 			AddZoomBitMap(picName, myrole.x, myrole.y, RoleWidth, RoleHeight, SRCAND);
 		}
-			
+
 		else
 		{
 			switch (currPic)
@@ -156,9 +161,9 @@ void DrawBonus()
 		if (bonus[i].live == TRUE)
 		{
 			if (bonus[i].IsColor == TRUE)
-				AddZoomBitMap("COLORBONUS.bmp", bonus[i].x, bonus[i].y, BonusSize*2, BonusSize*2, SRCAND);
+				AddZoomBitMap("COLORBONUS.bmp", bonus[i].x, bonus[i].y, BonusSize * 2, BonusSize * 2, SRCAND);
 			else
-				AddZoomBitMap("NORMALBONUS.bmp", bonus[i].x, bonus[i].y, BonusSize*2, BonusSize*2, SRCAND);
+				AddZoomBitMap("NORMALBONUS.bmp", bonus[i].x, bonus[i].y, BonusSize * 2, BonusSize * 2, SRCAND);
 		}
 	}
 }
@@ -178,16 +183,16 @@ void StageDraw()
 
 void DrawExistingLines()
 {
-	LINE*p;
+	LINE* p;
 	DOT* pres;
 	for (p = LineUnion; p != NULL; p = p->next)
 	{
 		for (pres = p->HeadDot; pres != NULL; pres = pres->next)
 		{
-			
+
 			NewSetPenColor(0, 0, 0);
 			StartFilledRegion(1);
-			drawBox(pres->x, pres->y,0, 2*DotSize, 2*DotSize);
+			drawBox(pres->x, pres->y, 0, 2 * DotSize, 2 * DotSize);
 			EndFilledRegion();
 		}
 	}
@@ -213,7 +218,7 @@ void DrawEnemy()
 				enemyPicSource = "chicken.bmp";
 				break;
 			}
-			AddZoomBitMap(enemyPicSource,enemy[i].x,enemy[i].y,enemy[i].width, enemy[i].height,SRCAND);
+			AddZoomBitMap(enemyPicSource, enemy[i].x, enemy[i].y, enemy[i].width, enemy[i].height, SRCAND);
 		}
 	}
 }
