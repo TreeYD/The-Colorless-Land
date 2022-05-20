@@ -1,4 +1,4 @@
-﻿#ifndef STAGEINIT_H
+#ifndef STAGEINIT_H
 #define STAGEINIT_H
 void StageSetting();
 //初始化一切关卡
@@ -21,9 +21,6 @@ void BlockSetting(double X, double Y);
 
 void BlockSettingX(double StartX, double StartY, int number);
 //从起始点(StartX,StartY)开始 横向自左向右铺排number个block
-
-void BlockSettingY(double StartX, double StartY, int number);
-//从起始点(StartX,StartY)开始 纵向自下向上铺排number个block
 
 void GoalSetting(double x, double y);
 //设置终点的坐标
