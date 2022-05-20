@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
 #include "graphics.h"
@@ -29,8 +29,8 @@ void StageSetting() {
 	int i;
 	for (i = 0; i < StageNum; i++) {
 		StageArray[i] = GetBlock(sizeof(State));
-		StageArray[i]->name = GetBlock( sizeof(char));
-		sprintf(StageArray[i]->name,"%d",i);
+		StageArray[i]->name = GetBlock(sizeof(char));
+		sprintf(StageArray[i]->name, "%d", i);
 		StageArray[i]->init = InitArray[i];//待改
 		StageArray[i]->draw = StageDraw;//在写
 		StageArray[i]->destroy = StageClear;
@@ -46,7 +46,6 @@ void RoleSetting(double x, double y) {
 	myrole.HP = InitialHP;
 	myrole.live = TRUE;
 	myrole.mark = 0;
-	myrole.IsMoving = FALSE;
 }
 void EnemySetting(int i, double x, double y, double range, int direction, int kind) {
 	enemy[i].x = x;
@@ -202,7 +201,7 @@ void FreeAllStages()
 		//free(StageArray[i]->name);
 		free(StageArray[i]);
 	}
-} 
+}
 void InitSetting() {
 	InitArray[0] = StageInit1;
 	InitArray[1] = StageInit2;
@@ -226,102 +225,102 @@ void InitSetting() {
 	InitArray[19] = StageInit20;*/
 }
 void StageInit1() {
-	RoleSetting(0, 1.5);
-	BlockSettingX(0, 1, 9);
-	BlockSettingY(4, 1.5, 2);
-	BlockSettingX(4.5, 2, 3);
-	BlockSettingY(5.5, 1, 2);
-	BlockSettingX(7, 3, 2);
-	BlockSettingX(8, 5, 4);
-	BlockSettingX(0, 6, 12);
-	BlockSettingX(12, 3, 8);
-	BlockSettingX(12, 7, 8);
-	EnemySetting(0, 8, 5.5, 1.5, RIGHT, 1);
-	EnemySetting(1, 12, 3.5, 3.5, RIGHT, 1);
-	BonusSettingX(0, 4, 2.5, FALSE, 0.4, 3);
-	BonusSettingX(3, 2, 6.5, FALSE, 0.4, 5);
-	BonusSettingX(8, 12, 7.5, FALSE, 0.4, 5);
-	BonusSetting(13, 5.7, 2.5, TRUE);
-	BonusSetting(14, 15, 3.5, TRUE);
-	GoalSetting(1, 6.5);
+	RoleSetting(0, 1.06);
+	BlockSettingX(0, 0.56, 12);
+	BlockSettingX(4, 1.06, 4);
+	BlockSettingX(4, 1.56, 4);
+	BlockSettingX(7, 2.56, 2);
+	BlockSettingX(8, 4.56, 4);
+	BlockSettingX(12, 2.56, 8);
+	BlockSettingX(0, 5.56, 12);
+	BlockSettingX(12, 6.56, 8);
+	EnemySetting(0, 8, 4.06, 1.5, RIGHT, 1);
+	EnemySetting(1, 12, 2.06, 3.5, RIGHT, 1);
+	BonusSettingX(0, 4, 1.06, FALSE, 0.4, 3);
+	BonusSettingX(3, 2, 5.06, FALSE, 0.4, 5);
+	BonusSettingX(8, 12, 6.06, FALSE, 0.4, 5);
+	BonusSetting(13, 5.7, 1.06, TRUE);
+	BonusSetting(14, 15, 2.06, TRUE);
+	GoalSetting(1, 5.06);
 	SettingMisc();
 }
 void StageInit2() {
-	RoleSetting(15.5, 2);
-	BlockSettingX(0, 7, 8);
-	BlockSettingX(11, 1.5, 10);
-	BlockSettingX(12, 6, 8);
-	BlockSettingX(7, 4, 2);
-	BlockSettingX(5, 5, 2);
-	BlockSettingX(7, 6, 2);
-	BlockSetting(11, 1);
-	EnemySetting(0, 5, 5.5, 0.5, RIGHT, 1);
-	EnemySetting(1, 12, 6.5, 3.5, RIGHT, 2);
-	BonusSettingX(0, 11, 2, FALSE, 0.4, 3);
-	BonusSettingX(3, 11.5, 2.7, FALSE, 0.4, 2);
-	BonusSettingX(5, 1, 3, FALSE, 0.4, 3);
-	BonusSettingX(8, 12.5, 6.5, FALSE, 0.4, 3);
-	BonusSetting(11, 12, 4.5, TRUE);
-	BonusSetting(12, 7.2, 6.2, TRUE);
-	BonusSetting(13, 11.2, 8, TRUE);
-	GoalSetting(0.5, 7.5);
+	RoleSetting(15.5, 1.56);
+	BlockSettingX(0, 6.56, 8);
+	BlockSettingX(11, 1.06, 10);
+	BlockSettingX(12, 5.56, 8);
+	BlockSettingX(7, 3.56, 2);
+	BlockSettingX(5, 4.56, 2);
+	BlockSettingX(7, 5.56, 2);
+	BlockSettingX(11, 0.56, 10);
+	EnemySetting(0, 5, 5.06, 0.5, RIGHT, 1);
+	EnemySetting(1, 12, 6.06, 3.5, RIGHT, 2);
+	BonusSettingX(0, 11, 1.56, FALSE, 0.4, 3);
+	BonusSettingX(3, 11.5, 2.26, FALSE, 0.4, 2);
+	BonusSettingX(5, 1, 2.56, FALSE, 0.4, 3);
+	BonusSettingX(8, 12.5, 6.06, FALSE, 0.4, 3);
+	BonusSetting(11, 12, 4.06, TRUE);
+	BonusSetting(12, 7.2, 5.76, TRUE);
+	BonusSetting(13, 11.76, 8, TRUE);
+	GoalSetting(0.5, 7.06);
 	SettingMisc();
 }
 void StageInit3() {
-	RoleSetting(0, 4.5);
-	BlockSettingX(0, 4, 12);
-	BlockSettingX(0, 7, 10);
-	BlockSettingX(10, 4, 12);
-	EnemySetting(0, 5.5, 4.5, 2.5, LEFT, 1);
-	EnemySetting(1, 15.5, 4.5, 5.5, LEFT, 2);
-	BonusSettingX(0, 6.5, 2.2, FALSE, 0.4, 3);
-	BonusSettingX(3, 12.2, 5, FALSE, 0.4, 3);
-	BonusSettingX(6, 2.5, 7.6, FALSE, 0.4, 3);
-	BonusSetting(9, 2, 5, TRUE);
-	BonusSetting(10, 11.5, 4.6, TRUE);
-	GoalSetting(1, 7.5);
+	RoleSetting(0, 4.06);
+	BlockSettingX(0, 4, 11.56);
+	BlockSettingX(0, 7, 11.56);
+	BlockSettingX(10, 4, 11.56);
+	EnemySetting(0, 5.5, 4.06, 2.5, LEFT, 1);
+	EnemySetting(1, 15.5, 4.06, 5.5, LEFT, 2);
+	BonusSettingX(0, 6.5, 2.76, FALSE, 0.4, 3);
+	BonusSettingX(3, 12.2, 4.56, FALSE, 0.4, 3);
+	BonusSettingX(6, 2.5, 7.16, FALSE, 0.4, 3);
+	BonusSetting(9, 2, 4.56, TRUE);
+	BonusSetting(10, 11.5, 4.16, TRUE);
+	GoalSetting(1, 7.06);
 	SettingMisc();
 }
 void StageInit4() {
-	RoleSetting(1, 1.5);
-	BlockSettingX(0, 1, 32);
-	BlockSettingX(0, 4, 6);
-	BlockSettingX(13, 5, 6);
-	EnemySetting(0, 6, 1.5, 2.5, RIGHT, 2);
-	EnemySetting(1, 12, 1.5, 3.5, RIGHT, 2);
-	EnemySetting(2, 0, 4.5, 2.5, RIGHT, 3);
-	//EnemySetting(3, 15.5, 5.5, LEFT, 3);
-	BonusSettingX(0, 0.2, 4.6, FALSE, 0.4, 3);
-	BonusSettingX(3, 13.2, 5.7, FALSE, 0.4, 4);
-	BonusSettingX(7, 6, 1.7, FALSE, 0.4, 3);
-	BonusSettingX(10, 11.2, 1.7, FALSE, 0.4, 4);
-	GoalSetting(7.5, 8);
+	RoleSetting(1, 1.06);
+	BlockSettingX(0, 0.56, 32);
+	BlockSettingX(0, 3.56, 6);
+	BlockSettingX(13, 4.56, 6);
+	EnemySetting(0, 6, 1.06, 2.5, RIGHT, 2);
+	EnemySetting(1, 15.5, 1.06, 3.5, RIGHT, 2);
+	EnemySetting(2, 0, 4.06, 2.5, RIGHT, 3);
+	EnemySetting(3, 13, , 5.06, 2.5, LEFT, 3);
+	BonusSettingX(0, 0.2, 4.16, FALSE, 0.4, 3);
+	BonusSettingX(3, 13.2, 5.26, FALSE, 0.4, 4);
+	BonusSettingX(7, 6, 1.26, FALSE, 0.4, 3);
+	BonusSettingX(10, 11.2, 1.26, FALSE, 0.4, 4);
+	GoalSetting(7.5, 7.56);
 	SettingMisc();
 }
 void StageInit5() {
-	RoleSetting(1, 1.5);
-	BlockSettingX(0, 1, 32);
-	EnemySetting(0, 5, 1.5, 3.5, RIGHT, 3);
-	EnemySetting(1, 10, 1.5, 4.5, RIGHT, 3);
-	BonusSettingX(0, 2, 1.5, TRUE, 0.4, 3);
-	BonusSettingX(3, 6.2, 1.5, TRUE, 0.4, 4);
-	BonusSettingX(7, 12, 1.5, TRUE, 0.4, 3);
-	GoalSetting(7.5, 8);
+	RoleSetting(1, 1.06);
+	BlockSettingX(0, 0.56, 32);
+	EnemySetting(0, 5, 1.06, 3.5, RIGHT, 3);
+	EnemySetting(1, 10, 1.06, 4.5, RIGHT, 3);
+	BonusSettingX(0, 2, 1.06, TRUE, 0.4, 3);
+	BonusSettingX(3, 6.2, 1.06, TRUE, 0.4, 4);
+	BonusSettingX(7, 12, 1.06, TRUE, 0.4, 3);
+	GoalSetting(7.5, 7.56);
 	SettingMisc();
 }
 void StageInit6() {
-	RoleSetting(0.5, 7.5);
-	BlockSetting(0, 7, 8);
-	BlockSetting(12, 7, 8);
-	//EnemySettingX(0, 15.5, 7.5, 3.5, LEFT, 3);
-	//EnemySettingX(1, 15.5, 1, 15.5, LEFT, 3);
-	BonusSettingX(0, 2, 7.6, TRUE, 0.4, 2);
-	BonusSettingX(2, 12, 7.6, TRUE, 0.4, 3);
-	BonusSettingX(5, 5.7, 4, FALSE, 0.4, 4);
-	BonusSettingX(9, 6.3, 4.8, FALSE, 0.4, 3);
-	BonusSettingX(12, 7, 5.6, FALSE, 0.4, 2);
-	BonusSetting(14, 7.5, 6.5, FALSE);
-	GoalSetting(7.5, 1);
+	RoleSetting(0.5, 7.06);
+	BlockSetting(0, 6.56, 8);
+	BlockSetting(12, 6.56, 8);
+	BlockSettingX(0, 0.56, 32);
+	EnemySettingX(0, 15.5, 7.06, 3.5, LEFT, 3);
+	EnemySettingX(1, 15.5, 1.06, 15.5, LEFT, 3);
+	BonusSettingX(0, 2, 7.16, TRUE, 0.4, 2);
+	BonusSettingX(2, 12, 7.16, TRUE, 0.4, 3);
+	BonusSettingX(5, 5.7, 3.56, FALSE, 0.4, 4);
+	BonusSettingX(9, 6.3, 4.36, FALSE, 0.4, 3);
+	BonusSettingX(12, 7, 5.16, FALSE, 0.4, 2);
+	BonusSetting(14, 7.5, 6.06, FALSE);
+	GoalSetting(7.5, 1.06);
 	SettingMisc();
 }
 
