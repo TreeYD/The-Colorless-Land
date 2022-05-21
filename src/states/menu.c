@@ -1,4 +1,4 @@
-#include "stateManager.h"
+﻿#include "stateManager.h"
 #include "menu.h"
 #include"gamecontrol.h"
 #define MAXLEVEL 1
@@ -519,7 +519,7 @@ void drawHelpMenu()
 }
 void drawHelpMenuP1()
 {
-	const string helpsP1[2][5] = { "W:跳跃","A/D:向左/右运动","F:切换模式","鼠标左键：绘制图线/向当前方向射击","鼠标右键：绘图模式下回收墨水","ESC：退出关卡回到主菜单","P：暂停游戏","H：帮助页面","←/→：（帮助页面）上一页/下一页" ,"" };
+	const string helpsP1[2][5] = { "W:跳跃","A/D:向左/右运动","F:切换模式","鼠标左键：绘制方块/射击","鼠标右键：绘图模式下回收墨水","ESC：退出关卡回到主菜单","P：暂停游戏","H：帮助页面","←/→：（帮助页面）上一页/下一页" ,"注意：绘制只能以已有方块为起点" };
 	int regPointSize = GetPointSize();
 	SetPointSize(regPointSize * 2.5);
 	SetStyle(1);
@@ -532,8 +532,6 @@ void drawHelpMenuP1()
 	{
 		for (int j = 0; j < 5; j++)
 		{
-			if (i == 1 && j == 4)
-				continue;
 			MovePen(1.5 + 7 * i, 6 - j * 1);
 			DrawTextString(helpsP1[i][j]);
 		}
