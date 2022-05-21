@@ -215,10 +215,10 @@ void DrawEnemy()
 				break;
 			case 2:enemyPicSource = "skull.bmp";
 				break;
-			case 3:enemyPicSource = "chicken.bmp";
+			case 3:enemyPicSource = "spider.bmp";
 				break;
 			default:
-				enemyPicSource = "chicken.bmp";
+				enemyPicSource = "spider.bmp";
 				break;
 			}
 			AddZoomBitMap(enemyPicSource, enemy[i].x, enemy[i].y, enemy[i].width, enemy[i].height, SRCAND);
