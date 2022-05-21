@@ -285,7 +285,7 @@ void BulletMove() {//子弹发射出去以后自动运动的函数
 	}
 	for (i = 0; i < BulletNum; i++) {
 		if (bullet[i].live && bullet[i].IsMoving) {
-			if (BulletAndGround(bullet[i], blockhead) || bullet[i].x >= GraphicsWindowWidth || bullet[i].x <= 0 || bullet[i].y >= GraphicsWindowHeight || bullet[i].y <= 0) {
+			if (BulletAndGround(bullet[i]) || bullet[i].x >= GraphicsWindowWidth || bullet[i].x <= 0 || bullet[i].y >= GraphicsWindowHeight || bullet[i].y <= 0) {
 				bullet[i].live = FALSE;
 				bullet[i].IsMoving = FALSE;
 				//子弹撞墙 超出边界均算FALSE

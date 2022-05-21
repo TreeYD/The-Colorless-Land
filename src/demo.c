@@ -6,7 +6,7 @@
 #include "extgraph.h"
 #include "genlib.h"
 #include "conio.h"
-#include <crtdbg.h>
+
 #include <windows.h>
 #include <olectl.h>
 #include <stdio.h>
@@ -21,7 +21,6 @@
 #include "stateManager.h"
 #include"stageinit.h"
 //#pragma comment(lib,"winmm.lib")
-#define CRTDBG_MAP_ALLOC
 
 
 

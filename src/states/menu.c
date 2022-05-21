@@ -176,13 +176,14 @@ void LoadRank(int x, int score)
 	curArch->rank[x] = score;
 }
 void WriteArchFile() {
-	for (int i = 0; i < 3; i++) {
+	int i,j;
+	for (i = 0; i < 3; i++) {
 		FILE *fp = fopen(archName[i], "w");
 		archBuf[i].rank[0] = 0;
-		for (int j = 1; j <= (EACHRANK - LOCALTIME) / 3; j++)
+		for (j = 1; j <= (EACHRANK - LOCALTIME) / 3; j++)
 			archBuf[i].rank[0] += archBuf[i].rank[j];
 		fprintf(fp, "%d%03d%s", archBuf[i].maxLevel, archBuf[i].rank[0], archBuf[i].time);
-		for (int j = 1; j <= (EACHRANK - LOCALTIME) / 3; j++) {
+		for (j = 1; j <= (EACHRANK - LOCALTIME) / 3; j++) {
 			fprintf(fp, "%03d", archBuf[i].rank[j]);
 		}
 		fclose(fp);
@@ -190,7 +191,8 @@ void WriteArchFile() {
 	return;
 }
 void ReadArchFile() {
-	for (int i = 0; i < 3; i++) {
+	int i;
+	for (i = 0; i < 3; i++) {
 		FILE *fp = fopen(archName[i], "r");
 		int cnt = MAXLEVEL;
 		SetArchZero(&archBuf[i]);
@@ -216,7 +218,8 @@ void ReadArchFile() {
 	return;
 }
 void InitNewGame() {
-	for (int i = 0; i < 3; i++) {
+	int  i;
+	for (i = 0; i < 3; i++) {
 		if (archBuf[i].maxLevel > 0)continue;
 		archBuf[i].maxLevel = 1;
 		time_t systime = time(0);
@@ -229,8 +232,9 @@ void InitNewGame() {
 
 void SetArchZero(ARCHINFO* ptr)
 {
+	int i;
 	ptr->maxLevel = 0;
-	for (int i = 0; i <= 6; i++)ptr->rank[i] = 0;
+	for (i = 0; i <= 6; i++)ptr->rank[i] = 0;
 	strcpy(ptr->time, "0000/00/00");
 	ptr->time[10] = '\0';
 	return;
@@ -311,11 +315,12 @@ void setArchMenu(void)
 BUTTON add, del;
 void drawArchMenu(void)
 {
+	int i;
 	AddZoomBitMap("archive.bmp", TITLEPOSX, TITLEPOSY - 0.15, ICONSZ, ICONSZ, SRCCOPY);
 	setLabel(TITLEPOSX + ICONSZ, TITLEPOSY, 50, " 存档");
 	add->isDisable = isDelete || (archBuf[2].maxLevel);
 	double staX = 2.2, staY = 5.9 + BTHT1 + 0.25, W = BTWD1 + 0.2, H = -0.05;
-	for (int i = 0; i < 3; i++) {
+	for (i = 0; i < 3; i++) {
 		if (!archBuf[i].maxLevel)break;
 		staY -= BTHT1 + 0.25;
 		H += BTHT1 + 0.25;
@@ -519,6 +524,7 @@ void drawHelpMenu()
 }
 void drawHelpMenuP1()
 {
+	int i,j;
 	const string helpsP1[2][5] = { "W:跳跃","A/D:向左/右运动","F:切换模式","鼠标左键：绘制方块/射击","鼠标右键：绘图模式下回收墨水","ESC：退出关卡回到主菜单","P：暂停游戏","H：帮助页面","←/→：（帮助页面）上一页/下一页" ,"注意：绘制只能以已有方块为起点" };
 	int regPointSize = GetPointSize();
 	SetPointSize(regPointSize * 2.5);
@@ -528,9 +534,9 @@ void drawHelpMenuP1()
 	DrawTextString("操作提示");
 	SetPointSize(regPointSize * 2);
 	SetStyle(0);
-	for (int i = 0; i < 2; i++)
+	for (i = 0; i < 2; i++)
 	{
-		for (int j = 0; j < 5; j++)
+		for (j = 0; j < 5; j++)
 		{
 			MovePen(1.5 + 7 * i, 6 - j * 1);
 			DrawTextString(helpsP1[i][j]);
