@@ -156,11 +156,13 @@ bool JumpJudgeDot() {
 	double RoleY = myrole.y;
 	double DotX, DotY;
 	LINE* line = LineUnion;
+
 	while (line != NULL) {
 		DOT* dot = line->HeadDot;
 		while (dot != NULL) {
 			DotX = dot->x + DotSize;
 			DotY = dot->y + 2 * DotSize;
+			//if (fabs(RoleX - DotX) <= JUMPDOTRANGEX && fabs(RoleY - DotY) <= JUMPDOTRANGEY) {
 			if (fabs(RoleX - DotX) <= JUMPDOTRANGEX && fabs(RoleY - DotY) <= JUMPDOTRANGEY) {
 				return TRUE;
 			}
@@ -180,7 +182,9 @@ bool RightMoveJudgeDot() {
 		while (dot != NULL) {
 			DotX = dot->x;
 			DotY = dot->y;
-			if (DotX - RoleX >= 0 && DotX - RoleX <= MOVERANGE && fabs(RoleY - DotY) <= MOVERANGE) {
+			//if (DotX - RoleX >= 0 && DotX - RoleX <= MOVERANGE && fabs(RoleY - DotY) <= MOVERANGE) {
+			if (DotX - RoleX >= 0 && DotX - RoleX < RoleWidth && (RoleY-DotY<2*DotSize&&RoleY>=DotY||DotY-RoleY<RoleHeight&&DotY>RoleY)) {
+				myrole.x = DotX - RoleWidth;
 				return TRUE;
 			}
 			dot = dot->next;
@@ -199,7 +203,8 @@ bool LeftMoveJudgeDot() {
 		while (dot != NULL) {
 			DotX = dot->x + 2 * DotSize;
 			DotY = dot->y;
-			if (RoleX - DotX >= 0 && RoleX - DotX <= MOVERANGE && fabs(RoleY - DotY) <= MOVERANGE) {
+			//if (RoleX - DotX >= 0 && RoleX - DotX <= MOVERANGE && fabs(RoleY - DotY) <= MOVERANGE) {
+			if (RoleX-DotX<0  && DotX - RoleX < 2*BlockSize && (RoleY - DotY < 2 * DotSize&&RoleY >= DotY || DotY - RoleY<RoleHeight&&DotY>RoleY)) {
 				return TRUE;
 			}
 			dot = dot->next;
@@ -251,14 +256,37 @@ bool MouseAndAllLine() {
 	while (p != NULL) {
 		dot = p->HeadDot;
 		while (dot != NULL) {
-			DotX = dot->x;
-			DotY = dot->y;
+			DotX = dot->x + DotSize;
+			DotY = dot->y + DotSize;
 			if (distance(MouseX, MouseY, 0, DotX, DotY, DotSize)) {
 				return TRUE;
 			}
 			dot = dot->next;
 		}
 		p = p->next;
+	}
+	return FALSE;
+}
+bool UpDotJudge(void)
+{
+	double RoleX = myrole.x + RoleWidth / 2;
+	double RoleY = myrole.y;
+	double DotX, DotY;
+	LINE* line = LineUnion;
+	while (line != NULL) {
+		DOT* dot = line->HeadDot;
+		while (dot != NULL) {
+			DotX = dot->x + DotSize;
+			DotY = dot->y;
+			//if (fabs(RoleX - DotX) <= JUMPDOTRANGEX && fabs(RoleY - DotY) <= JUMPDOTRANGEY) {
+			if (fabs(RoleX - DotX) <= JUMPDOTRANGEX && RoleY+RoleHeight>DotY&&RoleY+RoleHeight<=DotY+2*BlockSize) {
+				if (IsJumping)
+					VerticalSpeed *= -1;
+				return TRUE;
+			}
+			dot = dot->next;
+		}
+		line = line->next;
 	}
 	return FALSE;
 }
