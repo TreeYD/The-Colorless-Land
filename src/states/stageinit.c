@@ -132,6 +132,7 @@ void StageClear() {
 	LineClear();
 	EnemyClear();
 	BonusClear();
+	BulletClear();
 	GoalClear();
 	CancelControlTimer();
 	cancelTimer(HP);
@@ -178,6 +179,12 @@ void BonusClear() {
 		bonus[i].live = FALSE;
 	}
 	return;
+}
+void BulletClear() {
+	int i;
+	for (i = 0; i < BulletNum; i++) {
+		bullet[i].IsMoving = FALSE;
+	}
 }
 void GoalClear() {
 	NowGoal.live = FALSE;
