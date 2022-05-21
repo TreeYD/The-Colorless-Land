@@ -206,9 +206,9 @@ void ReadArchFile() {
 		}
 		archBuf[i].time[cnt - TOTRANK] = '\0';
 		while (cnt < EACHRANK) {
-			archBuf[i].rank[cnt - LOCALTIME + 1] = fgetc(fp) - '0';
-			archBuf[i].rank[cnt - LOCALTIME + 1] = archBuf[i].rank[cnt - LOCALTIME + 1] * 10 + fgetc(fp) - '0';
-			archBuf[i].rank[cnt - LOCALTIME + 1] = archBuf[i].rank[cnt - LOCALTIME + 1] * 10 + fgetc(fp) - '0';
+			archBuf[i].rank[(cnt - LOCALTIME)/3 + 1] = fgetc(fp) - '0';
+			archBuf[i].rank[(cnt - LOCALTIME)/3 + 1] = archBuf[i].rank[(cnt - LOCALTIME) / 3 + 1] * 10 + fgetc(fp) - '0';
+			archBuf[i].rank[(cnt - LOCALTIME)/3 + 1] = archBuf[i].rank[(cnt - LOCALTIME) / 3 + 1] * 10 + fgetc(fp) - '0';
 			cnt += 3;
 		}
 		fclose(fp);
