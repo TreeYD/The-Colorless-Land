@@ -30,6 +30,7 @@ void BlockClear();
 void LineClear();
 void EnemyClear();
 void BonusClear();
+void BulletClear();
 void GoalClear();
 //清空关卡状态的函数 放在state的destroy里
 void InitSetting();
