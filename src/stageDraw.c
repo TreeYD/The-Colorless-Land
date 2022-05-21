@@ -60,7 +60,8 @@ void DrawStatusBar()
 	MovePen(11.304, 0.28 - GetFontAscent() / 2);
 	DrawTextString("MODE:");
 	AddZoomBitMap((myrole.weapon ? "shoot.bmp" : "pen.bmp"), 11.904, 0.112, 0.336, 0.336, SRCAND);
-	MovePen(0.56, 0.28 - GetFontAscent() / 2);
+	char MarkString[100];
+	MovePen(2.56, 0.28 - GetFontAscent() / 2);
 	NewSetPenColor(0, 0, 0);
 	sprintf(MarkString, "Your Mark : % d", myrole.mark);
 	DrawTextString(MarkString);
