@@ -104,7 +104,7 @@ void DrawRole()
 {
 	static int currPic = 1;
 	static int counter = 20;
-	string picName;
+	string picName=NULL;
 	if (myrole.HP > 0)
 	{
 		counter = 24;
