@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <stddef.h>
@@ -22,10 +22,11 @@
 #include "conio.h"
 #include "lightgui.h"
 #include "menu.h"
+#include"gamecontrol.h"
 extern LINE* LineUnion;
 void DrawExistingLines(void);
 void DrawEnemy(void);
-char MarkString[20] ;
+void DrawMouse();
 void DrawStatusBar()
 {
 	SetPointSize(13);
@@ -102,22 +103,11 @@ void DrawGoal()
 void DrawRole()
 {
 	static int currPic = 1;
-	static int counter = 20;
 	string picName;
-	if (myrole.HP > 0)
-	{
-		counter = 24;
-	}
 	if (myrole.HP <= 0)
 	{
-		if(counter>16)
-		picName = "PICRETIRED2.bmp";
-		else if(counter>8)
-			picName = "PICRETIRED1.bmp";
-		else
-			picName = "PICRETIRED.bmp";
+		picName = "PICRETIRED.bmp";
 		AddZoomBitMap(picName, myrole.x, myrole.y, RoleWidth, RoleHeight, SRCAND);
-		counter--;
 		return;
 	}
 	if (myrole.IsMoving == FALSE)
@@ -191,6 +181,7 @@ void StageDraw()
 	DrawExistingLines();
 	traverseButton();
 	DrawStatusBar();
+	DrawMouse();
 }
 
 void DrawExistingLines()
@@ -233,4 +224,7 @@ void DrawEnemy()
 			AddZoomBitMap(enemyPicSource, enemy[i].x, enemy[i].y, enemy[i].width, enemy[i].height, SRCAND);
 		}
 	}
+}
+void DrawMouse() {
+	AddZoomBitMap((myrole.weapon ? "shoot.bmp" : "pen.bmp"), MouseX, MouseY, 0.336, 0.336, SRCAND);
 }
