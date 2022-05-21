@@ -13,9 +13,9 @@
 #define EnemySpeed 0.02//敌人移动速度
 #define EnemyNum 10//一个关卡中敌人的最大数量
 #define BulletSpeed 0.3//子弹移动速度
-#define BulletWidth 0.01//子弹大小
-#define BulletHeight 0.01
-#define BulletSize 0.005//子弹判定半径
+#define BulletWidth 0.04//子弹大小
+#define BulletHeight 0.04
+#define BulletSize 0.02//子弹判定半径
 #define BulletNum 100//子弹最大数量
 #define BlockSize 0.25
 #define BonusNum 30
