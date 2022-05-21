@@ -8,17 +8,17 @@
 #define RoleWidth 0.5//角色大小
 #define RoleHeight 0.75
 #define InitialHP 100
-#define InitialColorVolume 20
+#define InitialColorVolume 10
 #define MaxColorVolume 100
 #define EnemySpeed 0.02//敌人移动速度
 #define EnemyNum 10//一个关卡中敌人的最大数量
-#define BulletSpeed 0.01//子弹移动速度
+#define BulletSpeed 0.3//子弹移动速度
 #define BulletWidth 0.01//子弹大小
 #define BulletHeight 0.01
 #define BulletSize 0.005//子弹判定半径
 #define BulletNum 100//子弹最大数量
 #define BlockSize 0.25
-#define BonusNum 20
+#define BonusNum 30
 #define BonusSize 0.15
 #define GoalSize 0.15
 #define DotSize 0.1
@@ -34,7 +34,7 @@ struct ROLE
 	double y;
 	int direction;//角色移动方向
 	int mark;//得分
-	int colorvolume;//颜料容量
+	double colorvolume;//颜料容量
 	bool live;
 	bool weapon;//TRUE为枪FALSE为画笔
 	int HP;

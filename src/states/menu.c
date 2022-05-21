@@ -264,8 +264,8 @@ void drawMainMenu()
 	if (animation_line <= ANIMATIONSTAGE && animation_line >= 0) {
 		//display logo
 		DisplayClear();
-		AddBitMap("logo.bmp", 3.5, 6, SRCCOPY);
-		AddBitMap("spray.bmp", GetAnimationX(3.5, animation_line), GetAnimationY(6.1, animation_line), SRCCOPY);
+		AddBitMap("logo.bmp", 3.5, 8, SRCCOPY);
+		AddBitMap("spray.bmp", GetAnimationX(3.5, animation_line), GetAnimationY(8.1, animation_line), SRCCOPY);
 		animation_line += animation_iv;
 	}
 	if (animation_line > 800) {
@@ -281,8 +281,8 @@ void drawMainMenu()
 		animation_line = -1;
 	}
 	if (animation_line == -1) {
-		AddBitMap("logo.bmp", 3.5, 6, SRCCOPY);
-		AddBitMap("spray.bmp", GetAnimationX(3.5, ANIMATIONSTAGE), GetAnimationY(6.1, ANIMATIONSTAGE), SRCCOPY);
+		AddBitMap("logo.bmp", 3.5, 8, SRCCOPY);
+		AddBitMap("spray.bmp", GetAnimationX(3.5, ANIMATIONSTAGE), GetAnimationY(8.1, ANIMATIONSTAGE), SRCCOPY);
 		traverseButton();
 	}
 }
