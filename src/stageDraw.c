@@ -103,11 +103,22 @@ void DrawGoal()
 void DrawRole()
 {
 	static int currPic = 1;
+	static int counter = 20;
 	string picName;
+	if (myrole.HP > 0)
+	{
+		counter = 24;
+	}
 	if (myrole.HP <= 0)
 	{
-		picName = "PICRETIRED.bmp";
+		if (counter > 16)
+			picName = "PICRETIRED2.bmp";
+		else if (counter > 8)
+			picName = "PICRETIRED1.bmp";
+		else
+			picName = "PICRETIRED.bmp";
 		AddZoomBitMap(picName, myrole.x, myrole.y, RoleWidth, RoleHeight, SRCAND);
+		counter--;
 		return;
 	}
 	if (myrole.IsMoving == FALSE)
