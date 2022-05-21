@@ -39,7 +39,7 @@ typedef struct {
 	double mY;
 	bool inText,inDrag;
 	int event, button;
-	bool isClick;//解决：反复traverse刷新出新界面时，鼠标没有回弹，导致同区域新按钮误触的问题
+	bool isClick;//瑙ｅ喅锛氬弽澶峵raverse鍒锋柊鍑烘柊鐣岄潰鏃讹紝榧犳爣娌℃湁鍥炲脊锛屽鑷村悓鍖哄煙鏂版寜閽瑙︾殑闂
 }*UIState;
 
 static UIState curState;
@@ -234,17 +234,16 @@ void traverseButton() {
 		}
 		else {
 			if (inBox(ptr->x, ptr->y, ptr->w, ptr->h)) {
-				if (!curState->isClick&&curState->button==LEFT_BUTTON&&curState->event == BUTTON_DOWN) {//解决长时间按下重复执行的问题
+				if (!curState->isClick&&curState->button==LEFT_BUTTON&&curState->event == BUTTON_DOWN) {//瑙ｅ喅闀挎椂闂存寜涓嬮噸澶嶆墽琛岀殑闂
 					curState->isClick = 1;
 					if(ptr->clickEvent!=NULL)ptr->clickEvent();
-					printf("isClick=%d\n",curState->isClick);
 					
 					ptr = NULL;//!!!
 				}
 				if (ptr == NULL)break;
-				//经过Pop和Push两次的CacheSorting
-				//headButton此时不会为NULL了，但是ptr的内存又被释放了，ptr不为NULL，所以现在在clickevent之后将ptr强行设为NULL
-				//headButton==NULL 说明已经进行了CacheSorting()
+				//缁忚繃Pop鍜孭ush涓ゆ鐨凜acheSorting
+				//headButton姝ゆ椂涓嶄細涓篘ULL浜嗭紝浣嗘槸ptr鐨勫唴瀛樺張琚噴鏀句簡锛宲tr涓嶄负NULL锛屾墍浠ョ幇鍦ㄥ湪clickevent涔嬪悗灏唒tr寮鸿璁句负NULL
+				//headButton==NULL 璇存槑宸茬粡杩涜浜咰acheSorting()
 				if ((strlen(StateTop()->name) != 1))
 				{
 					SetPenColor("ButtonShadow");
