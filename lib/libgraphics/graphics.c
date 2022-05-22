@@ -820,7 +820,7 @@ void repaint()
 
 static void InitDisplay(void)
 {
-    WNDCLASS wndcls;
+    WNDCLASSEX wndcls;
     RECT bounds, consoleRect, graphicsRect;
     double screenHeight, screenWidth, xSpace, ySpace;
     double xScale, yScale, scaleFactor;
@@ -858,19 +858,20 @@ static void InitDisplay(void)
     g_keyboard = NULL;
 	g_mouse = NULL;
 	g_timer = NULL;
-    
+	wndcls.cbSize = sizeof(WNDCLASSEX);
     wndcls.cbClsExtra = 0;
     wndcls.cbWndExtra = 0;
     wndcls.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
     wndcls.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wndcls.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+    wndcls.hIcon = LoadIcon(NULL, IDI_ERROR);
+	wndcls.hIconSm = LoadIcon(NULL, IDI_ERROR);
     wndcls.hInstance = NULL;
     wndcls.lpfnWndProc = GraphicsEventProc;
     wndcls.lpszClassName = "Graphics Window";
     wndcls.lpszMenuName = NULL;
     wndcls.style = CS_HREDRAW | CS_VREDRAW;
     
-    RegisterClass(&wndcls);
+    RegisterClassEx(&wndcls);
     
     graphicsWindow = CreateWindow(
       GWClassName,
@@ -1044,13 +1045,14 @@ static BOOL CALLBACK EnumerateProc(HWND window, LPARAM clientData)
 
 static void RegisterWindowClass(void)
 {
-    WNDCLASS wcApp;
-
+    WNDCLASSEX wcApp;
+	wcApp.cbSize = sizeof(WNDCLASSEX);
     wcApp.lpszClassName = GWClassName;
     wcApp.hInstance = NULL;
     wcApp.lpfnWndProc = GraphicsEventProc;
     wcApp.hCursor = NULL;
     wcApp.hIcon = NULL;
+	wcApp.hIconSm = NULL;
     wcApp.lpszMenuName = NULL;
     wcApp.hbrBackground = GetStockObject(WHITE_BRUSH);
     wcApp.style = CS_HREDRAW | CS_VREDRAW;
