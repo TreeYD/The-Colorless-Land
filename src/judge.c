@@ -239,25 +239,4 @@ bool MouseAndAllLine() {
 	}
 	return FALSE;
 }
-bool UpDotJudge(void)
-{
-	double RoleX = myrole.x + RoleWidth / 2;
-	double RoleY = myrole.y;
-	double DotX, DotY;
-	LINE* line = LineUnion;
-	while (line != NULL) {
-		DOT* dot = line->HeadDot;
-		while (dot != NULL) {
-			DotX = dot->x + DotSize;
-			DotY = dot->y;
-			if (fabs(RoleX - DotX) <= JUMPDOTRANGEX && RoleY+RoleHeight>DotY&&RoleY+RoleHeight<=DotY+2*BlockSize) {
-				if (IsJumping)
-					VerticalSpeed *= -1;
-				return TRUE;
-			}
-			dot = dot->next;
-		}
-		line = line->next;
-	}
-	return FALSE;
-}
+
