@@ -23,7 +23,7 @@ extern struct ENEMY enemy[EnemyNum];
 extern struct BULLET bullet[BulletNum];
 extern void(*stateRender)(void);
 extern struct BLOCK* blockhead;
-extern LINE* LineUnion = NULL; //the linklist for all lines drawn.
+extern LINE* LineUnion = NULL; 
 extern State PauseMenu;
 extern State HelpMenu;
 extern int curStage;
@@ -35,7 +35,7 @@ void ScreenRender(void) {
 	}
 }
 void StartAutoTimer() {
-	startTimer(FALL, RENDERGAP);//FALL的Timer需要一直开着，因为需要一直判断，不需要按键来触发
+	startTimer(FALL, RENDERGAP);//FALL的Timer需要一直开着，需要一直判断，不需要按键来触发
 	startTimer(JUDGE, RENDERGAP);
 	startTimer(BULLETMAKE, RENDERGAP);//子弹的不断产生
 	startTimer(BULLETMOVE, RENDERGAP);//子弹运动的Timer需要一直开着
@@ -112,7 +112,7 @@ void KeyBoardControl(int key, int event) {//键盘信息回调函数
 		case 'W':
 			startTimer(JUMP, RENDERGAP);
 			break;
-		case 'F'://切换武器，按键可以改，也可以改鼠标
+		case 'F':
 			myrole.weapon = !myrole.weapon;
 			break;
 		case 'P':
@@ -178,7 +178,7 @@ void PlayerMove(int event)
 			cancelTimer(JUMP);
 		}
 		break;
-	case FALL://FALL的Timer需要一直开着，因为需要一直判断，不需要按键来触发
+	case FALL://FALL的Timer需要一直开着，需要一直判断，不需要按键来触发
 		if (myrole.y <= 1) {//保证角色不穿过下边界
 			myrole.y = 1;
 			IsDropping = FALSE;
