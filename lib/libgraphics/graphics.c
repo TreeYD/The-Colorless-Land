@@ -22,7 +22,7 @@
 #include "gcalloc.h"
 #include "strlib.h"
 #include "extgraph.h"
-
+#include "resource.h"
 /*
  * Parameters
  * ----------
