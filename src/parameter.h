@@ -85,10 +85,6 @@ struct GOAL {
 	bool live;
 };
 struct GOAL NowGoal;
-struct STAGE {
-	int num;
-	struct STAGE* next;
-};
 typedef struct dot {
 	double x, y;
 	struct dot* next;
