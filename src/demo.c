@@ -27,6 +27,7 @@
 void Main()
 {
 		SetWindowSize(GraphicsWindowWidth, GraphicsWindowHeight);
+		SetWindowTitle("无色之境");
 		InitGraphics();
 		InitConsole();
 		InitGUI();
