@@ -1,17 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stddef.h>
-#include "graphics.h"
-#include "extgraph.h"
-#include "genlib.h"
-#include "conio.h"
-#include <windows.h>
-#include <olectl.h>
-#include <mmsystem.h>
-#include <wingdi.h>
-#include <ole2.h>
-#include <ocidl.h>
-#include <winuser.h>
 #include"parameter.h"
 #include"gamecontrol.h"
 #include"judge.h"
@@ -170,7 +156,6 @@ bool RightMoveJudgeDot() {
 		while (dot != NULL) {
 			DotX = dot->x;
 			DotY = dot->y;
-			//if (DotX - RoleX >= 0 && DotX - RoleX <= MOVERANGE && fabs(RoleY - DotY) <= MOVERANGE) {
 			if (DotX - RoleX >= 0 && DotX - RoleX < RoleWidth && (RoleY-DotY<2*DotSize&&RoleY>=DotY||DotY-RoleY<RoleHeight&&DotY>RoleY)) {
 				myrole.x = DotX - RoleWidth;
 				return TRUE;
