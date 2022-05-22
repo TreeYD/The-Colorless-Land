@@ -1,29 +1,29 @@
 #ifndef STAGEINIT_H
 #define STAGEINIT_H
 void StageSetting();
-//åˆå§‹åŒ–ä¸€åˆ‡å…³å¡
+//³õÊ¼»¯Ò»ÇĞ¹Ø¿¨
 void RoleSetting(double x, double y);
-//è®¾ç½®è§’è‰²çš„åˆå§‹ä½ç½®ä¸º(x,y)
+//ÉèÖÃ½ÇÉ«µÄ³õÊ¼Î»ÖÃÎª(x,y)
 
 void EnemySetting(int i, double x, double y, double range, int direction, int kind);
-//æ•Œäººç”¨æ•°ç»„å­˜å‚¨ è®©ç¬¬iä¸ªæ•Œäººçš„åˆå§‹ä½ç½®åœ¨(x,y) æ•Œäººç§ç±»ä¸ºkind(åˆ†1ï¼Œ2ï¼Œ3ä¸‰ç±») èµ·å§‹è¿åŠ¨æ–¹å‘ä¸ºdirecion(LEFT RIGHT) è¿åŠ¨èŒƒå›´æ˜¯range(å¾€å¤è¿åŠ¨)
+//µĞÈËÓÃÊı×é´æ´¢ ÈÃµÚi¸öµĞÈËµÄ³õÊ¼Î»ÖÃÔÚ(x,y) µĞÈËÖÖÀàÎªkind(·Ö1£¬2£¬3ÈıÀà) ÆğÊ¼ÔË¶¯·½ÏòÎªdirecion(LEFT RIGHT) ÔË¶¯·¶Î§ÊÇrange(Íù¸´ÔË¶¯)
 
 void BonusSetting(int i, double x, double y, bool IsColor);
-//è¾…åŠ©å‡½æ•° è¢«ç”¨äºBonusSettingX
-//æˆ–è€…ç”¨äºè®¾ç½®å•ä¸ªæ”¶é›†ç‰© è®©ç¬¬iä¸ªæ”¶é›†ç‰©åœ¨(x,y)ä½ç½® IsColorä¸ºTRUEæ—¶æ˜¯é¢œæ–™æ”¶é›†ç‰© åä¹‹ä¸ºåŠ åˆ†æ”¶é›†ç‰©
+//¸¨Öúº¯Êı ±»ÓÃÓÚBonusSettingX
+//»òÕßÓÃÓÚÉèÖÃµ¥¸öÊÕ¼¯Îï ÈÃµÚi¸öÊÕ¼¯ÎïÔÚ(x,y)Î»ÖÃ IsColorÎªTRUEÊ±ÊÇÑÕÁÏÊÕ¼¯Îï ·´Ö®Îª¼Ó·ÖÊÕ¼¯Îï
 
 void BonusSettingX(int i, double StartX, double StartY, bool IsColor, double gap, int number);
-//ä»èµ·å§‹ç‚¹(startX,startY)å¼€å§‹ æ¨ªå‘ä»å·¦å‘å³é“ºæ’numberä¸ªIsColorç±»çš„æ”¶é›†ç‰© æ¯ä¸ªæ”¶é›†ç‰©ä¹‹é—´çš„è·ç¦»æ˜¯gap ç¬¬ä¸€ä¸ªé“ºæ’çš„æ˜¯ç¬¬iå·æ”¶é›†ç‰© 
-//IsColorä¸ºTRUEæ—¶æ˜¯é¢œæ–™æ”¶é›†ç‰© åä¹‹ä¸ºåŠ åˆ†æ”¶é›†ç‰©
+//´ÓÆğÊ¼µã(startX,startY)¿ªÊ¼ ºáÏò´Ó×óÏòÓÒÆÌÅÅnumber¸öIsColorÀàµÄÊÕ¼¯Îï Ã¿¸öÊÕ¼¯ÎïÖ®¼äµÄ¾àÀëÊÇgap µÚÒ»¸öÆÌÅÅµÄÊÇµÚiºÅÊÕ¼¯Îï 
+//IsColorÎªTRUEÊ±ÊÇÑÕÁÏÊÕ¼¯Îï ·´Ö®Îª¼Ó·ÖÊÕ¼¯Îï
 
 void BlockSetting(double X, double Y);
-//è¾…åŠ©å‡½æ•° è¢«ç”¨äºBlockSettingXå’ŒBlockSettingY
+//¸¨Öúº¯Êı ±»ÓÃÓÚBlockSettingXºÍBlockSettingY
 
 void BlockSettingX(double StartX, double StartY, int number);
-//ä»èµ·å§‹ç‚¹(StartX,StartY)å¼€å§‹ æ¨ªå‘è‡ªå·¦å‘å³é“ºæ’numberä¸ªblock
+//´ÓÆğÊ¼µã(StartX,StartY)¿ªÊ¼ ºáÏò×Ô×óÏòÓÒÆÌÅÅnumber¸öblock
 
 void GoalSetting(double x, double y);
-//è®¾ç½®ç»ˆç‚¹çš„åæ ‡
+//ÉèÖÃÖÕµãµÄ×ø±ê
 
 void StageClear();
 void BlockClear();
@@ -32,16 +32,16 @@ void EnemyClear();
 void BonusClear();
 void BulletClear();
 void GoalClear();
-//æ¸…ç©ºå…³å¡çŠ¶æ€çš„å‡½æ•° æ”¾åœ¨stateçš„destroyé‡Œ
+//Çå¿Õ¹Ø¿¨×´Ì¬µÄº¯Êı ·ÅÔÚstateµÄdestroyÀï
 void InitSetting();
-//ç”¨äºæŠŠè®¾å®šå¥½çš„StageInitèµ‹å€¼ç»™å‡½æ•°æŒ‡é’ˆæ•°ç»„
+//ÓÃÓÚ°ÑÉè¶¨ºÃµÄStageInit¸³Öµ¸øº¯ÊıÖ¸ÕëÊı×é
 void StageInit1();
 void StageInit2();
 void StageInit3();
 void StageInit4();
 void StageInit5();
 void StageInit6();
-//æ”¾åœ¨stateçš„inité‡Œ
+//·ÅÔÚstateµÄinitÀï
 void SettingMisc(void);
 void FreeAllStages();
 //called when exit

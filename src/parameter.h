@@ -1,21 +1,21 @@
 #ifndef PARAMETER_H
 #define PARAMETER_H
 
-#define GraphicsWindowWidth 16//çª—å£å¤§å°
+#define GraphicsWindowWidth 16//´°¿Ú´óĞ¡
 #define GraphicsWindowHeight 9
-#define RoleSpeed 0.2//è§’è‰²ç§»åŠ¨é€Ÿåº¦
-#define RoleWidth 0.5//è§’è‰²å¤§å°
+#define RoleSpeed 0.2//½ÇÉ«ÒÆ¶¯ËÙ¶È
+#define RoleWidth 0.5//½ÇÉ«´óĞ¡
 #define RoleHeight 0.75
 #define InitialHP 100
 #define InitialColorVolume 10
 #define MaxColorVolume 100
-#define EnemySpeed 0.02//æ•Œäººç§»åŠ¨é€Ÿåº¦
-#define EnemyNum 10//ä¸€ä¸ªå…³å¡ä¸­æ•Œäººçš„æœ€å¤§æ•°é‡
-#define BulletSpeed 0.3//å­å¼¹ç§»åŠ¨é€Ÿåº¦
-#define BulletWidth 0.04//å­å¼¹å¤§å°
+#define EnemySpeed 0.02//µĞÈËÒÆ¶¯ËÙ¶È
+#define EnemyNum 10//Ò»¸ö¹Ø¿¨ÖĞµĞÈËµÄ×î´óÊıÁ¿
+#define BulletSpeed 0.3//×Óµ¯ÒÆ¶¯ËÙ¶È
+#define BulletWidth 0.04//×Óµ¯´óĞ¡
 #define BulletHeight 0.04
-#define BulletSize 0.02//å­å¼¹åˆ¤å®šåŠå¾„
-#define BulletNum 100//å­å¼¹æœ€å¤§æ•°é‡
+#define BulletSize 0.02//×Óµ¯ÅĞ¶¨°ë¾¶
+#define BulletNum 100//×Óµ¯×î´óÊıÁ¿
 #define BlockSize 0.25
 #define BonusNum 30
 #define BonusSize 0.15
@@ -26,17 +26,17 @@
 enum DIRECTION
 {
 	LEFT = -1,
-	RIGHT = 1//æšä¸¾æ–¹å‘ç±»å‹
+	RIGHT = 1//Ã¶¾Ù·½ÏòÀàĞÍ
 };
 struct ROLE
 {
 	double x;
 	double y;
-	int direction;//è§’è‰²ç§»åŠ¨æ–¹å‘
-	int mark;//å¾—åˆ†
-	double colorvolume;//é¢œæ–™å®¹é‡
+	int direction;//½ÇÉ«ÒÆ¶¯·½Ïò
+	int mark;//µÃ·Ö
+	double colorvolume;//ÑÕÁÏÈİÁ¿
 	bool live;
-	bool weapon;//TRUEä¸ºæªFALSEä¸ºç”»ç¬”
+	bool weapon;//TRUEÎªÇ¹FALSEÎª»­±Ê
 	int HP;
 	bool IsMoving;
 };
@@ -45,37 +45,37 @@ struct ENEMY
 {
 	double x;
 	double y;
-	double width;//ä¸åŒæ•Œäººä¸åŒå¤§å°
+	double width;//²»Í¬µĞÈË²»Í¬´óĞ¡
 	double height;
 	double size;
-	double moverange;//ç§»åŠ¨èŒƒå›´
+	double moverange;//ÒÆ¶¯·¶Î§
 	double nowrange;
-	int direction;//æ•Œäººåœ¨ä¸€ä¸ªåŒºåŸŸå¾€å¤è¿åŠ¨ï¼Œæ¶‰åŠè¿åŠ¨æ–¹å‘
-	int kind;//æ•Œäººç§ç±»
+	int direction;//µĞÈËÔÚÒ»¸öÇøÓòÍù¸´ÔË¶¯£¬Éæ¼°ÔË¶¯·½Ïò
+	int kind;//µĞÈËÖÖÀà
 	bool live;
-	int HP;//ä¸åŒæ•Œäººè¡€é‡ä¸åŒï¼Œéœ€è¦æ”»å‡»ä¸åŒæ¬¡æ•°ï¼Œæ¯æ¬¡æ”»å‡»HP--ï¼Œæ„Ÿè§‰BOSSåº”è¯¥å¯ä»¥æ”¾è¿›é‡Œé¢æ¥
+	int HP;//²»Í¬µĞÈËÑªÁ¿²»Í¬£¬ĞèÒª¹¥»÷²»Í¬´ÎÊı£¬Ã¿´Î¹¥»÷HP--£¬¸Ğ¾õBOSSÓ¦¸Ã¿ÉÒÔ·Å½øÀïÃæÀ´
 };
-struct ENEMY enemy[EnemyNum];//æ•Œäººç”¨æ•°ç»„å­˜å‚¨
+struct ENEMY enemy[EnemyNum];//µĞÈËÓÃÊı×é´æ´¢
 struct BULLET
 {
 	double x;
 	double y;
-	double SpeedX;//æ ¹æ®é¼ æ ‡ä½ç½®å’Œè§’è‰²ä½ç½®ç¡®å®šå¤¹è§’ï¼Œç„¶åå°†é€Ÿåº¦æ­£äº¤åˆ†è§£ä¸€ä¸‹
+	double SpeedX;//¸ù¾İÊó±êÎ»ÖÃºÍ½ÇÉ«Î»ÖÃÈ·¶¨¼Ğ½Ç£¬È»ºó½«ËÙ¶ÈÕı½»·Ö½âÒ»ÏÂ
 	double SpeedY;
 	bool live;
 	bool IsMoving;
 };
-struct BULLET bullet[BulletNum];//å­å¼¹ç”¨æ•°ç»„å­˜å‚¨
+struct BULLET bullet[BulletNum];//×Óµ¯ÓÃÊı×é´æ´¢
 struct BLOCK {
 	double x;
 	double y;
 	struct BLOCK* next;
 };
-struct BLOCK* blockhead;//åœ°é¢è¡¨é¢ç”¨é“¾è¡¨å­˜å‚¨
+struct BLOCK* blockhead;//µØÃæ±íÃæÓÃÁ´±í´æ´¢
 struct BONUS {
 	double x;
 	double y;
-	bool IsColor;//æ”¶é›†ç‰©ä¸¤ç§ ä¸€ç§åŠ åˆ†ä¸€ç§åŠ é¢œæ–™
+	bool IsColor;//ÊÕ¼¯ÎïÁ½ÖÖ Ò»ÖÖ¼Ó·ÖÒ»ÖÖ¼ÓÑÕÁÏ
 	bool live;
 };
 struct BONUS bonus[BonusNum];

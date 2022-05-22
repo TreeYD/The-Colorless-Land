@@ -35,10 +35,10 @@ void ScreenRender(void) {
 	}
 }
 void StartAutoTimer() {
-	startTimer(FALL, RENDERGAP);//FALLçš„Timeréœ€è¦ä¸€ç›´å¼€ç€ï¼Œéœ€è¦ä¸€ç›´åˆ¤æ–­ï¼Œä¸éœ€è¦æŒ‰é”®æ¥è§¦å‘
+	startTimer(FALL, RENDERGAP);//FALLµÄTimerĞèÒªÒ»Ö±¿ª×Å£¬ĞèÒªÒ»Ö±ÅĞ¶Ï£¬²»ĞèÒª°´¼üÀ´´¥·¢
 	startTimer(JUDGE, RENDERGAP);
-	startTimer(BULLETMAKE, RENDERGAP);//å­å¼¹çš„ä¸æ–­äº§ç”Ÿ
-	startTimer(BULLETMOVE, RENDERGAP);//å­å¼¹è¿åŠ¨çš„Timeréœ€è¦ä¸€ç›´å¼€ç€
+	startTimer(BULLETMAKE, RENDERGAP);//×Óµ¯µÄ²»¶Ï²úÉú
+	startTimer(BULLETMOVE, RENDERGAP);//×Óµ¯ÔË¶¯µÄTimerĞèÒªÒ»Ö±¿ª×Å
 	return;
 }
 void CancelControlTimer() {
@@ -53,7 +53,7 @@ void CancelControlTimer() {
 	cancelTimer(DRAW);
 	return;
 }
-void render(int TimerID)//è®¡æ—¶å™¨å›è°ƒå‡½æ•°
+void render(int TimerID)//¼ÆÊ±Æ÷»Øµ÷º¯Êı
 {
 	switch (TimerID)
 	{
@@ -83,7 +83,7 @@ void render(int TimerID)//è®¡æ—¶å™¨å›è°ƒå‡½æ•°
 	case BULLETMOVE:
 		BulletMove();
 		break;
-	case DRAW://è¿˜åœ¨å†™
+	case DRAW://»¹ÔÚĞ´
 		MakeLine();
 		PickUpDots();
 		break;
@@ -96,7 +96,7 @@ void render(int TimerID)//è®¡æ—¶å™¨å›è°ƒå‡½æ•°
 	}
 	return;
 }
-void KeyBoardControl(int key, int event) {//é”®ç›˜ä¿¡æ¯å›è°ƒå‡½æ•°
+void KeyBoardControl(int key, int event) {//¼üÅÌĞÅÏ¢»Øµ÷º¯Êı
 	if (event == KEY_DOWN)
 	{
 		switch (key)
@@ -152,14 +152,14 @@ void PlayerMove(int event)
 	{
 	case LEFTMOVING:
 		myrole.direction = LEFT;
-		if (myrole.x >= 0 && !LeftMoveJudgeBlock() && !LeftMoveJudgeDot()) {//çª—å£è¾¹ç•Œåˆ¤å®šå’Œåœ°é¢éšœç¢åˆ¤å®š
+		if (myrole.x >= 0 && !LeftMoveJudgeBlock() && !LeftMoveJudgeDot()) {//´°¿Ú±ß½çÅĞ¶¨ºÍµØÃæÕÏ°­ÅĞ¶¨
 			myrole.x -= RoleSpeed;
 		}
 		break;
 	case RIGHTMOVING:
 		myrole.direction = RIGHT;
 		if (myrole.x <= GraphicsWindowWidth - RoleWidth && !RightMoveJudgeBlock() && !RightMoveJudgeDot()) {
-			//çª—å£è¾¹ç•Œåˆ¤å®šå’Œåœ°é¢éšœç¢åˆ¤å®š
+			//´°¿Ú±ß½çÅĞ¶¨ºÍµØÃæÕÏ°­ÅĞ¶¨
 			myrole.x += RoleSpeed;
 		}
 		break;
@@ -178,8 +178,8 @@ void PlayerMove(int event)
 			cancelTimer(JUMP);
 		}
 		break;
-	case FALL://FALLçš„Timeréœ€è¦ä¸€ç›´å¼€ç€ï¼Œéœ€è¦ä¸€ç›´åˆ¤æ–­ï¼Œä¸éœ€è¦æŒ‰é”®æ¥è§¦å‘
-		if (myrole.y <= 1) {//ä¿è¯è§’è‰²ä¸ç©¿è¿‡ä¸‹è¾¹ç•Œ
+	case FALL://FALLµÄTimerĞèÒªÒ»Ö±¿ª×Å£¬ĞèÒªÒ»Ö±ÅĞ¶Ï£¬²»ĞèÒª°´¼üÀ´´¥·¢
+		if (myrole.y <= 1) {//±£Ö¤½ÇÉ«²»´©¹ıÏÂ±ß½ç
 			myrole.y = 1;
 			IsDropping = FALSE;
 		}
@@ -226,7 +226,7 @@ void EnemyJudge() {
 		if (RoleAndEnemy(enemy[i])) {
 			myrole.HP -= enemy[i].kind;
 		}
-		enemy[i].x = enemy[i].x + enemy[i].direction * EnemySpeed;//å¾€å¤è¿åŠ¨çš„åˆ¤æ–­
+		enemy[i].x = enemy[i].x + enemy[i].direction * EnemySpeed;//Íù¸´ÔË¶¯µÄÅĞ¶Ï
 		enemy[i].nowrange += EnemySpeed;
 		if (enemy[i].nowrange >= enemy[i].moverange) {
 			enemy[i].direction = -enemy[i].direction;
@@ -249,7 +249,7 @@ void GoalJudge() {
 		ToSettle();
 	}
 }
-void BulletMake() {//å­å¼¹äº§ç”Ÿ
+void BulletMake() {//×Óµ¯²úÉú
 	int i;
 	for (i = 0; i < BulletNum; i++) {
 		if (!bullet[i].live) {
@@ -258,7 +258,7 @@ void BulletMake() {//å­å¼¹äº§ç”Ÿ
 	}
 	return;
 }
-void Shot() {//å‘å°„æ—¶è°ƒç”¨çš„å‡½æ•°
+void Shot() {//·¢ÉäÊ±µ÷ÓÃµÄº¯Êı
 	int i;
 	if (myrole.colorvolume > 0) {
 		for (i = 0; i < BulletNum; i++) {
@@ -275,7 +275,7 @@ void Shot() {//å‘å°„æ—¶è°ƒç”¨çš„å‡½æ•°
 	}
 	return;
 }
-void BulletMove() {//å­å¼¹å‘å°„å‡ºå»ä»¥åè‡ªåŠ¨è¿åŠ¨çš„å‡½æ•°
+void BulletMove() {//×Óµ¯·¢Éä³öÈ¥ÒÔºó×Ô¶¯ÔË¶¯µÄº¯Êı
 	int i, j;
 	for (i = 0; i < BulletNum; i++) {
 		if (bullet[i].live && bullet[i].IsMoving) {
@@ -288,7 +288,7 @@ void BulletMove() {//å­å¼¹å‘å°„å‡ºå»ä»¥åè‡ªåŠ¨è¿åŠ¨çš„å‡½æ•°
 			if (BulletAndGround(bullet[i]) || bullet[i].x >= GraphicsWindowWidth || bullet[i].x <= 0 || bullet[i].y >= GraphicsWindowHeight || bullet[i].y <= 0) {
 				bullet[i].live = FALSE;
 				bullet[i].IsMoving = FALSE;
-				//å­å¼¹æ’å¢™ è¶…å‡ºè¾¹ç•Œå‡ç®—FALSE
+				//×Óµ¯×²Ç½ ³¬³ö±ß½ç¾ùËãFALSE
 			}
 			for (j = 0; j < EnemyNum; j++) {
 				if (EnemyAndBullet(enemy[j], bullet[i])) {
@@ -298,14 +298,14 @@ void BulletMove() {//å­å¼¹å‘å°„å‡ºå»ä»¥åè‡ªåŠ¨è¿åŠ¨çš„å‡½æ•°
 				}
 				if (enemy[j].HP <= 0 && enemy[j].live == TRUE) {
 					enemy[j].live = FALSE;
-					myrole.mark++;//å‡»æ€æ•Œäººå¾—åˆ†
+					myrole.mark++;//»÷É±µĞÈËµÃ·Ö
 				}
 			}
 		}
 	}
 	return;
 }
-void MouseControl(int x, int y, int button, int event) {//é¼ æ ‡ä¿¡æ¯å›è°ƒå‡½æ•°
+void MouseControl(int x, int y, int button, int event) {//Êó±êĞÅÏ¢»Øµ÷º¯Êı
 	uiMouseEvent(x, y, button, event);
 	MouseX = ScaleXInches(x);
 	MouseY = ScaleYInches(y);
@@ -316,11 +316,11 @@ void MouseControl(int x, int y, int button, int event) {//é¼ æ ‡ä¿¡æ¯å›è°ƒå‡½æ
 			if (myrole.colorvolume <= 0) {
 				return;
 			}
-			if (myrole.weapon) {//ç”¨æªçš„æƒ…å†µ
+			if (myrole.weapon) {//ÓÃÇ¹µÄÇé¿ö
 				startTimer(SHOT, RENDERGAP);
 			}
-			else {//ç”¨ç¬”çš„æƒ…å†µ
-				if (MouseAndGround(blockhead) || MouseAndAllLine()) {//é¼ æ ‡æ¥è§¦åœ°é¢æ‰èƒ½ç”»æ¡¥
+			else {//ÓÃ±ÊµÄÇé¿ö
+				if (MouseAndGround(blockhead) || MouseAndAllLine()) {//Êó±ê½Ó´¥µØÃæ²ÅÄÜ»­ÇÅ
 					startTimer(DRAW, DRAWGAP);
 				}
 			}
@@ -335,7 +335,7 @@ void MouseControl(int x, int y, int button, int event) {//é¼ æ ‡ä¿¡æ¯å›è°ƒå‡½æ
 			}
 		}
 	}
-	if (button == RIGHT_BUTTON) {//å³é”®ç‚¹å‡»æ¡¥æ¢å›æ”¶
+	if (button == RIGHT_BUTTON) {//ÓÒ¼üµã»÷ÇÅÁº»ØÊÕ
 		if (event == BUTTON_DOWN) {
 			if (!myrole.weapon) {
 				Delete();
@@ -447,16 +447,16 @@ void DeleteLine(LINE* line) {
 	while (p != line) {
 		p = p->next;
 	}
-	DOT* q = line->HeadDot;//åˆ é™¤æ¡¥é‡Œé¢çš„dot
+	DOT* q = line->HeadDot;//É¾³ıÇÅÀïÃæµÄdot
 	DOT* r = NULL;
 	while (q != NULL) {
 		r = q;
 		q = q->next;
 		free(r);
 		r = NULL;
-		myrole.colorvolume += VOLUMEREDUCINGSPEED;//é¢œæ–™å›æ”¶
+		myrole.colorvolume += VOLUMEREDUCINGSPEED;//ÑÕÁÏ»ØÊÕ
 	}
-	free(line);//åˆ é™¤æ¡¥æœ¬èº«
+	free(line);//É¾³ıÇÅ±¾Éí
 	line = NULL;
 	return;
 }

@@ -5,17 +5,17 @@
 #include "parameter.h"
 enum timer {
 	RENDER,
-	LEFTMOVING, //å·¦ç§»åŠ¨
-	RIGHTMOVING, //å³ç§»åŠ¨
-	JUMP, //æŒ‰Wè·³è·ƒ
-	FALL, //ä»é«˜åœ°å½¢åˆ°ä½åœ°å½¢
-	JUDGE,//ç§»åŠ¨è¿‡ç¨‹ä¸­ä¸æ”¶é›†ç‰©å’Œæ•Œäººçš„ç¢°æ’
-	BULLETMAKE, //å­å¼¹ç”Ÿæˆ
-	SHOT, //ç‚¹å·¦é”®æ—¶çš„å‘å°„
-	BULLETMOVE, //å‘å°„å‡ºå»åçš„å­å¼¹ç§»åŠ¨
-	DRAW,//ç”»ç¬”timerï¼Œè¿˜æ²¡å†™
+	LEFTMOVING, //×óÒÆ¶¯
+	RIGHTMOVING, //ÓÒÒÆ¶¯
+	JUMP, //°´WÌøÔ¾
+	FALL, //´Ó¸ßµØĞÎµ½µÍµØĞÎ
+	JUDGE,//ÒÆ¶¯¹ı³ÌÖĞÓëÊÕ¼¯ÎïºÍµĞÈËµÄÅö×²
+	BULLETMAKE, //×Óµ¯Éú³É
+	SHOT, //µã×ó¼üÊ±µÄ·¢Éä
+	BULLETMOVE, //·¢Éä³öÈ¥ºóµÄ×Óµ¯ÒÆ¶¯
+	DRAW,//»­±Êtimer£¬»¹Ã»Ğ´
 	HP,//monitor life status
-};//ä¸åŒçš„timerç›´æ¥æšä¸¾äº†
+};//²»Í¬µÄtimerÖ±½ÓÃ¶¾ÙÁË
 #define INITIALVERTICALSPEED 0.15
 #define G 0.01
 #define VOLUMEREDUCINGSPEED 0.1 
@@ -23,15 +23,15 @@ enum timer {
 void StartAutoTimer();
 void CancelControlTimer();
 void render(int TimerID);
-void KeyBoardControl(int key, int event);//é”®ç›˜äº‹ä»¶å¤„ç†
-void MouseControl(int x, int y, int button, int event);//é¼ æ ‡äº‹ä»¶å¤„ç†
-void PlayerMove(int event);//æ ¹æ®ä¸åŒçš„æ–¹å‘eventæœ‰ä¸åŒåæ ‡çš„æ”¹å˜
-void BonusJudge();//åˆ¤æ–­å¾—åˆ°æ”¶é›†ç‰©çš„å‡½æ•°
-void EnemyJudge();//åˆ¤æ–­ä¸æ•Œäººç¢°æ’æ‰è¡€çš„å‡½æ•°
+void KeyBoardControl(int key, int event);//¼üÅÌÊÂ¼ş´¦Àí
+void MouseControl(int x, int y, int button, int event);//Êó±êÊÂ¼ş´¦Àí
+void PlayerMove(int event);//¸ù¾İ²»Í¬µÄ·½ÏòeventÓĞ²»Í¬×ø±êµÄ¸Ä±ä
+void BonusJudge();//ÅĞ¶ÏµÃµ½ÊÕ¼¯ÎïµÄº¯Êı
+void EnemyJudge();//ÅĞ¶ÏÓëµĞÈËÅö×²µôÑªµÄº¯Êı
 void GoalJudge();
-void BulletMake();//å°†bullet.liveä¸ºFALSEçš„å­å¼¹æ”¹ä¸ºTRUE
-void Shot();//æŒ‰Wæ—¶è®©bullet.liveå’Œbullet.IsMovingä¸ºTRUE,å¹¶ç¡®å®šå­å¼¹çš„é€Ÿåº¦
-void BulletMove();//ä¸€ç›´éå†å­å¼¹æ•°ç»„è®©bullet.IsMovingä¸ºTRUEçš„å­å¼¹ä¸€ç›´è¿åŠ¨
+void BulletMake();//½«bullet.liveÎªFALSEµÄ×Óµ¯¸ÄÎªTRUE
+void Shot();//°´WÊ±ÈÃbullet.liveºÍbullet.IsMovingÎªTRUE,²¢È·¶¨×Óµ¯µÄËÙ¶È
+void BulletMove();//Ò»Ö±±éÀú×Óµ¯Êı×éÈÃbullet.IsMovingÎªTRUEµÄ×Óµ¯Ò»Ö±ÔË¶¯
 void MakeLine();
 void PickUpDots();
 void AddLine(LINE* NewLine);
@@ -41,10 +41,10 @@ void DeleteLine(LINE* line);
 void CacheLineSorting(LINE* line);
 void recycleInk(LINE* line);
 void HPMonitor(void);
-double MouseX, MouseY;//å…¨å±€å˜é‡é¼ æ ‡åæ ‡
-double COS, SIN;//è§’è‰²ä¸é¼ æ ‡ä½ç½®è¿çº¿å¤¹è§’
-static double VerticalSpeed = INITIALVERTICALSPEED;//è§’è‰²åœ¨åœ°é¢ä¸Šå‘ä¸Šè·³èµ·çš„åˆé€Ÿåº¦
-static double FallingSpeed = 0;//è§’è‰²ä»é«˜å¤„æ‰åˆ°åœ°å¤„çš„åˆé€Ÿåº¦
+double MouseX, MouseY;//È«¾Ö±äÁ¿Êó±ê×ø±ê
+double COS, SIN;//½ÇÉ«ÓëÊó±êÎ»ÖÃÁ¬Ïß¼Ğ½Ç
+static double VerticalSpeed = INITIALVERTICALSPEED;//½ÇÉ«ÔÚµØÃæÉÏÏòÉÏÌøÆğµÄ³õËÙ¶È
+static double FallingSpeed = 0;//½ÇÉ«´Ó¸ß´¦µôµ½µØ´¦µÄ³õËÙ¶È
 static bool IsJumping = FALSE;
 static bool IsDropping = FALSE;
 static bool IsDrawing = FALSE;

@@ -5,19 +5,19 @@
 #define JUMPDOTRANGEX 0.4
 #define JUMPDOTRANGEY 0.05
 #define MOVERANGE 0.15
-bool distance(double x1, double y1, double size1, double x2, double y2, double size2);//æ ¹æ®åæ ‡å’Œåˆ¤å®šåŠå¾„ç¡®å®šè·ç¦»
+bool distance(double x1, double y1, double size1, double x2, double y2, double size2);//¸ù¾İ×ø±êºÍÅĞ¶¨°ë¾¶È·¶¨¾àÀë
 bool JumpJudgeBlock();
 bool RightMoveJudgeBlock();
 bool LeftMoveJudgeBlock();
-bool RoleAndEnemy(struct ENEMY enemy);//è§’è‰²å’Œæ•Œäººçš„ç¢°æ’åˆ¤å®š
+bool RoleAndEnemy(struct ENEMY enemy);//½ÇÉ«ºÍµĞÈËµÄÅö×²ÅĞ¶¨
 bool RoleAndGoal(struct GOAL goal);
-bool EnemyAndBullet(struct ENEMY enemy, struct BULLET bullet);//æ•Œäººå’Œå­å¼¹çš„ç¢°æ’åˆ¤å®š
+bool EnemyAndBullet(struct ENEMY enemy, struct BULLET bullet);//µĞÈËºÍ×Óµ¯µÄÅö×²ÅĞ¶¨
 bool BulletAndGround(struct BULLET bullet);
-bool RoleAndBonus(struct BONUS bonus);//è§’è‰²ä¸æ”¶é›†ç‰©çš„åˆ¤å®š
+bool RoleAndBonus(struct BONUS bonus);//½ÇÉ«ÓëÊÕ¼¯ÎïµÄÅĞ¶¨
 bool JumpJudgeDot();
 bool RightMoveJudgeDot();
 bool LeftMoveJudgeDot();
-bool MouseAndGround();//é¼ æ ‡ä½ç½®å’Œåœ°é¢è¡¨é¢çš„åˆ¤å®šï¼Œç”»å›¾æ—¶ç”¨
-bool MouseAndLine(LINE*line);//å³é”®å›æ”¶æ¡¥æ¢ä½¿ç”¨
+bool MouseAndGround();//Êó±êÎ»ÖÃºÍµØÃæ±íÃæµÄÅĞ¶¨£¬»­Í¼Ê±ÓÃ
+bool MouseAndLine(LINE*line);//ÓÒ¼ü»ØÊÕÇÅÁºÊ¹ÓÃ
 bool MouseAndAllLine();
 #endif
