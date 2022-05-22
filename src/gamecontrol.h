@@ -18,7 +18,7 @@ enum timer {
 };//不同的timer直接枚举了
 #define INITIALVERTICALSPEED 0.15
 #define G 0.01
-#define VOLUMEREDUCINGSPEED 0.1 //随便填的
+#define VOLUMEREDUCINGSPEED 0.1 
 #define ColorBonusVolume 10
 void StartAutoTimer();
 void CancelControlTimer();
