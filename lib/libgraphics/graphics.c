@@ -863,8 +863,8 @@ static void InitDisplay(void)
     wndcls.cbWndExtra = 0;
     wndcls.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
     wndcls.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wndcls.hIcon = LoadIcon(g_hinstance, IDI_ICON2);//IDI_ICON2 -> 32*32 windows32.ico
-	wndcls.hIconSm = LoadIcon(g_hinstance,IDI_ICON1);//IDI_ICON1 -> 16*16 windows16.ico
+    wndcls.hIcon = LoadIcon(g_hinstance, MAKEINTRESOURCE(IDI_ICON2));//IDI_ICON2 -> 32*32 windows32.ico
+	wndcls.hIconSm = LoadIcon(g_hinstance, MAKEINTRESOURCE(IDI_ICON1));//IDI_ICON1 -> 16*16 windows16.ico
     wndcls.hInstance = NULL;
     wndcls.lpfnWndProc = GraphicsEventProc;
     wndcls.lpszClassName = "Graphics Window";
@@ -1057,7 +1057,7 @@ static void RegisterWindowClass(void)
     wcApp.hbrBackground = GetStockObject(WHITE_BRUSH);
     wcApp.style = CS_HREDRAW | CS_VREDRAW;
     wcApp.cbClsExtra = wcApp.cbWndExtra = 0;
-    if (!RegisterClass(&wcApp)) {
+    if (!RegisterClassEX(&wcApp)) {
         Error("Internal error: RegisterClass failed\n");
     }
 }

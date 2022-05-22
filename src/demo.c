@@ -27,15 +27,14 @@
 void Main()
 {
 		SetWindowSize(GraphicsWindowWidth, GraphicsWindowHeight);
-		SetWindowTitle("鏃犺壊涔嬪");
+		SetWindowTitle("无色之境");
 		InitGraphics();
-		InitConsole();
 		InitGUI();
 //		Enable();
 		InitSetting();
 		StageSetting();
 		registerTimerEvent(render);
-		StateManagerInit(&statemanager);
+		StateManagerInit();
 		startTimer(RENDER,RENDERGAP);
 
 }

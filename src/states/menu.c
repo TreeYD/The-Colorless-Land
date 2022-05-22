@@ -1,4 +1,4 @@
-ï»¿#include "stateManager.h"
+#include "stateManager.h"
 #include "menu.h"
 #include"gamecontrol.h"
 #define MAXLEVEL 1
@@ -9,29 +9,29 @@
 #define TITLEPOSY 7.3
 #define ICONSZ 0.7
 #define ANIMATIONSTAGE 800
-//æ ‡é¢˜å¯¹åº”å›¾æ ‡çš„å¤§å°
+//±êÌâ¶ÔÓ¦Í¼±êµÄ´óĞ¡
 #define BTWD0 3.5
 #define BTHT0 0.8
-//MainMenuç•Œé¢çš„BUTTONçš„å°ºå¯¸
+//MainMenu½çÃæµÄBUTTONµÄ³ß´ç
 #define BTWD1 11.35
 #define BTHT1 0.8
 #define BTWD2 3.5
 #define BTHT2 0.8
-//ArchMenuç•Œé¢çš„BUTTONçš„å°ºå¯¸
+//ArchMenu½çÃæµÄBUTTONµÄ³ß´ç
 
-//æ€»å…±è®¾è®¡äº†ä¸‰ç§æŒ‰é’®å¤§å°
+//×Ü¹²Éè¼ÆÁËÈıÖÖ°´Å¥´óĞ¡
 //archive1.txt  10002022/05/22|(14)000000000000000000|(18)
-bool isDelete;//æ˜¯å¦å¤„äºåˆ é™¤æ¨¡å¼
+bool isDelete;//ÊÇ·ñ´¦ÓÚÉ¾³ıÄ£Ê½
 
 ARCHINFO archBuf[3];
 string archName[3] = { "archive1.txt","archive2.txt","archive3.txt" };
 struct ArchInfo* curArch;
-//åœ¨stateManagerinitçš„æ—¶å€™ä»æ–‡ä»¶ä¸­è¯»å…¥
-//åœ¨å›åˆ°MainMenuçš„æ—¶å€™å†è¾“å‡ºåˆ°æ–‡ä»¶é‡Œé¢ï¼Œå…³å¡ç»“ç®—çš„æ—¶å€™è®°å¾—æ›´æ–°curArchçš„æ€»å¾—åˆ†å’Œå½“å‰å…³å¡çš„å¾—åˆ†
-//ç”±äºArchMenuå’ŒLevelMenuæ˜¯åŒä¸€çº§çš„ï¼Œæ‰€ä»¥è·³è½¬çš„æ—¶å€™è®°å¾—è¦popå‡ºå»
+//ÔÚstateManagerinitµÄÊ±ºò´ÓÎÄ¼şÖĞ¶ÁÈë
+//ÔÚ»Øµ½MainMenuµÄÊ±ºòÔÙÊä³öµ½ÎÄ¼şÀïÃæ£¬¹Ø¿¨½áËãµÄÊ±ºò¼ÇµÃ¸üĞÂcurArchµÄ×ÜµÃ·ÖºÍµ±Ç°¹Ø¿¨µÄµÃ·Ö
+//ÓÉÓÚArchMenuºÍLevelMenuÊÇÍ¬Ò»¼¶µÄ£¬ËùÒÔÌø×ªµÄÊ±ºò¼ÇµÃÒªpop³öÈ¥
 //function for MainMenu
-int curStage = 1;//å½“å‰æ‰€å¤„çš„å…³å¡
-char settleInfo[] = { "ç¬¬1å…³     è·å¾—åˆ†æ•°: 000" };//å…³å¡ç»“ç®—æ˜¯éœ€è¦ç”¨åˆ°çš„å­—ç¬¦ä¸²ï¼Œç»™äº†èŠ‚çœæ¯æ¬¡drawç”Ÿæˆå­—ç¬¦çš„å†…å­˜å¼€æ”¯ï¼Œç°åœ¨æ­¤å¤„å­˜ä¸‹æ¥
+int curStage = 1;//µ±Ç°Ëù´¦µÄ¹Ø¿¨
+char settleInfo[] = { "µÚ1¹Ø     »ñµÃ·ÖÊı: 000" };//¹Ø¿¨½áËãÊÇĞèÒªÓÃµ½µÄ×Ö·û´®£¬¸øÁË½ÚÊ¡Ã¿´ÎdrawÉú³É×Ö·ûµÄÄÚ´æ¿ªÖ§£¬ÏÖÔÚ´Ë´¦´æÏÂÀ´
 extern struct ROLE myrole;
 extern StateManager statemanager;
 extern State* StageArray[StageNum];
@@ -48,7 +48,7 @@ void NewGame(void);
 void setArchMenu(void);
 void drawArchMenu(void);
 void setArchButton(void);
-void InitNewGame();//ç”Ÿæˆæ–°çš„å­˜æ¡£
+void InitNewGame();//Éú³ÉĞÂµÄ´æµµ
 void SetArchZero(ARCHINFO *ptr);
 void ToArch(void);
 void AddArch(void);
@@ -69,7 +69,7 @@ void LoadStage4(void);
 void LoadStage5(void);
 void LoadStage6(void);
 void *LoadStageList[] = { LoadStage1,LoadStage2,LoadStage3,LoadStage4,LoadStage5,LoadStage6 };
-//å‚¨å­˜LoadStageå„ä¸ªå…³å¡çš„å‡½æ•°
+//´¢´æLoadStage¸÷¸ö¹Ø¿¨µÄº¯Êı
 
 
 /*for pause page*/
@@ -87,11 +87,11 @@ void TurnPage();
 static int page = 1;
 
 /*function for settlement page*/
-void setSettleMenu();//åœ¨setSettleMenuæ—¶ç›´æ¥å°†myroleä¸­çš„ä¿¡æ¯è½½å…¥curArch
+void setSettleMenu();//ÔÚsetSettleMenuÊ±Ö±½Ó½«myroleÖĞµÄĞÅÏ¢ÔØÈëcurArch
 void drawSettleMenu();
-void ToSettle();//å…³å¡ç»“ç®—æ—¶è§¦å‘ï¼Œç”±äºè¿™å…³ä¸ä¼šå†ç”¨åˆ°äº†ï¼Œæ‰€ä»¥ç›´æ¥Popå‡ºæ ˆ
+void ToSettle();//¹Ø¿¨½áËãÊ±´¥·¢£¬ÓÉÓÚÕâ¹Ø²»»áÔÙÓÃµ½ÁË£¬ËùÒÔÖ±½ÓPop³öÕ»
 void ToNextStage();
-void ToLevel();//ä½¿ç”¨å½“å‰å­˜æ¡£åŠ è½½Levelç•Œé¢
+void ToLevel();//Ê¹ÓÃµ±Ç°´æµµ¼ÓÔØLevel½çÃæ
 
 State SettleMenu = {
 	"SETTLEMENU",
@@ -223,9 +223,9 @@ void InitNewGame() {
 		if (archBuf[i].maxLevel > 0)continue;
 		archBuf[i].maxLevel = 1;
 		time_t systime = time(0);
-		//äº§ç”Ÿâ€œYYYY/MM/DDâ€æ ¼å¼çš„å­—ç¬¦ä¸²
+		//²úÉú¡°YYYY/MM/DD¡±¸ñÊ½µÄ×Ö·û´®
 		strftime(archBuf[i].time, sizeof(archBuf[i].time), "%Y/%m/%d", localtime(&systime));
-		curArch = &archBuf[i];//åŒæ—¶å°†æ–°å»ºå­˜æ¡£è®¾ç½®ä¸ºå½“å‰å­˜æ¡£
+		curArch = &archBuf[i];//Í¬Ê±½«ĞÂ½¨´æµµÉèÖÃÎªµ±Ç°´æµµ
 		break;
 	}
 }
@@ -272,10 +272,10 @@ void drawMainMenu()
 		double L = ScaleXInches(420);
 		double H = ScaleXInches(250);
 		BUTTON newGame;
-		setButton(L, H, 0.1, BTWD0, BTHT0, "setting.bmp", "   ç»§ç»­æ¸¸æˆ ", MainToArch);
-		setButton(L + BTWD0 + 0.4, H, 0.1, BTWD0, BTHT0, "help.bmp", "    å¸®åŠ©   ", ToHelp);
-		setButton(L + BTWD0 + 0.4, H + BTHT0 + 0.2, 0.1, BTWD0, BTHT0, "exit.bmp", "  é€€å‡ºæ¸¸æˆ ", ExitGame);
-		newGame = setButton(L, H + BTHT0 + 0.2, 0.1, BTWD0, BTHT0, "new.bmp", "   æ–°å»ºæ¸¸æˆ ", NewGame);
+		setButton(L, H, 0.1, BTWD0, BTHT0, "setting.bmp", "   ¼ÌĞøÓÎÏ· ", MainToArch);
+		setButton(L + BTWD0 + 0.4, H, 0.1, BTWD0, BTHT0, "help.bmp", "    °ïÖú   ", ToHelp);
+		setButton(L + BTWD0 + 0.4, H + BTHT0 + 0.2, 0.1, BTWD0, BTHT0, "exit.bmp", "  ÍË³öÓÎÏ· ", ExitGame);
+		newGame = setButton(L, H + BTHT0 + 0.2, 0.1, BTWD0, BTHT0, "new.bmp", "   ĞÂ½¨ÓÎÏ· ", NewGame);
 		newGame->isDisable = (archBuf[2].maxLevel);
 		traverseButton();
 		animation_line = -1;
@@ -317,7 +317,7 @@ void drawArchMenu(void)
 {
 	int i;
 	AddZoomBitMap("archive.bmp", TITLEPOSX, TITLEPOSY - 0.15, ICONSZ, ICONSZ, SRCCOPY);
-	setLabel(TITLEPOSX + ICONSZ, TITLEPOSY, 50, " å­˜æ¡£");
+	setLabel(TITLEPOSX + ICONSZ, TITLEPOSY, 50, " ´æµµ");
 	add->isDisable = isDelete || (archBuf[2].maxLevel);
 	double staX = 2.2, staY = 5.9 + BTHT1 + 0.25, W = BTWD1 + 0.2, H = -0.05;
 	for (i = 0; i < 3; i++) {
@@ -342,14 +342,14 @@ void setArchButton(void)
 		if (!archBuf[i].maxLevel)break;
 		char info0[15], info1[85];
 		sprintf(info0, "archive%d.bmp", i + 1);
-		sprintf(info1, "      å…³å¡è¿›åº¦ %d           å¾—åˆ† %03d           æ—¥æœŸ %s   ",
+		sprintf(info1, "      ¹Ø¿¨½ø¶È %d           µÃ·Ö %03d           ÈÕÆÚ %s   ",
 			(archBuf[i].maxLevel<=6? archBuf[i].maxLevel :6), archBuf[i].rank[0], archBuf[i].time);
 		setButton(staX, staY, 0.1, BTWD1, BTHT1, CopyString(info0), CopyString(info1), LoadLevelList[i]);
 		staY -= BTHT1 + 0.25;
 	}
 	add = setButton(staX, staY, 0.1, BTWD2, BTHT2, "addarchive.bmp", "", AddArch);
 	del = setButton(staX + BTWD2 + 0.45, staY, 0.1, BTWD2, BTHT2, "deletearchive.bmp", "", DeleteArch);
-	setButton(staX + 2 * BTWD2 + 0.9, staY, 0.1, BTWD2, BTHT2, "menu.bmp", " ä¸»èœå•", GetBackToMainMenu);
+	setButton(staX + 2 * BTWD2 + 0.9, staY, 0.1, BTWD2, BTHT2, "menu.bmp", " Ö÷²Ëµ¥", GetBackToMainMenu);
 	return;
 }
 
@@ -363,12 +363,12 @@ void setLevelMenu(void)
 			if (num <= curArch->maxLevel)setButton(staX + i * 2.4, staY + j * 1.5, 0.1, 1.75, 1, "", IntegerToString(num), LoadStageList[num - 1]);
 			else {
 				BUTTON newLevel = setButton(staX + i * 2.4, staY + j * 1.5, 0.1, 1.75, 1, "lock.bmp", "", LoadStageList[num - 1]);
-				newLevel->isDisable = 1;//ä½¿å¾—æœªå¼€æ”¾çš„å…³å¡æ²¡æœ‰ç‚¹å‡»æ•ˆæœ
+				newLevel->isDisable = 1;//Ê¹µÃÎ´¿ª·ÅµÄ¹Ø¿¨Ã»ÓĞµã»÷Ğ§¹û
 			}
 		}
 	}
-	setButton(staX + 0.45, staY - 1.5, 0.1, 2.5, 0.8, "archive.bmp", " å­˜æ¡£", ToArch);
-	setButton(staX + 3.45, staY - 1.5, 0.1, 2.5, 0.8, "menu.bmp", " ä¸»èœå•", GetBackToMainMenu);
+	setButton(staX + 0.45, staY - 1.5, 0.1, 2.5, 0.8, "archive.bmp", " ´æµµ", ToArch);
+	setButton(staX + 3.45, staY - 1.5, 0.1, 2.5, 0.8, "menu.bmp", " Ö÷²Ëµ¥", GetBackToMainMenu);
 	traverseButton();
 	return;
 }
@@ -376,7 +376,7 @@ void setLevelMenu(void)
 void drawLevelMenu(void)
 {
 	AddZoomBitMap("flag.bmp", TITLEPOSX, TITLEPOSY - 0.1, ICONSZ, ICONSZ, SRCCOPY);
-	setLabel(TITLEPOSX + ICONSZ, TITLEPOSY, 50, " å…³å¡");
+	setLabel(TITLEPOSX + ICONSZ, TITLEPOSY, 50, " ¹Ø¿¨");
 	traverseButton();
 	return;
 }
@@ -468,9 +468,9 @@ void setPauseMenu()
 {
 	double x = GetWindowWidth();
 	double y = GetWindowHeight();
-	setButton(x / 2 - 0.75, y / 2 - 0.15, 0.1, 1.5, 0.4, "", "ç»§ç»­æ¸¸æˆ", Goback);
-	setButton(x / 2 - 0.75, y / 2 - 0.7, 0.1, 1.5, 0.4, "", "æŸ¥çœ‹å¸®åŠ©", ToHelp);
-	setButton(x / 2 - 0.75, y / 2 - 1.25, 0.1, 1.5, 0.4, "", "å›åˆ°ä¸»èœå•", GetBackToMainMenu);
+	setButton(x / 2 - 0.75, y / 2 - 0.15, 0.1, 1.5, 0.4, "", "¼ÌĞøÓÎÏ·", Goback);
+	setButton(x / 2 - 0.75, y / 2 - 0.7, 0.1, 1.5, 0.4, "", "²é¿´°ïÖú", ToHelp);
+	setButton(x / 2 - 0.75, y / 2 - 1.25, 0.1, 1.5, 0.4, "", "»Øµ½Ö÷²Ëµ¥", GetBackToMainMenu);
 }
 
 void drawPauseMenu()
@@ -509,7 +509,7 @@ void setHelpMenu()
 	double x = GetWindowWidth();
 	double y = GetWindowHeight();
 	page = 1;
-	setButton(x / 2 - 2.4, y / 4 - 1.5, 0.1, 1.8, 0.6, "", "è¿”å›", Goback);
+	setButton(x / 2 - 2.4, y / 4 - 1.5, 0.1, 1.8, 0.6, "", "·µ»Ø", Goback);
 	setButton(x / 2 + 0.6, y / 4 - 1.5, 0.1, 1.8, 0.6, "NextPage.bmp", "", TurnPage);
 
 }
@@ -525,13 +525,13 @@ void drawHelpMenu()
 void drawHelpMenuP1()
 {
 	int i,j;
-	const string helpsP1[2][5] = { "W:è·³è·ƒ","A/D:å‘å·¦/å³è¿åŠ¨","F:åˆ‡æ¢æ¨¡å¼","é¼ æ ‡å·¦é”®ï¼šç»˜åˆ¶æ–¹å—/å°„å‡»","é¼ æ ‡å³é”®ï¼šç»˜å›¾æ¨¡å¼ä¸‹å›æ”¶å¢¨æ°´","ESCï¼šé€€å‡ºå…³å¡å›åˆ°ä¸»èœå•","Pï¼šæš‚åœæ¸¸æˆ","Hï¼šå¸®åŠ©é¡µé¢","â†/â†’ï¼šï¼ˆå¸®åŠ©é¡µé¢ï¼‰ä¸Šä¸€é¡µ/ä¸‹ä¸€é¡µ" ,"æ³¨æ„ï¼šç»˜åˆ¶åªèƒ½ä»¥å·²æœ‰æ–¹å—ä¸ºèµ·ç‚¹" };
+	const string helpsP1[2][5] = { "W:ÌøÔ¾","A/D:Ïò×ó/ÓÒÔË¶¯","F:ÇĞ»»Ä£Ê½","Êó±ê×ó¼ü£º»æÖÆ·½¿é/Éä»÷","Êó±êÓÒ¼ü£º»æÍ¼Ä£Ê½ÏÂ»ØÊÕÄ«Ë®","ESC£ºÍË³ö¹Ø¿¨»Øµ½Ö÷²Ëµ¥","P£ºÔİÍ£ÓÎÏ·","H£º°ïÖúÒ³Ãæ","¡û/¡ú£º£¨°ïÖúÒ³Ãæ£©ÉÏÒ»Ò³/ÏÂÒ»Ò³" ,"×¢Òâ£º»æÖÆÖ»ÄÜÒÔÒÑÓĞ·½¿éÎªÆğµã" };
 	int regPointSize = GetPointSize();
 	SetPointSize(regPointSize * 2.5);
 	SetStyle(1);
-	double width = TextStringWidth("æ“ä½œæç¤º");
+	double width = TextStringWidth("²Ù×÷ÌáÊ¾");
 	MovePen(GetWindowWidth() / 2 - width / 2, 7);
-	DrawTextString("æ“ä½œæç¤º");
+	DrawTextString("²Ù×÷ÌáÊ¾");
 	SetPointSize(regPointSize * 2);
 	SetStyle(0);
 	for (i = 0; i < 2; i++)
@@ -570,9 +570,9 @@ void drawHelpMenuP2()
 	int regPointSize = GetPointSize();
 	SetPointSize(regPointSize * 2.5);
 	SetStyle(1);
-	double width = TextStringWidth("å›¾æ ‡è§£é‡Š");
+	double width = TextStringWidth("Í¼±ê½âÊÍ");
 	MovePen(GetWindowWidth() / 2 - width / 2, 7);
-	DrawTextString("å›¾æ ‡è§£é‡Š");
+	DrawTextString("Í¼±ê½âÊÍ");
 	SetPointSize(regPointSize * 1.5);
 	SetStyle(0);
 	NewSetPenColor(40, 85, 242);
@@ -587,7 +587,7 @@ void drawHelpMenuP2()
 	NewSetPenColor(0, 0, 0);
 	DrawTextString("INK:");
 	MovePen(GetWindowWidth() / 2 + 1.2, 5.4 - GetFontAscent() / 2);
-	DrawTextString("å½“å‰å‰©ä½™å¢¨æ°´é‡");
+	DrawTextString("µ±Ç°Ê£ÓàÄ«Ë®Á¿");
 	NewSetPenColor(242, 11, 25);
 	StartFilledRegion(1);
 	MovePen(GetWindowWidth() / 2 - 1, 6);
@@ -600,17 +600,17 @@ void drawHelpMenuP2()
 	NewSetPenColor(0, 0, 0);
 	DrawTextString("HP:");
 	MovePen(GetWindowWidth() / 2 + 1.2, 5.9 - GetFontAscent() / 2);
-	DrawTextString("å½“å‰å‰©ä½™ç”Ÿå‘½å€¼");
+	DrawTextString("µ±Ç°Ê£ÓàÉúÃüÖµ");
 	AddZoomBitMap("shoot.bmp", GetWindowWidth() / 2 - 0.4, 4, 0.8, 0.8, SRCCOPY);
 	AddZoomBitMap("pen.bmp", GetWindowWidth() / 2 - 2.2, 4, 0.8, 0.8, SRCCOPY);
 	AddZoomBitMap("ghost.bmp", GetWindowWidth() / 2 + 1.4, 4, 0.8, 0.8, SRCCOPY);
 	SetPointSize(regPointSize);
-	MovePen(GetWindowWidth() / 2 - TextStringWidth("å°„å‡»æ¨¡å¼") / 2, 3.2);
-	DrawTextString("å°„å‡»æ¨¡å¼");
-	MovePen(GetWindowWidth() / 2 - 1.8 - TextStringWidth("ç»˜ç”»æ¨¡å¼") / 2, 3.2);
-	DrawTextString("ç»˜ç”»æ¨¡å¼");
-	MovePen(GetWindowWidth() / 2 + 1.8 - TextStringWidth("æ•Œäººï¼Œå¯é€šè¿‡å°„å‡»å‡»ç ´") / 2, 3.2);
-	DrawTextString("æ•Œäººï¼Œå¯é€šè¿‡å°„å‡»å‡»ç ´");
+	MovePen(GetWindowWidth() / 2 - TextStringWidth("Éä»÷Ä£Ê½") / 2, 3.2);
+	DrawTextString("Éä»÷Ä£Ê½");
+	MovePen(GetWindowWidth() / 2 - 1.8 - TextStringWidth("»æ»­Ä£Ê½") / 2, 3.2);
+	DrawTextString("»æ»­Ä£Ê½");
+	MovePen(GetWindowWidth() / 2 + 1.8 - TextStringWidth("µĞÈË£¬¿ÉÍ¨¹ıÉä»÷»÷ÆÆ") / 2, 3.2);
+	DrawTextString("µĞÈË£¬¿ÉÍ¨¹ıÉä»÷»÷ÆÆ");
 	traverseButton();
 }
 
@@ -621,14 +621,14 @@ void TurnPage()
 	if (page == 1)
 	{
 		CacheSorting();
-		setButton(x / 2 - 2.4, y / 4 - 1.5, 0.1, 1.8, 0.6, "", "è¿”å›", Goback);
+		setButton(x / 2 - 2.4, y / 4 - 1.5, 0.1, 1.8, 0.6, "", "·µ»Ø", Goback);
 		setButton(x / 2 + 0.6, y / 4 - 1.5, 0.1, 1.8, 0.6, "PrevPage.bmp", "", TurnPage);
 		page = 2;
 	}
 	else
 	{
 		CacheSorting();
-		setButton(x / 2 - 2.4, y / 4 - 1.5, 0.1, 1.8, 0.6, "", "è¿”å›", Goback);
+		setButton(x / 2 - 2.4, y / 4 - 1.5, 0.1, 1.8, 0.6, "", "·µ»Ø", Goback);
 		setButton(x / 2 + 0.6, y / 4 - 1.5, 0.1, 1.8, 0.6, "NextPage.bmp", "", TurnPage);
 		page = 1;
 	}
@@ -644,11 +644,11 @@ void setSettleMenu()
 {
 	double staX = 2.3, staY = 4;
 	LoadRank(curStage, myrole.mark);
-	BUTTON Next=setButton(staX, staY, 0.1, BTWD2, BTHT2, "continue.bmp", "ä¸‹ä¸€å…³", ToNextStage);
+	BUTTON Next=setButton(staX, staY, 0.1, BTWD2, BTHT2, "continue.bmp", "ÏÂÒ»¹Ø", ToNextStage);
 	if (myrole.live == FALSE||curStage==6)
 		Next->isDisable = TRUE;
-	setButton(staX + BTWD2 + 0.45, staY, 0.1, BTWD2, BTHT2, "flag.bmp", "å…³å¡", ToLevel);
-	setButton(staX + 2 * BTWD2 + 0.9, staY, 0.1, BTWD2, BTHT2, "menu.bmp", " ä¸»èœå•", GetBackToMainMenu);
+	setButton(staX + BTWD2 + 0.45, staY, 0.1, BTWD2, BTHT2, "flag.bmp", "¹Ø¿¨", ToLevel);
+	setButton(staX + 2 * BTWD2 + 0.9, staY, 0.1, BTWD2, BTHT2, "menu.bmp", " Ö÷²Ëµ¥", GetBackToMainMenu);
 	settleInfo[2] = curStage + '0';
 	settleInfo[20] = myrole.mark / 100 + '0';
 	settleInfo[21] = myrole.mark % 100 / 10 + '0';
@@ -656,13 +656,13 @@ void setSettleMenu()
 }
 void drawSettleMenu()
 {
-	setLabel(TITLEPOSX - 0.3, TITLEPOSY, 50, "å…³å¡ç»“ç®—");
+	setLabel(TITLEPOSX - 0.3, TITLEPOSY, 50, "¹Ø¿¨½áËã");
 	setLabel(5.5, 6, 40, settleInfo);
 	traverseButton();
 }
 void ToSettle()
 {
-	if (strcmp(StateTop()->name, "MAINMENU") != 0)StatePop("MAINMENU");//POPæ‰é™¤äº†MAINMENUä»¥å¤–çš„æ‰€æœ‰ä¸œè¥¿ï¼ŒåŒ…æ‹¬å½“å‰å…³å¡
+	if (strcmp(StateTop()->name, "MAINMENU") != 0)StatePop("MAINMENU");//POPµô³ıÁËMAINMENUÒÔÍâµÄËùÓĞ¶«Î÷£¬°üÀ¨µ±Ç°¹Ø¿¨
 	StatePush(&SettleMenu);
 }
 void ToNextStage()
