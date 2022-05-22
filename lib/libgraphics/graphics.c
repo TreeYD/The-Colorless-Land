@@ -863,8 +863,8 @@ static void InitDisplay(void)
     wndcls.cbWndExtra = 0;
     wndcls.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
     wndcls.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wndcls.hIcon = LoadIcon(NULL, IDI_ERROR);
-	wndcls.hIconSm = LoadIcon(NULL, IDI_ERROR);
+    wndcls.hIcon = LoadIcon(g_hinstance, IDI_ICON2);//IDI_ICON2 -> 32*32 windows32.ico
+	wndcls.hIconSm = LoadIcon(g_hinstance,IDI_ICON1);//IDI_ICON1 -> 16*16 windows16.ico
     wndcls.hInstance = NULL;
     wndcls.lpfnWndProc = GraphicsEventProc;
     wndcls.lpszClassName = "Graphics Window";
