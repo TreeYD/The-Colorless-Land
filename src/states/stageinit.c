@@ -31,8 +31,8 @@ void StageSetting() {
 		StageArray[i] = GetBlock(sizeof(State));
 		StageArray[i]->name = GetBlock(sizeof(char));
 		sprintf(StageArray[i]->name, "%d", i);
-		StageArray[i]->init = InitArray[i];//待改
-		StageArray[i]->draw = StageDraw;//在写
+		StageArray[i]->init = InitArray[i];
+		StageArray[i]->draw = StageDraw;
 		StageArray[i]->destroy = StageClear;
 		StageArray[i]->keyboardCallbackfn = KeyBoardControl;
 		StageArray[i]->mouseCallbackfn = MouseControl;
@@ -209,20 +209,6 @@ void InitSetting() {
 	InitArray[3] = StageInit4;
 	InitArray[4] = StageInit5;
 	InitArray[5] = StageInit6;
-	/*InitArray[6] = StageInit7;
-	InitArray[7] = StageInit8;
-	InitArray[8] = StageInit9;
-	InitArray[9] = StageInit10;
-	InitArray[10] = StageInit11;
-	InitArray[11] = StageInit12;
-	InitArray[12] = StageInit13;
-	InitArray[13] = StageInit14;
-	InitArray[14] = StageInit15;
-	InitArray[15] = StageInit16;
-	InitArray[16] = StageInit17;
-	InitArray[17] = StageInit18;
-	InitArray[18] = StageInit19;
-	InitArray[19] = StageInit20;*/
 }
 void StageInit1() {
 	RoleSetting(0, 1.06);
