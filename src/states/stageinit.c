@@ -21,6 +21,7 @@
 #include"lightgui.h"
 #include"stageDraw.h"
 #include"menu.h"
+
 extern LINE* LineUnion;
 State* StageArray[StageNum];
 fnPtr InitArray[StageNum];

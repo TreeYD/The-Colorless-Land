@@ -21,6 +21,7 @@
 #define BonusSize 0.15
 #define GoalSize 0.15
 #define DotSize 0.1
+#define StageNum 20
 #include"genlib.h"
 enum DIRECTION
 {

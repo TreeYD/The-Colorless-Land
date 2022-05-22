@@ -45,15 +45,3 @@ void StatePop(string name);//¿¼ÂÇµ½»á³öÏÖ²»Ö¹Ò»¸ö×´Ì¬³öÕ»¡¢³öÕ»×´Ì¬ÊıÁ¿²»¶¨µÄÇé¿
 State *StateTop();
 #endif
 
-/*£¨ÄÜÅÜµÄ£©Mainº¯Êıexample:
-
-void Main()
-{
-		SetWindowSize(GraphicsWindowWidth, GraphicsWindowHeight);
-		InitGraphics();
-		InitGUI();
-		registerTimerEvent(render);
-		StateManagerInit(&statemanager);
-		startTimer(RENDER,RENDERGAP);
-}
-*/
