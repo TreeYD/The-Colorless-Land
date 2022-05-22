@@ -2014,28 +2014,6 @@ double ScaleYInches(int y)/*y coordinate from pixels to inches*/
  	  return GetWindowHeight()-(double)y/GetYResolution();
 } 	   
 
-/*new Functions written by Ag2SO4
-*Function void AddBitMap(char* bitMap,int x,int y,unsigned long printMethod)
-*bitMap:the file name of the image
-*x,y:position of the image(in pixel)
-*printMethod:
-*/
-void AddBitMap(char* bitMap,double x,double y,unsigned long printMethod)
-{
-	y = DesiredHeight - y;
-	int pixelX = PixelsX(x);
-	int pixelY = PixelsY(y);
-	HBITMAP hbitmap = LoadImage(NULL, (LPCSTR)bitMap, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-	HDC virtualDC = CreateCompatibleDC(osdc);
-	HGDIOBJ hOldBmp =SelectObject(virtualDC,hbitmap);
-	BITMAP bmp;
-	GetObject(hbitmap, sizeof(BITMAP), &bmp);
-	BitBlt(osdc, pixelX, pixelY, bmp.bmWidth,bmp.bmHeight, virtualDC,0,0, (DWORD)printMethod);
-	SelectObject(virtualDC, hOldBmp);
-	DeleteObject(hbitmap);
-	DeleteObject(hOldBmp);
-	DeleteDC(virtualDC);
-}
 
 /*to make transition effects on drawn line, create a new function that choose color by RGB*/
 void NewSetPenColor(int red, int green, int blue)
