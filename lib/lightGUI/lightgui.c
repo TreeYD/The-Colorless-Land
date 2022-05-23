@@ -206,10 +206,10 @@ void drawButton(BUTTON ptr,bool fill) {
 	}
 	drawBox(ptr->x, ptr->y, ptr->r,ptr->w, ptr->h);
 	double length = TextStringWidth(ptr->text);
-	if (ptr->iconAddress != "")length += ptr->h*0.7;
+	if (ptr->iconAddress[0] != '\0')length += ptr->h*0.7;
 	double staX = ptr->x + (ptr->w - length) / 2;
 	if(!fill)AddZoomBitMap(ptr->iconAddress, staX, ptr->y+0.15*ptr->h, ptr->h*0.7, ptr->h*0.7, SRCAND);
-	if (ptr->iconAddress != "")staX += ptr->h*0.7;
+	if (ptr->iconAddress[0]!= '\0')staX += ptr->h*0.7;
 	setLabel(staX, ptr->y + ptr->h / 3, ScalePixels(ptr->h / 3), ptr->text);
 }
 BUTTON setButton(double x,double y,double r,double w,double h,string icon,string text,void *func) {

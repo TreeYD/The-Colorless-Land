@@ -266,7 +266,7 @@ void drawMainMenu()
 		//display logo
 		DisplayClear();
 		AddZoomBitMap("logo.bmp", 3.5, 4.6, 8, 3.09278, SRCCOPY);
-		AddZoomBitMap("spray.bmp", GetAnimationX(4, animation_line), GetAnimationY(4.7, animation_line), 12.77, 4 ,SRCCOPY);
+		AddZoomBitMap("spray.bmp", GetAnimationX(3.5, animation_line), GetAnimationY(4.7, animation_line), 12.77, 4 ,SRCCOPY);
 		animation_line += animation_iv;
 	}
 	if (animation_line > 800) {
@@ -283,7 +283,7 @@ void drawMainMenu()
 	}
 	if (animation_line == -1) {
 		AddZoomBitMap("logo.bmp", 3.5, 4.6,8, 3.09278, SRCCOPY);
-		AddZoomBitMap("spray.bmp", GetAnimationX(4, ANIMATIONSTAGE), GetAnimationY(4.7, ANIMATIONSTAGE),12.77,4 ,SRCCOPY);
+		AddZoomBitMap("spray.bmp", GetAnimationX(3.5, ANIMATIONSTAGE), GetAnimationY(4.7, ANIMATIONSTAGE),12.77,4 ,SRCCOPY);
 		traverseButton();
 	}
 }
@@ -361,7 +361,7 @@ void setLevelMenu(void)
 	for (j = 0; j < 2; j++) {
 		for (i = 0; i < 3; i++) {
 			int num = 4 - j * 3 + i;
-			if (num <= curArch->maxLevel)setButton(staX + i * 2.4, staY + j * 1.5, 0.1, 1.75, 1, "", IntegerToString(num), LoadStageList[num - 1]);
+			if (num <= curArch->maxLevel)setButton(staX + i * 2.4, staY + j * 1.5, 0.1, 1.75, 1, "\0", IntegerToString(num), LoadStageList[num - 1]);
 			else {
 				BUTTON newLevel = setButton(staX + i * 2.4, staY + j * 1.5, 0.1, 1.75, 1, "lock.bmp", "", LoadStageList[num - 1]);
 				newLevel->isDisable = 1;//使得未开放的关卡没有点击效果
@@ -469,9 +469,9 @@ void setPauseMenu()
 {
 	double x = GetWindowWidth();
 	double y = GetWindowHeight();
-	setButton(x / 2 - 0.75, y / 2 - 0.15, 0.1, 1.5, 0.4, "", "继续游戏", Goback);
-	setButton(x / 2 - 0.75, y / 2 - 0.7, 0.1, 1.5, 0.4, "", "查看帮助", ToHelp);
-	setButton(x / 2 - 0.75, y / 2 - 1.25, 0.1, 1.5, 0.4, "", "回到主菜单", GetBackToMainMenu);
+	setButton(x / 2 - 0.75, y / 2 - 0.15, 0.1, 1.5, 0.4, "\0", "继续游戏", Goback);
+	setButton(x / 2 - 0.75, y / 2 - 0.7, 0.1, 1.5, 0.4, "\0", "查看帮助", ToHelp);
+	setButton(x / 2 - 0.75, y / 2 - 1.25, 0.1, 1.5, 0.4, "\0", "回到主菜单", GetBackToMainMenu);
 }
 
 void drawPauseMenu()
@@ -622,14 +622,14 @@ void TurnPage()
 	if (page == 1)
 	{
 		CacheSorting();
-		setButton(x / 2 - 2.4, y / 4 - 1.5, 0.1, 1.8, 0.6, "", "返回", Goback);
+		setButton(x / 2 - 2.4, y / 4 - 1.5, 0.1, 1.8, 0.6, "\0", "返回", Goback);
 		setButton(x / 2 + 0.6, y / 4 - 1.5, 0.1, 1.8, 0.6, "PrevPage.bmp", "", TurnPage);
 		page = 2;
 	}
 	else
 	{
 		CacheSorting();
-		setButton(x / 2 - 2.4, y / 4 - 1.5, 0.1, 1.8, 0.6, "", "返回", Goback);
+		setButton(x / 2 - 2.4, y / 4 - 1.5, 0.1, 1.8, 0.6, "\0", "返回", Goback);
 		setButton(x / 2 + 0.6, y / 4 - 1.5, 0.1, 1.8, 0.6, "NextPage.bmp", "", TurnPage);
 		page = 1;
 	}

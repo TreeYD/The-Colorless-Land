@@ -1057,7 +1057,7 @@ static void RegisterWindowClass(void)
     wcApp.hbrBackground = GetStockObject(WHITE_BRUSH);
     wcApp.style = CS_HREDRAW | CS_VREDRAW;
     wcApp.cbClsExtra = wcApp.cbWndExtra = 0;
-    if (!RegisterClassEX(&wcApp)) {
+    if (!RegisterClassEx(&wcApp)) {
         Error("Internal error: RegisterClass failed\n");
     }
 }
