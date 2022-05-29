@@ -172,8 +172,8 @@ void PlayerMove(int event)
 		if (IsJumping && !(JumpJudgeBlock() || JumpJudgeDot())) {
 			VerticalSpeed -= G;
 			myrole.y += VerticalSpeed;
-			if (FallingSpeed >= 1.2*BlockSize)
-				FallingSpeed = 1.2*BlockSize;
+			if (VerticalSpeed <= -1.2*BlockSize)
+				VerticalSpeed = -1.2*BlockSize;
 		}
 		if (JumpJudgeBlock() || JumpJudgeDot() ) {
 			IsJumping = FALSE;
