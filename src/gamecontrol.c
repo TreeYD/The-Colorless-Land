@@ -173,17 +173,18 @@ void PlayerMove(int event)
 			VerticalSpeed -= G;
 			myrole.y += VerticalSpeed;
 		}
-		if (JumpJudgeBlock() || JumpJudgeDot() || myrole.y <= 1) {
+		if (JumpJudgeBlock() || JumpJudgeDot() ) {
 			IsJumping = FALSE;
 			cancelTimer(JUMP);
 		}
 		break;
 	case FALL://FALL的Timer需要一直开着，需要一直判断，不需要按键来触发
-		if (myrole.y <= 1) {//保证角色不穿过下边界
-			myrole.y = 1;
+		if (myrole.y < 0) {
+			myrole.HP = 0;
+			myrole.live = FALSE;
 			IsDropping = FALSE;
 		}
-		if (!IsJumping && !IsDropping && !(JumpJudgeBlock() || JumpJudgeDot()) && myrole.y > 1) {
+		if (!IsJumping && !IsDropping && !(JumpJudgeBlock() || JumpJudgeDot()) ) {
 			IsDropping = TRUE;
 			FallingSpeed = 0;
 		}
@@ -317,6 +318,10 @@ void MouseControl(int x, int y, int button, int event) {//鼠标信息回调函数
 				return;
 			}
 			if (myrole.weapon) {//用枪的情况
+				if (COS >= 0)
+					myrole.direction = RIGHT;
+				else
+					myrole.direction = LEFT;
 				startTimer(SHOT, RENDERGAP);
 			}
 			else {//用笔的情况
