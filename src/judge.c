@@ -24,14 +24,8 @@ bool JumpJudgeBlock() {
 	while (p != NULL) {
 		BlockX = p->x + BlockSize;
 		BlockY = p->y + 2 * BlockSize;
-		if (fabs(RoleX - BlockX) <= JUMPBLOCKRANGEX && RoleY - BlockY <= 0 && BlockY - RoleY <= BlockSize) {
-			myrole.y = p->y + 2 * BlockSize;
-			return TRUE;
-		}
-		else if (fabs(RoleX - BlockX) <= JUMPBLOCKRANGEX && BlockY - RoleY < RoleHeight + 2 * BlockSize && BlockY - RoleY>0)
-		{
-			myrole.y = p->y - RoleHeight;
-			VerticalSpeed = -1 * fabs(VerticalSpeed);
+		if (fabs(RoleX - BlockX) <= JUMPBLOCKRANGEX && fabs(RoleY - BlockY) <= JUMPBLOCKRANGEY) {
+			myrole.y = BlockY;
 			return TRUE;
 		}
 		p = p->next;
@@ -46,8 +40,8 @@ bool RightMoveJudgeBlock() {
 	while (p != NULL) {
 		BlockX = p->x;
 		BlockY = p->y;
-		if (BlockX - RoleX >= 0 && BlockX - RoleX <= MOVERANGE && (BlockY - RoleY < RoleHeight && BlockY - RoleY >= 0 || RoleY - BlockY < 2 * BlockSize && RoleY - BlockY >= 0)) {
-			myrole.x = p->x - RoleWidth;
+		if (fabs(BlockX - RoleX) <= MOVERANGE && fabs(BlockY - RoleY) <= BlockSize) {
+			myrole.x = BlockX - RoleWidth;
 			return TRUE;
 		}
 		p = p->next;
@@ -62,8 +56,8 @@ bool LeftMoveJudgeBlock() {
 	while (p != NULL) {
 		BlockX = p->x + 2 * BlockSize;
 		BlockY = p->y;
-		if (RoleX - BlockX >= 0 && RoleX - BlockX <= MOVERANGE && (BlockY - RoleY < RoleHeight && BlockY - RoleY > 0 || RoleY - BlockY < 2 * BlockSize && RoleY - BlockY >= 0)) {
-			myrole.x = p->x + 2 * BlockSize;
+		if (fabs(BlockX - RoleX) <= MOVERANGE && fabs(BlockY - RoleY) <= BlockSize) {
+			myrole.x = BlockX;
 			return TRUE;
 		}
 		p = p->next;
@@ -87,7 +81,7 @@ bool RoleAndGoal(struct GOAL goal) {
 	double RoleY = myrole.y + RoleHeight / 2;
 	double GoalX = goal.x + GoalSize;
 	double GoalY = goal.y + GoalSize;
-	if (distance(RoleX, RoleY, RoleWidth , goal.x, goal.y, GoalSize)) {
+	if (distance(RoleX, RoleY, RoleWidth, goal.x, goal.y, GoalSize)) {
 		return TRUE;
 	}
 	return FALSE;
@@ -97,7 +91,7 @@ bool EnemyAndBullet(struct ENEMY enemy, struct BULLET bullet) {
 	double BulletY = bullet.y + BulletHeight / 2;
 	double EnemyX = enemy.x + enemy.width / 2;
 	double EnemyY = enemy.y + enemy.height / 2;
-	if (distance(BulletX, BulletY, BulletSize, EnemyX, EnemyY, enemy.size)&&enemy.live==TRUE) {
+	if (distance(BulletX, BulletY, BulletSize, EnemyX, EnemyY, enemy.size)&&enemy.live== TRUE) {
 		return TRUE;
 	}
 	return FALSE;
@@ -138,6 +132,12 @@ bool JumpJudgeDot() {
 			DotX = dot->x + DotSize;
 			DotY = dot->y + 2 * DotSize;
 			if (fabs(RoleX - DotX) <= JUMPDOTRANGEX && fabs(RoleY - DotY) <= JUMPDOTRANGEY) {
+				myrole.y = DotY;
+				return TRUE;
+			}
+			else if (fabs(RoleX - DotX) <= JUMPDOTRANGEX && DotY > RoleY+0.15&&DotY - RoleY < RoleHeight + 2 * BlockSize-0.45)
+			{
+				myrole.y = myrole.y - VerticalSpeed;
 				return TRUE;
 			}
 			dot = dot->next;
@@ -156,7 +156,7 @@ bool RightMoveJudgeDot() {
 		while (dot != NULL) {
 			DotX = dot->x;
 			DotY = dot->y;
-			if (DotX - RoleX >= 0 && DotX - RoleX < RoleWidth && (RoleY-DotY<2*DotSize&&RoleY>=DotY||DotY-RoleY<RoleHeight&&DotY>RoleY)) {
+			if (fabs(DotX - RoleX) <= MOVERANGE && fabs(DotY - RoleY) <= DotSize) {
 				myrole.x = DotX - RoleWidth;
 				return TRUE;
 			}
@@ -176,7 +176,8 @@ bool LeftMoveJudgeDot() {
 		while (dot != NULL) {
 			DotX = dot->x + 2 * DotSize;
 			DotY = dot->y;
-			if (RoleX-DotX<0  && DotX - RoleX < 2*BlockSize && (RoleY - DotY < 2 * DotSize&&RoleY >= DotY || DotY - RoleY<RoleHeight&&DotY>RoleY)) {
+			if (fabs(DotX - RoleX) <= MOVERANGE && fabs(DotY - RoleY) <= DotSize) {
+				myrole.x = DotX;
 				return TRUE;
 			}
 			dot = dot->next;

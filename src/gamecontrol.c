@@ -28,6 +28,9 @@ extern State PauseMenu;
 extern State HelpMenu;
 extern int curStage;
 extern struct ArchInfo* curArch;
+ bool IsJumping = FALSE;
+static bool IsDropping = FALSE;
+static bool IsDrawing = FALSE;
 void ScreenRender(void) {
 	DisplayClear();
 	if (stateRender != NULL) {
@@ -171,6 +174,8 @@ void PlayerMove(int event)
 		}
 		if (IsJumping && !(JumpJudgeBlock() || JumpJudgeDot())) {
 			VerticalSpeed -= G;
+			if(VerticalSpeed<=-0.7*BlockSize)
+				VerticalSpeed==-0.7*BlockSize;
 			myrole.y += VerticalSpeed;
 		}
 		if (JumpJudgeBlock() || JumpJudgeDot() ) {
@@ -191,8 +196,8 @@ void PlayerMove(int event)
 		if (IsDropping) {
 			myrole.y -= FallingSpeed;
 			FallingSpeed += G;
-			if (FallingSpeed >= 1.2*BlockSize)
-				FallingSpeed = 1.2*BlockSize;
+			if (FallingSpeed >= 0.7*BlockSize)
+				FallingSpeed = 0.7*BlockSize;
 		}
 		if (JumpJudgeBlock() || JumpJudgeDot()) {
 			IsDropping = FALSE;
