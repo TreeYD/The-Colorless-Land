@@ -164,7 +164,7 @@ void PlayerMove(int event)
 		}
 		break;
 	case JUMP:
-		if (!IsJumping && !IsDropping && (JumpJudgeBlock() || JumpJudgeDot() || myrole.y <= 1)) {
+		if (!IsJumping && !IsDropping && (JumpJudgeBlock() || JumpJudgeDot())) {
 			IsJumping = TRUE;
 			VerticalSpeed = INITIALVERTICALSPEED;
 			myrole.y += VerticalSpeed;
@@ -191,6 +191,8 @@ void PlayerMove(int event)
 		if (IsDropping) {
 			myrole.y -= FallingSpeed;
 			FallingSpeed += G;
+			if (FallingSpeed >= 1.2*BlockSize)
+				FallingSpeed = 1.2*BlockSize;
 		}
 		if (JumpJudgeBlock() || JumpJudgeDot()) {
 			IsDropping = FALSE;
