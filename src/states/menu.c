@@ -93,6 +93,7 @@ void drawSettleMenu();
 void ToSettle();//关卡结算时触发，由于这关不会再用到了，所以直接Pop出栈
 void ToNextStage();
 void ToLevel();//使用当前存档加载Level界面
+void ToAgain();//如果角色死亡，那么重新加载当前关卡 
 
 State SettleMenu = {
 	"SETTLEMENU",
@@ -645,9 +646,10 @@ void setSettleMenu()
 {
 	double staX = 2.3, staY = 4;
 	LoadRank(curStage, myrole.mark);
-	BUTTON Next=setButton(staX, staY, 0.1, BTWD2, BTHT2, "continue.bmp", "下一关", ToNextStage);
-	if (myrole.live == FALSE||curStage==6)
-		Next->isDisable = TRUE;
+	if(myrole.live==TRUE){
+		BUTTON Next=setButton(staX, staY, 0.1, BTWD2, BTHT2, "continue.bmp", "下一关", ToNextStage);
+		Next->isDisable=(curStage==6);	
+	}else setButton(staX,staY,0.1,BTWD2,BTHT2,"again.bmp"," 重新开始",ToAgain);
 	setButton(staX + BTWD2 + 0.45, staY, 0.1, BTWD2, BTHT2, "flag.bmp", "关卡", ToLevel);
 	setButton(staX + 2 * BTWD2 + 0.9, staY, 0.1, BTWD2, BTHT2, "menu.bmp", " 主菜单", GetBackToMainMenu);
 	settleInfo[2] = curStage + '0';
@@ -669,6 +671,11 @@ void ToSettle()
 void ToNextStage()
 {
 	curStage++;
+	StatePop(NULL);
+	StatePush(StageArray[curStage - 1]);
+}
+void ToAgain()
+{
 	StatePop(NULL);
 	StatePush(StageArray[curStage - 1]);
 }
