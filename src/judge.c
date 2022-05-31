@@ -97,7 +97,7 @@ bool EnemyAndBullet(struct ENEMY enemy, struct BULLET bullet) {
 	double BulletY = bullet.y + BulletHeight / 2;
 	double EnemyX = enemy.x + enemy.width / 2;
 	double EnemyY = enemy.y + enemy.height / 2;
-	if (distance(BulletX, BulletY, BulletSize, EnemyX, EnemyY, enemy.size)) {
+	if (distance(BulletX, BulletY, BulletSize, EnemyX, EnemyY, enemy.size)&&enemy.live==TRUE) {
 		return TRUE;
 	}
 	return FALSE;
