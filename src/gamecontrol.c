@@ -42,6 +42,7 @@ void StartAutoTimer() {
 	startTimer(JUDGE, RENDERGAP);
 	startTimer(BULLETMAKE, RENDERGAP);//子弹的不断产生
 	startTimer(BULLETMOVE, RENDERGAP);//子弹运动的Timer需要一直开着
+	//startTimer(DETECT,RENDERGAP/2);
 	return;
 }
 void CancelControlTimer() {
@@ -54,6 +55,7 @@ void CancelControlTimer() {
 	cancelTimer(JUMP);
 	cancelTimer(SHOT);
 	cancelTimer(DRAW);
+	//cancelTimer(DETECT);
 	return;
 }
 void render(int TimerID)//计时器回调函数
@@ -95,6 +97,14 @@ void render(int TimerID)//计时器回调函数
 		break;
 	case HP:
 		HPMonitor();
+		break;
+	case DETECT:
+		JumpJudgeBlock();
+		RightMoveJudgeBlock();
+		LeftMoveJudgeBlock();
+		JumpJudgeDot();
+		RightMoveJudgeDot();
+		LeftMoveJudgeDot();
 		break;
 	}
 	return;
@@ -182,11 +192,12 @@ void PlayerMove(int event)
 		}
 		break;
 	case FALL://FALL的Timer需要一直开着，需要一直判断，不需要按键来触发
-		if (myrole.y <= 1) {//保证角色不穿过下边界
-			myrole.y = 1;
+		if (myrole.y <= 0) {//保证角色不穿过下边界
 			IsDropping = FALSE;
+			myrole.HP = 0;
+			myrole.live = FALSE;
 		}
-		if (!IsJumping && !IsDropping && !(JumpJudgeBlock() || JumpJudgeDot()) && myrole.y > 1) {
+		if (!IsJumping && !IsDropping && !(JumpJudgeBlock() || JumpJudgeDot()) ) {
 			IsDropping = TRUE;
 			FallingSpeed = 0;
 		}
