@@ -339,6 +339,10 @@ void MouseControl(int x, int y, int button, int event) {//鼠标信息回调函数
 				return;
 			}
 			if (myrole.weapon) {//用枪的情况
+				if (COS >= 0)
+					myrole.direction = RIGHT;
+				else
+					myrole.direction = LEFT;
 				startTimer(SHOT, RENDERGAP);
 			}
 			else {//用笔的情况
