@@ -19,7 +19,9 @@
 #include "stateManager.h"
 #include"menu.h"
 bool IsJumping = FALSE;
-static bool IsDropping = FALSE;
+bool teleport = FALSE;
+bool IsDropping = FALSE;
+double VerticalSpeed = INITIALVERTICALSPEED;//角色在地面上向上跳起的初速度
 static bool IsDrawing = FALSE;
 extern struct ROLE myrole;
 extern struct ENEMY enemy[EnemyNum];
@@ -161,6 +163,8 @@ void KeyBoardControl(int key, int event) {//键盘信息回调函数
 }
 void PlayerMove(int event)
 {
+	teleport = TRUE;
+	printf("teleport!\n");
 	switch (event)
 	{
 	case LEFTMOVING:
@@ -177,18 +181,19 @@ void PlayerMove(int event)
 		}
 		break;
 	case JUMP:
-		if (!IsJumping && !IsDropping && (JumpJudgeBlock() || JumpJudgeDot() || myrole.y <= 1)) {
+		if (!IsJumping && !IsDropping && (JumpJudgeBlock() || JumpJudgeDot() )) {
 			IsJumping = TRUE;
 			VerticalSpeed = INITIALVERTICALSPEED;
 			myrole.y += VerticalSpeed;
 		}
 		if (IsJumping && !(JumpJudgeBlock() || JumpJudgeDot())) {
-			VerticalSpeed -= G;
+			VerticalSpeed = (VerticalSpeed - G < -0.7*BlockSize ? -0.7*BlockSize : VerticalSpeed - G);
 			myrole.y += VerticalSpeed;
 		}
-		if (JumpJudgeBlock() || JumpJudgeDot() || myrole.y <= 1) {
+		if (JumpJudgeBlock() || JumpJudgeDot() ) {
 			IsJumping = FALSE;
 			cancelTimer(JUMP);
+			VerticalSpeed = 0;
 		}
 		break;
 	case FALL://FALL的Timer需要一直开着，需要一直判断，不需要按键来触发
@@ -203,10 +208,11 @@ void PlayerMove(int event)
 		}
 		if (IsDropping) {
 			myrole.y -= FallingSpeed;
-			FallingSpeed += G;
+			FallingSpeed = (FallingSpeed + G > 0.7*BlockSize ? 0.7*BlockSize : FallingSpeed + G);
 		}
 		if (JumpJudgeBlock() || JumpJudgeDot()) {
 			IsDropping = FALSE;
+			FallingSpeed = 0;
 		}
 		break;
 	default:
