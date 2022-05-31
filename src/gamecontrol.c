@@ -19,7 +19,7 @@
 #include "stateManager.h"
 #include"menu.h"
 bool IsJumping = FALSE;
-bool teleport = FALSE;
+
 bool IsDropping = FALSE;
 double VerticalSpeed = INITIALVERTICALSPEED;//角色在地面上向上跳起的初速度
 static bool IsDrawing = FALSE;
@@ -163,7 +163,7 @@ void KeyBoardControl(int key, int event) {//键盘信息回调函数
 }
 void PlayerMove(int event)
 {
-	teleport = TRUE;
+
 	switch (event)
 	{
 	case LEFTMOVING:

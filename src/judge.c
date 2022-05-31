@@ -2,7 +2,7 @@
 #include"gamecontrol.h"
 #include"judge.h"
 #include<math.h>
-extern bool teleport;
+
 extern bool IsJumping;
 extern bool IsDropping;
 extern double VerticalSpeed;
@@ -31,20 +31,16 @@ bool JumpJudgeBlock() {
 		if (fabs(RoleX - BlockX) < BlockSize+RoleWidth/2 -0.05&& BlockY - RoleY < RoleHeight + 2 * BlockSize&& BlockY - RoleY>0&&IsJumping&&VerticalSpeed>=0)
 		{
 
-			if (teleport)
-			{
-			teleport = FALSE;
+
 			myrole.y = p->y - RoleHeight;
-			}
+			
 			VerticalSpeed = -1 * fabs(VerticalSpeed);
 			return TRUE;
 		}
 		else  if (fabs(RoleX - BlockX) <= JUMPBLOCKRANGEX && RoleY - BlockY <= 0 && BlockY - RoleY <= BlockSize) {
-			if (teleport)
-			{
-				teleport = FALSE;
+
 				myrole.y = p->y + 2 * BlockSize;
-			}
+			
 			return TRUE;
 		}
 		
@@ -62,11 +58,9 @@ bool RightMoveJudgeBlock() {
 		BlockY = p->y;
 		if (BlockX - RoleX >= 0 && BlockX - RoleX <= MOVERANGE && (BlockY - RoleY < RoleHeight && BlockY - RoleY >= 0 || RoleY - BlockY < 2 * BlockSize && RoleY - BlockY >= 0)) {
 
-			if (teleport)
-			{
-				teleport = FALSE;
+
 				myrole.x = p->x - RoleWidth;
-			}
+			
 			return TRUE;
 		}
 		p = p->next;
@@ -82,11 +76,9 @@ bool LeftMoveJudgeBlock() {
 		BlockX = p->x + 2 * BlockSize;
 		BlockY = p->y;
 		if (RoleX - BlockX >= 0 && RoleX - BlockX <= MOVERANGE && (BlockY - RoleY < RoleHeight && BlockY - RoleY > 0 || RoleY - BlockY < 2 * BlockSize && RoleY - BlockY >= 0)) {
-			if (teleport)
-			{
-				teleport = FALSE;
+
 				myrole.x = p->x + 2 * BlockSize;
-			}
+			
 			return TRUE;
 		}
 		p = p->next;
@@ -167,20 +159,16 @@ bool JumpJudgeDot() {
 					 dot = dot->next;
 					 continue;
 				 }
-			if (teleport)
-			{
-				teleport = FALSE;
+
 				myrole.y = DotY - RoleHeight - 2 * DotSize + 0.1;
-			}
+			
 			VerticalSpeed = -1 * fabs(VerticalSpeed);
 			return TRUE;
 			}
 			else if (fabs(RoleX-DotX)<RoleWidth/2+DotSize&&RoleY<=DotY&&RoleY+RoleHeight>DotY&&VerticalSpeed<=0) {//TO DO :分辨常态时站立碰撞和跳起碰撞
-				if (teleport)
-				{
-					teleport = FALSE;
+
 					myrole.y = DotY;
-				}
+				
 				return TRUE;
 			}
 			
@@ -201,11 +189,9 @@ bool RightMoveJudgeDot() {
 			DotX = dot->x;
 			DotY = dot->y;
 			if (RoleX-DotX>=0&&RoleX-DotX<=2*DotSize && (RoleY-DotY<2*DotSize&&RoleY>=DotY||DotY-RoleY<RoleHeight&&DotY>RoleY)) {
-				if (teleport)
-				{
-					teleport = FALSE;
+
 					myrole.x = DotX - RoleWidth;
-				}
+				
 				return TRUE;
 			}
 			dot = dot->next;
@@ -225,11 +211,9 @@ bool LeftMoveJudgeDot() {
 			DotX = dot->x + 2 * DotSize;
 			DotY = dot->y;
 			if (RoleX-DotX<=0  && DotX - RoleX < 2*DotSize && (RoleY - DotY < 2 * DotSize&&RoleY >= DotY || DotY - RoleY<RoleHeight&&DotY>RoleY)) {
-				if (teleport)
-				{
-					teleport = FALSE;
+
 					myrole.x = dot->x + 2 * DotSize;
-				}
+				
 				return TRUE;
 			}
 			dot = dot->next;
