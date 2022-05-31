@@ -28,16 +28,9 @@ bool JumpJudgeBlock() {
 	while (p != NULL) {
 		BlockX = p->x + BlockSize;
 		BlockY = p->y + 2 * BlockSize;
-		if (fabs(RoleX - BlockX) <= JUMPBLOCKRANGEX && RoleY - BlockY <= 0 && BlockY - RoleY <= BlockSize) {
-			if (teleport)
-			{
-				teleport = FALSE;
-				myrole.y = p->y + 2 * BlockSize;
-			}
-			return TRUE;
-		}
-		else if (fabs(RoleX - BlockX) < BlockSize+RoleWidth/2 -0.05&& BlockY - RoleY < RoleHeight + 2 * BlockSize && BlockY - RoleY>0&&IsJumping)
+		if (fabs(RoleX - BlockX) < BlockSize+RoleWidth/2 -0.05&& BlockY - RoleY < RoleHeight + 2 * BlockSize&& BlockY - RoleY>0&&IsJumping&&VerticalSpeed>=0)
 		{
+
 			if (teleport)
 			{
 			teleport = FALSE;
@@ -46,6 +39,15 @@ bool JumpJudgeBlock() {
 			VerticalSpeed = -1 * fabs(VerticalSpeed);
 			return TRUE;
 		}
+		else  if (fabs(RoleX - BlockX) <= JUMPBLOCKRANGEX && RoleY - BlockY <= 0 && BlockY - RoleY <= BlockSize) {
+			if (teleport)
+			{
+				teleport = FALSE;
+				myrole.y = p->y + 2 * BlockSize;
+			}
+			return TRUE;
+		}
+		
 		p = p->next;
 	}
 	return FALSE;
@@ -160,6 +162,11 @@ bool JumpJudgeDot() {
 			DotY = dot->y + 2 * DotSize;
 			 if (fabs(RoleX - DotX) < RoleWidth / 2 + DotSize && (IsJumping&&VerticalSpeed >= 0) && RoleY + RoleHeight - 0.1 > DotY - 2 * DotSize&&RoleY < DotY)
 			{
+				 if (RightMoveJudgeDot() || LeftMoveJudgeDot())
+				 {
+					 dot = dot->next;
+					 continue;
+				 }
 			if (teleport)
 			{
 				teleport = FALSE;

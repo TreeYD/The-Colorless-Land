@@ -164,16 +164,17 @@ void KeyBoardControl(int key, int event) {//键盘信息回调函数
 void PlayerMove(int event)
 {
 	teleport = TRUE;
-	printf("teleport!\n");
 	switch (event)
 	{
 	case LEFTMOVING:
+
 		myrole.direction = LEFT;
 		if (myrole.x >= 0 && !LeftMoveJudgeBlock() && !LeftMoveJudgeDot()) {//窗口边界判定和地面障碍判定
 			myrole.x -= RoleSpeed;
 		}
 		break;
 	case RIGHTMOVING:
+
 		myrole.direction = RIGHT;
 		if (myrole.x <= GraphicsWindowWidth - RoleWidth && !RightMoveJudgeBlock() && !RightMoveJudgeDot()) {
 			//窗口边界判定和地面障碍判定
@@ -181,6 +182,7 @@ void PlayerMove(int event)
 		}
 		break;
 	case JUMP:
+
 		if (!IsJumping && !IsDropping && (JumpJudgeBlock() || JumpJudgeDot() )) {
 			IsJumping = TRUE;
 			VerticalSpeed = INITIALVERTICALSPEED;
