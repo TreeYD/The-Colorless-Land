@@ -18,6 +18,9 @@
 #include<math.h>
 #include "stateManager.h"
 #include"menu.h"
+bool IsJumping = FALSE;
+static bool IsDropping = FALSE;
+static bool IsDrawing = FALSE;
 extern struct ROLE myrole;
 extern struct ENEMY enemy[EnemyNum];
 extern struct BULLET bullet[BulletNum];

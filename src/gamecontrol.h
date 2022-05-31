@@ -45,8 +45,6 @@ double MouseX, MouseY;//全局变量鼠标坐标
 double COS, SIN;//角色与鼠标位置连线夹角
 static double VerticalSpeed = INITIALVERTICALSPEED;//角色在地面上向上跳起的初速度
 static double FallingSpeed = 0;//角色从高处掉到地处的初速度
-static bool IsJumping = FALSE;
-static bool IsDropping = FALSE;
-static bool IsDrawing = FALSE;
+
 #endif
 

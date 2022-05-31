@@ -21,7 +21,7 @@
 #include"lightgui.h"
 #include"stageDraw.h"
 #include"menu.h"
-
+extern bool IsJumping;
 extern LINE* LineUnion;
 State* StageArray[StageNum];
 fnPtr InitArray[StageNum];
