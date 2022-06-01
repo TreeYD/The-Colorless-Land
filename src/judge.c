@@ -154,7 +154,7 @@ bool JumpJudgeDot() {
 			DotY = dot->y + 2 * DotSize;
 			 if (fabs(RoleX - DotX) < RoleWidth / 2 + DotSize && (IsJumping&&VerticalSpeed >= 0) && RoleY + RoleHeight - 0.1 > DotY - 2 * DotSize&&RoleY < DotY)
 			{
-				 if (RightMoveJudgeDot() || LeftMoveJudgeDot())
+				 if ((myrole.direction==RIGHT&&RightMoveJudgeDot()) || (myrole.direction == LEFT && LeftMoveJudgeDot()))
 				 {
 					 dot = dot->next;
 					 continue;
