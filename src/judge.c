@@ -164,11 +164,11 @@ bool JumpJudgeDot() {
 		while (dot != NULL) {
 			DotX = dot->x + DotSize;
 			DotY = dot->y + 2 * DotSize;
-			 if (fabs(RoleX - DotX) < RoleWidth / 2 + DotSize && (IsJumping&&VerticalSpeed >= 0) && RoleY + RoleHeight - 0.1 > DotY - 2 * DotSize&&RoleY < DotY)
+			 if (fabs(RoleX - DotX) < RoleWidth / 2 + DotSize && (IsJumping&&VerticalSpeed >= 0) && RoleY + RoleHeight - 0.1 > DotY - 2 * DotSize&&RoleY < DotY-RoleHeight/2)
 			{
 				 if (myrole.IsMoving&&((myrole.direction==RIGHT&&RightMoveJudgeDot()) || (myrole.direction == LEFT && LeftMoveJudgeDot())))
 				 {
-					 if (fabs(RoleX - DotX) < RoleWidth / 2 + DotSize && (IsJumping&&VerticalSpeed >= 0) && RoleY + RoleHeight - 0.1 > DotY - 2 * DotSize&&RoleY < DotY)
+					 if (fabs(RoleX - DotX) < RoleWidth / 2 + DotSize && (IsJumping&&VerticalSpeed >= 0) && RoleY + RoleHeight - 0.1 > DotY - 2 * DotSize&&RoleY < DotY - RoleHeight / 2)
 					 {
 						 myrole.y = DotY - RoleHeight - 2 * DotSize + 0.1;
 
