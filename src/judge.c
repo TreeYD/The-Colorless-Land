@@ -154,8 +154,15 @@ bool JumpJudgeDot() {
 			DotY = dot->y + 2 * DotSize;
 			 if (fabs(RoleX - DotX) < RoleWidth / 2 + DotSize && (IsJumping&&VerticalSpeed >= 0) && RoleY + RoleHeight - 0.1 > DotY - 2 * DotSize&&RoleY < DotY)
 			{
-				 if ((myrole.direction==RIGHT&&RightMoveJudgeDot()) || (myrole.direction == LEFT && LeftMoveJudgeDot()))
+				 if (myrole.IsMoving&&((myrole.direction==RIGHT&&RightMoveJudgeDot()) || (myrole.direction == LEFT && LeftMoveJudgeDot())))
 				 {
+					 if (fabs(RoleX - DotX) < RoleWidth / 2 + DotSize && (IsJumping&&VerticalSpeed >= 0) && RoleY + RoleHeight - 0.1 > DotY - 2 * DotSize&&RoleY < DotY)
+					 {
+						 myrole.y = DotY - RoleHeight - 2 * DotSize + 0.1;
+
+						 VerticalSpeed = -1 * fabs(VerticalSpeed);
+						 return TRUE;
+					 }
 					 dot = dot->next;
 					 continue;
 				 }
@@ -165,7 +172,7 @@ bool JumpJudgeDot() {
 			VerticalSpeed = -1 * fabs(VerticalSpeed);
 			return TRUE;
 			}
-			else if (fabs(RoleX-DotX)<RoleWidth/2+DotSize&&RoleY<=DotY&&RoleY+RoleHeight>DotY&&VerticalSpeed<=0) {//TO DO :分辨常态时站立碰撞和跳起碰撞
+			else if (fabs(RoleX-DotX)<RoleWidth/2+DotSize&&RoleY<=DotY&&RoleY+RoleHeight/2>DotY&&VerticalSpeed<=0) {//TO DO :分辨常态时站立碰撞和跳起碰撞
 
 					myrole.y = DotY;
 				
