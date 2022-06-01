@@ -5,6 +5,7 @@
 #define JUMPDOTRANGEX 0.4
 #define JUMPDOTRANGEY 0.05
 #define MOVERANGE 0.15
+#define WEAKCRUSHGAP 0.08
 bool distance(double x1, double y1, double size1, double x2, double y2, double size2);//根据坐标和判定半径确定距离
 bool JumpJudgeBlock();
 bool RightMoveJudgeBlock();
@@ -20,4 +21,5 @@ bool LeftMoveJudgeDot();
 bool MouseAndGround();//鼠标位置和地面表面的判定，画图时用
 bool MouseAndLine(LINE*line);//右键回收桥梁使用
 bool MouseAndAllLine();
+bool CleanTopJudge(int type);//1:block;2:dot
 #endif

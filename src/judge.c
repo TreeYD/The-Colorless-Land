@@ -69,7 +69,22 @@ bool RightMoveJudgeBlock() {
 		BlockX = p->x;
 		BlockY = p->y;
 		if (BlockX - RoleX <= 0 && RoleX-BlockX<2*BlockSize&& (BlockY - RoleY < RoleHeight && BlockY - RoleY >= 0 || RoleY - BlockY < 2 * BlockSize && RoleY - BlockY >= 0)) {
-
+			if (BlockY + 2 * BlockSize - RoleY <= WEAKCRUSHGAP && !IsJumping)
+			{
+				myrole.y += WEAKCRUSHGAP;
+				myrole.x += RoleSpeed;
+				if (CleanTopJudge(1) || CleanTopJudge(2))
+				{
+					myrole.y = RoleY;
+					myrole.x = p->x - RoleWidth;
+					return TRUE;
+				}
+				else
+				{
+					myrole.x -= RoleSpeed;
+					return FALSE;
+				}
+			}
 
 				myrole.x = p->x - RoleWidth;
 			
@@ -88,7 +103,22 @@ bool LeftMoveJudgeBlock() {
 		BlockX = p->x + 2 * BlockSize;
 		BlockY = p->y;
 		if (RoleX - BlockX <= 0 && BlockX -RoleX<= 2*BlockSize && (BlockY - RoleY < RoleHeight && BlockY - RoleY > 0 || RoleY - BlockY < 2 * BlockSize && RoleY - BlockY >= 0)) {
-
+			if (BlockY + 2 * BlockSize - RoleY <= WEAKCRUSHGAP && !IsJumping)
+			{
+				myrole.y += WEAKCRUSHGAP;
+				myrole.x -= RoleSpeed;
+				if (CleanTopJudge(1) || CleanTopJudge(2))
+				{
+					myrole.y = RoleY;
+					myrole.x = p->x + 2 * BlockSize;
+					return TRUE;
+				}
+				else
+				{
+					myrole.x += RoleSpeed;
+					return FALSE;
+				}
+			}
 				myrole.x = p->x + 2 * BlockSize;
 			
 			return TRUE;
@@ -209,6 +239,22 @@ bool RightMoveJudgeDot() {
 			DotY = dot->y;
 			if (RoleX-DotX>=0&&RoleX-DotX<=2*DotSize && (RoleY-DotY<2*DotSize&&RoleY>=DotY||DotY-RoleY<RoleHeight&&DotY>RoleY)) {
 
+				if (DotY +2*DotSize- RoleY <= WEAKCRUSHGAP&& !IsJumping)
+				{
+					myrole.y += WEAKCRUSHGAP;
+					myrole.x += RoleSpeed;
+					if ( CleanTopJudge(1) || CleanTopJudge(2))
+					{
+						myrole.y = RoleY;
+						myrole.x = DotX - RoleWidth;
+						return TRUE;
+					}
+					else
+					{
+						myrole.x -= RoleSpeed;
+						return FALSE;
+					}
+				}
 					myrole.x = DotX - RoleWidth;
 				
 				return TRUE;
@@ -230,7 +276,22 @@ bool LeftMoveJudgeDot() {
 			DotX = dot->x + 2 * DotSize;
 			DotY = dot->y;
 			if (RoleX-DotX<=0  && DotX - RoleX < 2*DotSize && (RoleY - DotY < 2 * DotSize&&RoleY >= DotY || DotY - RoleY<RoleHeight&&DotY>RoleY)) {
-
+				if (DotY + 2 * DotSize - RoleY <= WEAKCRUSHGAP&&!IsJumping)
+				{
+					myrole.y +=WEAKCRUSHGAP;
+					myrole.x -= RoleSpeed;
+					if (CleanTopJudge(1)||CleanTopJudge(2))
+					{
+						myrole.y = RoleY;
+						myrole.x = dot->x + 2 * DotSize;
+						return TRUE;
+					}
+					else
+					{
+						myrole.x += RoleSpeed;
+						return FALSE;
+					}
+				}
 					myrole.x = dot->x + 2 * DotSize;
 				
 				return TRUE;
@@ -296,3 +357,30 @@ bool MouseAndAllLine() {
 	return FALSE;
 }
 
+bool CleanTopJudge(int type)//1:block;2:dot
+{
+	if (type == 1)
+	{
+		struct BLOCK *p;
+		for (p = blockhead; p != NULL; p = p->next)
+		{
+			if (fabs(myrole.x + RoleWidth / 2 - p->x+ BlockSize) < BlockSize + RoleWidth / 2 - 0.05&& p->y - myrole.y < RoleHeight && p->y - myrole.y>2*BlockSize)
+				return TRUE;
+		}
+		return FALSE;
+	}
+	else
+	{
+		LINE *p;
+		DOT * q;
+		for (p = LineUnion; p != NULL; p = p->next)
+		{
+			for (q = p->HeadDot; q != NULL; q = q->next)
+			{
+				if (fabs(myrole.x + RoleWidth / 2 - q->x + DotSize) < DotSize + RoleWidth / 2 - 0.05&& q->y - myrole.y < RoleHeight && q->y - myrole.y>2*DotSize)
+					return TRUE;
+			}
+		}
+		return FALSE;
+	}
+}
