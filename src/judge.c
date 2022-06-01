@@ -28,9 +28,21 @@ bool JumpJudgeBlock() {
 	while (p != NULL) {
 		BlockX = p->x + BlockSize;
 		BlockY = p->y + 2 * BlockSize;
-		if (fabs(RoleX - BlockX) < BlockSize+RoleWidth/2 -0.05&& BlockY - RoleY < RoleHeight + 2 * BlockSize&& BlockY - RoleY>0&&IsJumping&&VerticalSpeed>=0)
+		if (fabs(RoleX - BlockX) < BlockSize+RoleWidth/2 -0.05&& BlockY - RoleY < RoleHeight + 2 * BlockSize&& BlockY - RoleY>2*BlockSize&&IsJumping&&VerticalSpeed>=0)
 		{
 
+			if (myrole.IsMoving && (( RightMoveJudgeBlock()) || ( LeftMoveJudgeBlock())))
+			{
+				if (fabs(RoleX - BlockX) < BlockSize + RoleWidth / 2 - 0.05&& BlockY - RoleY < RoleHeight + 2 * BlockSize&& BlockY - RoleY>2 * BlockSize&&IsJumping&&VerticalSpeed >= 0)
+				{
+					myrole.y = p->y - RoleHeight;
+
+					VerticalSpeed = -1 * fabs(VerticalSpeed);
+					return TRUE;
+				}
+				p = p->next;
+				continue;
+			}
 
 			myrole.y = p->y - RoleHeight;
 			
@@ -56,7 +68,7 @@ bool RightMoveJudgeBlock() {
 	while (p != NULL) {
 		BlockX = p->x;
 		BlockY = p->y;
-		if (BlockX - RoleX >= 0 && BlockX - RoleX <= MOVERANGE && (BlockY - RoleY < RoleHeight && BlockY - RoleY >= 0 || RoleY - BlockY < 2 * BlockSize && RoleY - BlockY >= 0)) {
+		if (BlockX - RoleX <= 0 && RoleX-BlockX<2*BlockSize&& (BlockY - RoleY < RoleHeight && BlockY - RoleY >= 0 || RoleY - BlockY < 2 * BlockSize && RoleY - BlockY >= 0)) {
 
 
 				myrole.x = p->x - RoleWidth;
@@ -75,7 +87,7 @@ bool LeftMoveJudgeBlock() {
 	while (p != NULL) {
 		BlockX = p->x + 2 * BlockSize;
 		BlockY = p->y;
-		if (RoleX - BlockX >= 0 && RoleX - BlockX <= MOVERANGE && (BlockY - RoleY < RoleHeight && BlockY - RoleY > 0 || RoleY - BlockY < 2 * BlockSize && RoleY - BlockY >= 0)) {
+		if (RoleX - BlockX <= 0 && BlockX -RoleX<= 2*BlockSize && (BlockY - RoleY < RoleHeight && BlockY - RoleY > 0 || RoleY - BlockY < 2 * BlockSize && RoleY - BlockY >= 0)) {
 
 				myrole.x = p->x + 2 * BlockSize;
 			
